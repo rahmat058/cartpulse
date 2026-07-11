@@ -1,0 +1,5 @@
+.gitignore
+build/
+coverage/
+.next
+node_modules

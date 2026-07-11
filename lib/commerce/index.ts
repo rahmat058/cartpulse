@@ -1,0 +1,10 @@
+/** Commerce domain — Strategy + Facade patterns for catalog, pricing, and home shelves. */
+export type { PricingStrategy } from '@/lib/commerce/ProductPricing'
+export { FlashSaleTimer } from '@/lib/commerce/FlashSaleTimer'
+export { CategoryCatalog } from '@/lib/commerce/CategoryCatalog'
+export type { CategoryNode } from '@/lib/commerce/CategoryCatalog'
+export { SortStrategyRegistry } from '@/lib/commerce/SortStrategy'
+export type { ProductSortStrategy } from '@/lib/commerce/SortStrategy'
+export { HomePageComposer } from '@/lib/commerce/HomeShelfStrategy'
+export { ProductPricing, SyntheticPromoStrategy } from '@/lib/commerce/ProductPricing'
+export type { HomeShelfPayload, HomeShelfStrategy } from '@/lib/commerce/HomeShelfStrategy'

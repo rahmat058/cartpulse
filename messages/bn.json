@@ -1,0 +1,408 @@
+{
+  "common": {
+    "loading": "লোড হচ্ছে…",
+    "seeAll": "সব দেখুন",
+    "seeAllProducts": "সব পণ্য দেখুন",
+    "seeAllStores": "সব স্টোর দেখুন",
+    "seeAllOrders": "সব অর্ডার দেখুন",
+    "continueShopping": "কেনাকাটা চালিয়ে যান",
+    "shopNow": "এখনই কিনুন",
+    "verified": "যাচাইকৃত",
+    "free": "ফ্রি",
+    "home": "হোম",
+    "cart": "কার্ট",
+    "search": "খুঁজুন",
+    "save": "সংরক্ষণ",
+    "cancel": "বাতিল",
+    "remove": "সরান",
+    "total": "মোট",
+    "subtotal": "উপমোট",
+    "brandName": "কার্টপাল্স",
+    "marketplace": "মার্কেটপ্লেস"
+  },
+  "nav": {
+    "home": "হোম",
+    "flashDeals": "ফ্ল্যাশ ডিল",
+    "signIn": "সাইন ইন",
+    "wishlist": "উইশলিস্ট",
+    "wishlistCount": "উইশলিস্ট, {count}টি আইটেম",
+    "cartCount": "কার্ট, {count}টি আইটেম",
+    "allCategories": "সব ক্যাটাগরি",
+    "categoriesUnavailable": "ক্যাটাগরি লোড হয়নি",
+    "noSubcategories": "এখনও কোনো উপ-ক্যাটাগরি নেই।",
+    "browseCategoryHint": "এই ক্যাটাগরিতে পণ্য ব্রাউজ করুন বা সম্পর্কিত আইটেম দেখুন।",
+    "viewAllCategory": "সব {category} দেখুন →",
+    "exploreCategory": "{category} এক্সপ্লোর করুন",
+    "shopCategory": "{category} কিনুন",
+    "categoryMeta": "{count}টি পণ্য · ৩-স্তরের ক্যাটাগরি · দ্রুত ডেলিভারি।"
+  },
+  "announcement": {
+    "message": "$৭৫-এর বেশি অর্ডারে ফ্রি শিপিং · ফ্ল্যাশ ডিল শীঘ্রই শেষ",
+    "dismiss": "ঘোষণা বন্ধ করুন"
+  },
+  "search": {
+    "placeholder": "পণ্য, ব্র্যান্ড, ক্যাটাগরি খুঁজুন…",
+    "label": "পণ্য খুঁজুন",
+    "searching": "খুঁজছি…",
+    "noMatches": "“{query}”-এর জন্য কিছু পাওয়া যায়নি",
+    "seeAllResults": "“{query}”-এর সব ফলাফল দেখুন"
+  },
+  "theme": {
+    "switchToLight": "লাইট মোডে যান",
+    "switchToDark": "ডার্ক মোডে যান"
+  },
+  "language": {
+    "label": "ভাষা",
+    "english": "English",
+    "bangla": "বাংলা"
+  },
+  "footer": {
+    "description": "ফিল্টার, ফ্ল্যাশ ডিল এবং রোল-ভিত্তিক ড্যাশবোর্ডসহ মাল্টি-স্টোর মার্কেটপ্লেস ডেমো।",
+    "shop": "কেনাকাটা",
+    "account": "অ্যাকাউন্ট",
+    "support": "সাপোর্ট",
+    "allProducts": "সব পণ্য",
+    "topRated": "টপ রেটেড",
+    "electronics": "ইলেকট্রনিক্স",
+    "fashion": "ফ্যাশন",
+    "createAccount": "অ্যাকাউন্ট তৈরি",
+    "myOrders": "আমার অর্ডার",
+    "helpCenter": "হেল্প সেন্টার",
+    "about": "আমাদের সম্পর্কে",
+    "contact": "যোগাযোগ",
+    "terms": "শর্তাবলী",
+    "checkout": "চেকআউট",
+    "digitalLibrary": "ডিজিটাল লাইব্রেরি",
+    "copyright": "© {year} CartPulse। Next.js 16 · Redux · Prisma দিয়ে তৈরি।",
+    "madeWith": "মার্কেটপ্লেস UX ডেমোর জন্য <heart></heart> দিয়ে তৈরি"
+  },
+  "hero": {
+    "prevSlide": "আগের স্লাইড",
+    "nextSlide": "পরের স্লাইড",
+    "slides": {
+      "summer-sale": {
+        "eyebrow": "রাইড ও গিয়ার",
+        "title": "মোটরসাইকেল ও হেলমেট",
+        "description": "বাইক, হেলমেট ও অটোমোবাইল essentials — যাচাইকৃত বিক্রেতাদের কাছ থেকে, রেটিং ও দামে ফিল্টার করুন।",
+        "cta": "মোটরসাইকেল দেখুন",
+        "secondaryCta": "টপ রেটেড"
+      },
+      "tech-hub": {
+        "eyebrow": "টেক হাব",
+        "title": "স্মার্ট টিভি ও গ্যাজেট",
+        "description": "টেলিভিশন, অডিও ও দৈনন্দিন ইলেকট্রনিক্স — যাচাইকৃত বিক্রেতাদের কাছ থেকে, রেটিং ও দামে ফিল্টার করুন।",
+        "cta": "ইলেকট্রনিক্স দেখুন"
+      },
+      "fashion-flash": {
+        "eyebrow": "স্টাইল পিক",
+        "title": "ফ্যাশন ফ্ল্যাশ",
+        "description": "ফুটওয়্যার ও পোশাকে নতুন কালেকশন — শীর্ষ মার্কেটপ্লেস স্টোর থেকে সীমিত সময়ের পিক।",
+        "cta": "ফ্যাশন কিনুন"
+      },
+      "home-deals": {
+        "eyebrow": "হোম ও লিভিং",
+        "title": "শক্তিশালী হোম অ্যাপ্লায়ান্স",
+        "description": "ওয়াশিং মেশিন, কিচেন গিয়ার ও হোম essentials — স্টকে থাকা পণ্যে দ্রুত ডিসপ্যাচ।",
+        "cta": "অ্যাপ্লায়ান্স দেখুন"
+      }
+    },
+    "promo": {
+      "benefitsLabel": "কেনাকাটার সুবিধা",
+      "cashOnDelivery": {
+        "title": "১০০% ক্যাশ অন ডেলিভারি",
+        "description": "অর্ডার পৌঁছালে নগদে পরিশোধ করুন"
+      },
+      "nationwideDelivery": {
+        "title": "সারাদেশে ডেলিভারি",
+        "description": "দেশজুড়ে দ্রুত ডেলিভারি"
+      }
+    }
+  },
+  "home": {
+    "whyShop": "কেন CartPulse-এ কিনবেন",
+    "shelves": {
+      "recently-ordered": {
+        "title": "সম্প্রতি অর্ডার করা",
+        "subtitle": "আপনি সম্প্রতি যে পণ্যগুলো অর্ডার করেছেন"
+      },
+      "all-products": {
+        "title": "সব পণ্য",
+        "subtitle": "আমাদের স্টোর ও আরও অনেকের সব পণ্য"
+      },
+      "featured-stores": {
+        "title": "ফিচার্ড স্টোর · যাচাইকৃত বিক্রেতা",
+        "subtitle": "আমাদের স্টোর ও আরও অনেকের সব স্টোর"
+      },
+      "best-sellers": {
+        "title": "এই সপ্তাহের বেস্ট সেলার",
+        "subtitle": "আমাদের স্টোর ও আরও অনেকের সব পণ্য"
+      },
+      "new-arrivals": {
+        "title": "নতুন আগমন",
+        "subtitle": "আমাদের স্টোর ও আরও অনেকের সব পণ্য"
+      },
+      "recently-viewed": {
+        "title": "সম্প্রতি দেখা",
+        "subtitle": "যেখানে থেমেছিলেন সেখান থেকে চালিয়ে যান"
+      }
+    }
+  },
+  "trust": {
+    "fastDelivery": {
+      "title": "দ্রুত ডেলিভারি",
+      "description": "স্টকে থাকা পণ্যে ২–৩ দিনে ডিসপ্যাচ"
+    },
+    "returns": {
+      "title": "৭ দিনের রিটার্ন",
+      "description": "ঝামেলামুক্ত রিটার্ন উইন্ডো"
+    },
+    "secureCheckout": {
+      "title": "নিরাপদ চেকআউট",
+      "description": "Stripe-চালিত পেমেন্ট"
+    },
+    "buyerProtection": {
+      "title": "ক্রেতা সুরক্ষা",
+      "description": "প্রতিটি কার্ডে যাচাইকৃত বিক্রেতা"
+    },
+    "authentic": {
+      "title": "অরিজিনাল পণ্য",
+      "description": "অফিসিয়াল স্টোর ব্যাজ"
+    }
+  },
+  "auth": {
+    "signIn": "সাইন ইন",
+    "signInSubtitle": "আবার স্বাগতম — যেখানে থেমেছিলেন সেখান থেকে চালিয়ে যান।",
+    "welcomeBack": "আবার স্বাগতম",
+    "createAccount": "অ্যাকাউন্ট তৈরি",
+    "newToCartPulse": "CartPulse-এ নতুন?",
+    "alreadyHaveAccount": "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "fullName": "পুরো নাম",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+    "continue": "চালিয়ে যান",
+    "orContinueWith": "অথবা এর মাধ্যমে চালিয়ে যান",
+    "github": "GitHub",
+    "google": "Google",
+    "emailNotVerified": "ইমেইল যাচাই হয়নি",
+    "resendVerification": "যাচাই ইমেইল আবার পাঠান",
+    "invalidCredentials": "ভুল ইমেইল বা পাসওয়ার্ড",
+    "verifyEmailFirst": "সাইন ইন করতে আগে ইমেইল যাচাই করুন।",
+    "verificationSent": "যাচাই ইমেইল পাঠানো হয়েছে।",
+    "verificationFailed": "যাচাই ইমেইল পাঠানো যায়নি।",
+    "forgotPasswordTitle": "পাসওয়ার্ড ভুলে গেছেন?",
+    "forgotPasswordSubtitle": "আপনার ইমেইল দিন, আমরা রিসেট লিংক পাঠাব।",
+    "sendResetLink": "রিসেট লিংক পাঠান",
+    "checkInbox": "ইনবক্স দেখুন",
+    "emailSent": "ইমেইল পাঠানো হয়েছে",
+    "backToSignIn": "সাইন ইন-এ ফিরে যান",
+    "rememberPassword": "পাসওয়ার্ড মনে আছে?",
+    "resetEmailFailed": "রিসেট ইমেইল পাঠানো যায়নি",
+    "registerSubtitle": "CartPulse-এ যোগ দিন — আইটেম সেভ, অর্ডার ট্র্যাক ও দ্রুত চেকআউট।",
+    "passwordMinLength": "কমপক্ষে ৮ অক্ষর",
+    "registerFailed": "নিবন্ধন ব্যর্থ",
+    "checkEmail": "আপনার ইমেইল দেখুন",
+    "verifyEmailTitle": "ইমেইল যাচাই করুন",
+    "verifyEmailInstructions": "আমরা আপনার ইনবক্সে যাচাই লিংক পাঠিয়েছি। ২৪ ঘণ্টার মধ্যে ক্লিক করে অ্যাকাউন্ট সক্রিয় করুন।",
+    "verificationExpired": "যাচাই মেয়াদ শেষ",
+    "sendVerificationAgain": "যাচাই ইমেইল আবার পাঠান",
+    "resetPasswordTitle": "নতুন পাসওয়ার্ড সেট করুন",
+    "newPassword": "নতুন পাসওয়ার্ড",
+    "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
+    "updatePassword": "পাসওয়ার্ড আপডেট",
+    "passwordUpdated": "পাসওয়ার্ড আপডেট হয়েছে!",
+    "invalidResetLink": "অবৈধ রিসেট লিংক",
+    "requestNewResetLink": "নতুন রিসেট লিংক চান",
+    "resetPasswordFailed": "পাসওয়ার্ড রিসেট করা যায়নি"
+  },
+  "cart": {
+    "yourCart": "আপনার কার্ট",
+    "yourCartLower": "আপনার কার্ট",
+    "emptyTitle": "আপনার কার্ট খালি",
+    "emptyDrawer": "ফ্ল্যাশ ডিল ব্রাউজ করে আইটেম যোগ করুন — কার্ট localStorage-এ সংরক্ষিত থাকে।",
+    "emptyPanel": "ক্যাটালগ থেকে আইটেম যোগ করুন। রিফ্রesh-এও কার্ট localStorage-এ থাকে।",
+    "browseProducts": "পণ্য ব্রাউজ করুন",
+    "clearAll": "সব মুছুন",
+    "clear": "মুছুন",
+    "proceedToCheckout": "চেকআউটে যান",
+    "signInToCheckout": "চেকআউটের জন্য সাইন ইন করুন",
+    "secureCheckoutNote": "নিরাপদ চেকআউট · Stripe বা ক্যাশ অন ডেলিভারি",
+    "deliveryBanner": "সারাদেশে দ্রুত ডেলিভারি — Stripe দিয়ে নিরাপদ চেকআউট।",
+    "youSave": "আপনি সাশ্রয়",
+    "delivery": "ডেলিভারি",
+    "trustNote": "ক্যাশ অন ডেলিভারি · ৭ দিনের রিটার্ন",
+    "recommended": "আপনার জন্য সুপারিশ",
+    "viewAll": "সব দেখুন",
+    "shoppingCart": "শপিং কার্ট",
+    "itemCount": "আপনার কার্ট ({count, plural, one {#টি আইটেম} other {#টি আইটেম}})",
+    "closeCart": "কার্ট বন্ধ করুন",
+    "closeCartDrawer": "কার্ট ড্রয়ার বন্ধ করুন"
+  },
+  "checkout": {
+    "title": "চেকআউট",
+    "deliveryAddress": "ডেলিভারি ঠিকানা",
+    "paymentMethod": "পেমেন্ট পদ্ধতি",
+    "cashOnDelivery": "ক্যাশ অন ডেলিভারি",
+    "codDescription": "অর্ডার পৌঁছালে নগদে পরিশোধ করুন।",
+    "cardStripe": "কার্ড / Stripe",
+    "stripeDescription": "Stripe দিয়ে কার্ডে নিরাপদে অনলাইনে পরিশোধ করুন।",
+    "placeOrder": "অর্ডার দিন · {total}",
+    "payTotal": "পরিশোধ · {total}",
+    "addAddressFirst": "আগে ডেলিভারি ঠিকানা যোগ করুন।",
+    "orderPlaced": "অর্ডার হয়েছে",
+    "paymentSuccessful": "পেমেন্ট সফল",
+    "viewOrders": "অর্ডার দেখুন",
+    "paymentNotCompleted": "পেমেন্ট সম্পন্ন হয়নি",
+    "tryAgain": "আবার পেমেন্ট চেষ্টা করুন",
+    "viewCart": "কার্ট দেখুন"
+  },
+  "notFound": {
+    "badge": "৪০৪",
+    "title": "পৃষ্ঠা পাওয়া যায়নি",
+    "description": "আপনি যে পৃষ্ঠা খুঁজছেন তা নেই বা সরানো হয়েছে।",
+    "backHome": "হোমে ফিরে যান",
+    "browseProducts": "পণ্য ব্রাউজ করুন"
+  },
+  "pages": {
+    "help": {
+      "title": "হেল্প সেন্টার",
+      "subtitle": "কেনাকাটা, চেকআউট, অর্ডার ও অ্যাকাউন্ট সম্পর্কে সাধারণ প্রশ্নের উত্তর।",
+      "quickLinks": {
+        "title": "দ্রুত লিংক",
+        "orders": "আমার অর্ডার",
+        "ordersDesc": "স্ট্যাটাস দেখুন ও ইনভয়েস ডাউনলোড করুন",
+        "cart": "কার্ট",
+        "cartDesc": "চেকআউটের আগে আইটেম পর্যালোচনা",
+        "contact": "যোগাযোগ",
+        "contactDesc": "সাপোর্ট টিমের সাথে যোগাযোগ",
+        "terms": "শর্তাবলী",
+        "termsDesc": "মার্কেটপ্লেস নীতিমালা"
+      },
+      "faq": {
+        "title": "প্রায়শই জিজ্ঞাসিত প্রশ্ন",
+        "checkout": {
+          "q": "চেকআউট কীভাবে কাজ করে?",
+          "a": "কার্টে পণ্য যোগ করুন, সাইন ইন করুন, তারপর ক্যাশ অন ডেলিভারি বা Stripe কার্ড পেমেন্ট বেছে নিন। দাম সার্ভারে পুনরায় হিসাব হয় — কার্ট শুধু product ID সংরক্ষণ করে।"
+        },
+        "shipping": {
+          "q": "শিপিং কি ফ্রি?",
+          "a": "$৭৫-এর বেশি অর্ডারে ডিফল্টভাবে ফ্রি শিপিং। স্টোর-নির্দিষ্ট থreshold চেকআউটে দেখানো হয়।"
+        },
+        "returns": {
+          "q": "পণ্য ফেরত দিতে পারব?",
+          "a": "যোগ্য পণ্য ডেলিভারির ৭ দিনের মধ্যে ফেরত দেওয়া যায়। অর্ডার কনফার্মেশনে দেওয়া স্টোর সাপোর্ট ইমেইলে যোগাযোগ করুন।"
+        },
+        "filters": {
+          "q": "ক্যাটালগ ফিল্টার URL-এ সেভ হয়?",
+          "a": "হ্যাঁ — ক্যাটাগরি, দাম, রেটিং, সর্ট ও সার্চ সব URL-এ সিঙ্ক হয়, তাই ফিল্টার করা ভিউ বুকমার্ক বা শেয়ার করা যায়।"
+        }
+      },
+      "stillNeedHelp": {
+        "title": "আরও সাহায্য দরকার?",
+        "body": "ডেমো সাপোর্ট টিম অর্ডার ও অ্যাকাউন্ট প্রশ্নে এক কর্মদিবসের মধ্যে উত্তর দেয়।",
+        "cta": "সাপোর্টে যোগাযোগ"
+      }
+    },
+    "about": {
+      "title": "CartPulse সম্পর্কে",
+      "subtitle": "আধুনিক ই-কমার্স UX ও আর্কিটেকচার প্রদর্শনের জন্য তৈরি মাল্টি-স্টোর মার্কেটপ্লেস ডেমো।",
+      "intro": "CartPulse যাচাইকৃত বিক্রেতাদের কাছ থেকে ইলেকট্রনিক্স, ফ্যাশন, হোম অ্যাপ্লায়ান্স ও আরও অনেক কিছু এক জায়গায় দেয়। শক্তিশালী ফিল্টার, স্থায়ী কার্ট, COD বা Stripe চেকআউট।",
+      "mission": {
+        "title": "আমাদের লক্ষ্য",
+        "body": "একটি Next.js অ্যাপে প্রোডাকশন-গ্রেড প্যাটার্ন — সার্ভার-যাচাইকৃত চেকআউট, রোল-ভিত্তিক ড্যাশবোর্ড, ইনভেন্টরি সিঙ্ক, দ্বিভাষিক storefront — প্রদর্শন করা।"
+      },
+      "values": {
+        "title": "যাতে আমরা মনোযোগ দিই",
+        "marketplace": {
+          "title": "মাল্টি-স্টোর ক্যাটালগ",
+          "body": "স্বতন্ত্র স্টোরের পণ্য, একীভূত সার্চ ও চেকআউট"
+        },
+        "secure": {
+          "title": "বিশ্বাস ও নিরাপত্তা",
+          "body": "অথ-সুরক্ষিত চেকআউট, API rate limit, সার্ভার-পক্ষ দাম"
+        },
+        "dashboard": {
+          "title": "রোল-ভিত্তিক অভিজ্ঞতা",
+          "body": "এক প্ল্যাটফর্মে কাস্টমার My Account ও admin back-office"
+        }
+      },
+      "stack": {
+        "title": "যা দিয়ে তৈরি",
+        "body": "Next.js 16, React 19, Prisma 7, PostgreSQL, Redux, NextAuth, Stripe, Tailwind CSS v4, next-intl (ইংরেজি ও বাংলা)।"
+      }
+    },
+    "contact": {
+      "title": "যোগাযোগ",
+      "subtitle": "অর্ডার, অ্যাকাউন্ট বা এই ডেমো মার্কেটপ্লেস নিয়ে প্রশ্ন? আমরা সাহায্য করতে প্রস্তুত।",
+      "reachUs": {
+        "title": "যোগাযোগের মাধ্যম",
+        "body": "এই ডেমো পরিবেশে নিচের চ্যানেল ব্যবহার করুন। প্রোডাকশনে এগুলো আপনার সাপোর্ট ডেস্কে রাউট হবে।"
+      },
+      "channels": {
+        "email": {
+          "label": "ইমেইল",
+          "value": "support@cartpulse.com"
+        },
+        "phone": {
+          "label": "ফোন",
+          "value": "+1 (555) 012-3456"
+        },
+        "address": {
+          "label": "অফিস",
+          "value": "123 Marketplace Ave, Demo City, DC 10001"
+        }
+      },
+      "hours": {
+        "title": "সাপোর্ট সময়",
+        "weekdays": "সোম – শুক্র: সকাল ৯:০০ – বিকাল ৬:০০ (UTC+6)",
+        "weekend": "শনি: সকাল ১০:০০ – দুপুর ২:০০ · রবি: বন্ধ"
+      },
+      "orders": {
+        "title": "অর্ডার সাপোর্ট",
+        "body": "সাইন-ইন করা গ্রাহকরা My Account → Orders থেকে অর্ডার বিস্তারিত ও PDF ইনভয়েস দেখতে পারেন। দ্রুত সাহায্যের জন্য ইমেইলে অর্ডার ID উল্লেখ করুন।"
+      }
+    },
+    "terms": {
+      "title": "শর্তাবলী",
+      "subtitle": "CartPulse ডেমো মার্কেটপ্লেস ব্যবহারের আগে এই শর্তগুলো পড়ুন।",
+      "lastUpdated": "সর্বশেষ আপডেট: জুলাই ২০২৬ · মূল্যায়নের জন্য ডেমো শর্ত।",
+      "sections": {
+        "acceptance": {
+          "title": "১. শর্ত গ্রহণ",
+          "body": "CartPulse ব্যবহার করে আপনি এই শর্ত মেনে নেন। এটি একটি ডেমো মার্কেটপ্লেস; পণ্য ও লেনদেন UX ও প্রযুক্তিগত মূল্যায়নের জন্য সimulation করা।"
+        },
+        "accounts": {
+          "title": "২. অ্যাকাউন্ট",
+          "body": "নিবন্ধনে সঠিক তথ্য দিন। আপনার কredentials-এর অধীনে কার্যকলাপের জন্য আপনি দায়ী। Admin ও super admin শুধু ডেমো অ্যাক্সেসের জন্য seeded।"
+        },
+        "orders": {
+          "title": "৩. অর্ডার ও ফুলফিলমেন্ট",
+          "body": "চেকআউটে স্টক যাচাই না হওয়া পর্যন্ত অর্ডার নিশ্চিততা availability guarantee করে না। এই ডেমোতে অর্ডার স্ট্যাটাস admin প্যানেলে আপডেট হয়।"
+        },
+        "payments": {
+          "title": "৪. পেমেন্ট",
+          "body": "Stripe test mode ও Cash on Delivery সমর্থিত। ডেমোতে আসল পেমেন্ট credentials ব্যবহার করবেন না। কনফিগার থাকলে Stripe test keys ব্যবহৃত হয়।"
+        },
+        "returns": {
+          "title": "৫. রিটার্ন ও রিফান্ড",
+          "body": "ডেমো নীতি অনুযায়ী যোগ্য পণ্য ৭ দিনের মধ্যে ফেরত দেওয়া যায়। রিফান্ড পেমেন্ট পদ্ধতির উপর নির্ভর করে এবং এই ডেমোতে ম্যানুয়ালি পরিচালিত।"
+        },
+        "liability": {
+          "title": "৬. দায় সীমাবদ্ধতা",
+          "body": "CartPulse ডেমো হিসেবে as-is প্রদান করা হয়। seed data-তে merchant listing, দামের accuracy বা প্রোডাকশন ব্যবহারের fitness-এর কোনো warranty নেই।"
+        }
+      }
+    }
+  },
+  "product": {
+    "buyNow": "এখনই কিনুন",
+    "add": "যোগ",
+    "inCart": "কার্টে ({count})",
+    "soldOut": "স্টক শেষ",
+    "freeDelivery": "ফ্রি ডেলিভারি",
+    "standardShipping": "স্ট্যান্ডার্ড শিপিং",
+    "new": "নতুন",
+    "inStock": "স্টকে {count}টি",
+    "colors": "{count}টি রং"
+  }
+}

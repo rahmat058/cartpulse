@@ -1,0 +1,346 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  image         String?
+  passwordHash  String?
+  emailVerified Boolean        @default(false)
+  role          UserRole       @default(USER)
+  permCreate    Boolean        @default(false)
+  permRead      Boolean        @default(false)
+  permUpdate    Boolean        @default(false)
+  permDelete    Boolean        @default(false)
+  accounts     Account[]
+  sessions     Session[]
+  orders       Order[]
+  reviews      Review[]
+  library      LibraryItem[]
+  wishlist      WishlistItem[]
+  activityLogs  ActivityLog[]
+  notifications Notification[]
+  deletedAt     DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([deletedAt])
+}
+
+model ActivityLog {
+  id          String             @id @default(cuid())
+  actorId     String?
+  actor       User?              @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action      ActivityAction
+  entityType  ActivityEntityType
+  entityId    String?
+  entityLabel String?
+  summary     String
+  metadata    Json?
+  createdAt   DateTime           @default(now())
+
+  @@index([actorId])
+  @@index([entityType])
+  @@index([action])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Store {
+  id                    String    @id @default(cuid())
+  slug                  String    @unique
+  name                  String
+  description           String?
+  supportEmail          String?
+  logoEmoji             String    @default("🛍️")
+  logoUrl               String?
+  currency              String    @default("USD")
+  taxRate               Float     @default(0.08)
+  shippingFlat          Float     @default(5.99)
+  freeShippingThreshold Float     @default(75)
+  active                Boolean   @default(true)
+  verified              Boolean   @default(false)
+  products              Product[]
+  deletedAt             DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([deletedAt])
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  description String?
+  emoji       String?
+  sortOrder   Int        @default(0)
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  deletedAt   DateTime?
+
+  @@index([parentId])
+  @@index([sortOrder])
+  @@index([deletedAt])
+  @@map("categories")
+}
+
+enum CouponType {
+  PERCENT
+  SHIPPING
+  FIXED
+}
+
+enum ActivityAction {
+  CREATE
+  UPDATE
+  DELETE
+  STATUS_CHANGE
+  ROLE_CHANGE
+}
+
+enum ActivityEntityType {
+  USER
+  PRODUCT
+  STORE
+  CATEGORY
+  COUPON
+  ORDER
+  SYSTEM
+}
+
+enum NotificationType {
+  ORDER_UPDATE
+}
+
+model Coupon {
+  id            String     @id @default(cuid())
+  code          String     @unique
+  type          CouponType
+  value         Float
+  label         String
+  active        Boolean    @default(true)
+  minSubtotal   Float?
+  maxUses       Int?
+  usedCount     Int        @default(0)
+  startsAt      DateTime?
+  endsAt        DateTime?
+  deletedAt     DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([active])
+  @@index([deletedAt])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+enum VariantType {
+  COLOR
+  SIZE
+}
+
+model Product {
+  id               String           @id @default(cuid())
+  storeId          String
+  store            Store            @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  categoryId       String
+  category         Category         @relation(fields: [categoryId], references: [id])
+  slug             String
+  name             String
+  price            Float
+  stock            Int
+  rating           Float
+  emoji            String
+  imageUrl         String?
+  imageUrls        String[]         @default([])
+  description      String
+  published        Boolean          @default(true)
+  isDigital        Boolean          @default(false)
+  digitalAssetUrl  String?
+  variantType      VariantType      @default(COLOR)
+  defaultVariantId String?          @unique
+  defaultVariant   ProductVariant?  @relation("ProductDefaultVariant", fields: [defaultVariantId], references: [id], onDelete: SetNull)
+  variants         ProductVariant[] @relation("ProductVariants")
+  orderItems       OrderItem[]
+  reviews          Review[]
+  libraryItems     LibraryItem[]
+  wishlistItems    WishlistItem[]
+  deletedAt        DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([deletedAt])
+}
+
+model ProductVariant {
+  id         String      @id @default(cuid())
+  productId  String
+  product    Product     @relation("ProductVariants", fields: [productId], references: [id], onDelete: Cascade)
+  sku        String
+  slug       String
+  color      String
+  hex        String
+  stock      Int
+  price      Float?
+  emoji      String?
+  isDefault  Boolean     @default(false)
+  defaultFor Product?    @relation("ProductDefaultVariant")
+  orderItems OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@unique([productId, slug])
+  @@unique([productId, sku])
+  @@index([productId])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  status          OrderStatus @default(PENDING)
+  stripeSessionId String?     @unique
+  paymentMethod   String      @default("STRIPE")
+  shippingName    String?
+  shippingPhone   String?
+  shippingLine1   String?
+  shippingLine2   String?
+  shippingCity    String?
+  shippingCountry String?
+  deliveryNote    String?
+  subtotal        Float       @default(0)
+  tax             Float       @default(0)
+  shipping        Float       @default(0)
+  discount        Float       @default(0)
+  total           Float       @default(0)
+  promoCode       String?
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String          @id @default(cuid())
+  orderId   String
+  order     Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product         @relation(fields: [productId], references: [id])
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  quantity  Int
+  unitPrice Float
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Int
+  body      String?
+  createdAt DateTime @default(now())
+}
+
+model LibraryItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderId   String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType @default(ORDER_UPDATE)
+  title     String
+  body      String
+  orderId   String?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([userId, readAt])
+  @@index([createdAt])
+  @@map("notifications")
+}

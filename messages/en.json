@@ -1,0 +1,408 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "seeAll": "See all",
+    "seeAllProducts": "See all products",
+    "seeAllStores": "See all stores",
+    "seeAllOrders": "See all orders",
+    "continueShopping": "Continue shopping",
+    "shopNow": "Shop now",
+    "verified": "Verified",
+    "free": "Free",
+    "home": "Home",
+    "cart": "Cart",
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "brandName": "CartPulse",
+    "marketplace": "Marketplace"
+  },
+  "nav": {
+    "home": "Home",
+    "flashDeals": "Flash deals",
+    "signIn": "Sign in",
+    "wishlist": "Wishlist",
+    "wishlistCount": "Wishlist, {count} items",
+    "cartCount": "Cart, {count} items",
+    "allCategories": "All Categories",
+    "categoriesUnavailable": "Categories unavailable",
+    "noSubcategories": "No subcategories yet.",
+    "browseCategoryHint": "Browse products in this category or explore related items.",
+    "viewAllCategory": "View all {category} →",
+    "exploreCategory": "Explore {category}",
+    "shopCategory": "Shop {category}",
+    "categoryMeta": "{count} products · 3-level categories · Fast delivery."
+  },
+  "announcement": {
+    "message": "Free shipping on orders over $75 · Flash deals end soon",
+    "dismiss": "Dismiss announcement"
+  },
+  "search": {
+    "placeholder": "Search products, brands, categories…",
+    "label": "Search products",
+    "searching": "Searching…",
+    "noMatches": "No matches for “{query}”",
+    "seeAllResults": "See all results for “{query}”"
+  },
+  "theme": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "bangla": "বাংলা"
+  },
+  "footer": {
+    "description": "Multi-store marketplace demo with filters, flash deals, and role-based dashboards.",
+    "shop": "Shop",
+    "account": "Account",
+    "support": "Support",
+    "allProducts": "All products",
+    "topRated": "Top rated",
+    "electronics": "Electronics",
+    "fashion": "Fashion",
+    "createAccount": "Create account",
+    "myOrders": "My orders",
+    "helpCenter": "Help center",
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms & conditions",
+    "checkout": "Checkout",
+    "digitalLibrary": "Digital library",
+    "copyright": "© {year} CartPulse. Built with Next.js 16 · Redux · Prisma.",
+    "madeWith": "Made with <heart></heart> for marketplace UX demos"
+  },
+  "hero": {
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "slides": {
+      "summer-sale": {
+        "eyebrow": "Ride & gear",
+        "title": "Motorcycles & helmets",
+        "description": "Bikes, helmets, and automobile essentials from verified sellers — filter by rating and price.",
+        "cta": "Shop motorcycles",
+        "secondaryCta": "Top rated"
+      },
+      "tech-hub": {
+        "eyebrow": "Tech Hub",
+        "title": "Smart TVs & gadgets",
+        "description": "Televisions, audio, and everyday electronics from verified sellers — filter by rating and price.",
+        "cta": "Browse electronics"
+      },
+      "fashion-flash": {
+        "eyebrow": "Style picks",
+        "title": "Fashion flash",
+        "description": "Fresh drops in footwear and apparel — limited-time picks from top marketplace stores.",
+        "cta": "Shop fashion"
+      },
+      "home-deals": {
+        "eyebrow": "Home & living",
+        "title": "Appliances that work harder",
+        "description": "Washing machines, kitchen gear, and home essentials with fast dispatch on in-stock items.",
+        "cta": "Shop appliances"
+      }
+    },
+    "promo": {
+      "benefitsLabel": "Shopping benefits",
+      "cashOnDelivery": {
+        "title": "100% Cash on delivery",
+        "description": "Pay in cash when your order arrives"
+      },
+      "nationwideDelivery": {
+        "title": "Nationwide delivery",
+        "description": "Fast delivery across the country"
+      }
+    }
+  },
+  "home": {
+    "whyShop": "Why shop with CartPulse",
+    "shelves": {
+      "recently-ordered": {
+        "title": "Recently ordered",
+        "subtitle": "Products you've recently ordered from our store"
+      },
+      "all-products": {
+        "title": "All products",
+        "subtitle": "Find all products from our store and more"
+      },
+      "featured-stores": {
+        "title": "Featured stores · Verified sellers",
+        "subtitle": "Find all stores from our store and more"
+      },
+      "best-sellers": {
+        "title": "Best sellers this week",
+        "subtitle": "Find all products from our store and more"
+      },
+      "new-arrivals": {
+        "title": "New arrivals",
+        "subtitle": "Find all products from our store and more"
+      },
+      "recently-viewed": {
+        "title": "Recently viewed",
+        "subtitle": "Pick up where you left off"
+      }
+    }
+  },
+  "trust": {
+    "fastDelivery": {
+      "title": "Fast delivery",
+      "description": "2–3 day dispatch on in-stock items"
+    },
+    "returns": {
+      "title": "7-day returns",
+      "description": "Hassle-free return window"
+    },
+    "secureCheckout": {
+      "title": "Secure checkout",
+      "description": "Stripe-powered payments"
+    },
+    "buyerProtection": {
+      "title": "Buyer protection",
+      "description": "Verified sellers on every card"
+    },
+    "authentic": {
+      "title": "Authentic products",
+      "description": "Official store badges"
+    }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signInSubtitle": "Welcome back — pick up where you left off.",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create account",
+    "newToCartPulse": "New to CartPulse?",
+    "alreadyHaveAccount": "Already have an account?",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "forgotPassword": "Forgot password?",
+    "continue": "Continue",
+    "orContinueWith": "or continue with",
+    "github": "GitHub",
+    "google": "Google",
+    "emailNotVerified": "Email not verified",
+    "resendVerification": "Resend verification email",
+    "invalidCredentials": "Invalid email or password",
+    "verifyEmailFirst": "Please verify your email before signing in.",
+    "verificationSent": "Verification email sent.",
+    "verificationFailed": "Could not resend verification email.",
+    "forgotPasswordTitle": "Forgot password?",
+    "forgotPasswordSubtitle": "Enter your email and we'll send you a reset link.",
+    "sendResetLink": "Send reset link",
+    "checkInbox": "Check your inbox",
+    "emailSent": "Email sent",
+    "backToSignIn": "Back to sign in",
+    "rememberPassword": "Remember your password?",
+    "resetEmailFailed": "Could not send reset email",
+    "registerSubtitle": "Join CartPulse — save items, track orders, and checkout faster.",
+    "passwordMinLength": "At least 8 characters",
+    "registerFailed": "Registration failed",
+    "checkEmail": "Check your email",
+    "verifyEmailTitle": "Verify your email",
+    "verifyEmailInstructions": "We sent a verification link to your inbox. Click it within 24 hours to activate your account.",
+    "verificationExpired": "Verification expired",
+    "sendVerificationAgain": "Send verification email again",
+    "resetPasswordTitle": "Set a new password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "updatePassword": "Update password",
+    "passwordUpdated": "Password updated!",
+    "invalidResetLink": "Invalid reset link",
+    "requestNewResetLink": "Request a new reset link",
+    "resetPasswordFailed": "Could not reset password"
+  },
+  "cart": {
+    "yourCart": "Your Cart",
+    "yourCartLower": "Your cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyDrawer": "Browse flash deals and add items — your cart persists in localStorage.",
+    "emptyPanel": "Add items from the catalog. Cart persists in localStorage when you refresh.",
+    "browseProducts": "Browse products",
+    "clearAll": "Clear all",
+    "clear": "Clear",
+    "proceedToCheckout": "Proceed to Checkout",
+    "signInToCheckout": "Sign in to checkout",
+    "secureCheckoutNote": "Secure checkout · Stripe or Cash on Delivery",
+    "deliveryBanner": "Fast delivery nationwide — secure Stripe checkout when you arrive.",
+    "youSave": "You save",
+    "delivery": "Delivery",
+    "trustNote": "Cash on Delivery · 7-day returns",
+    "recommended": "Recommended for you",
+    "viewAll": "View all",
+    "shoppingCart": "Shopping Cart",
+    "itemCount": "Your Cart ({count, plural, one {# Item} other {# Items}})",
+    "closeCart": "Close cart",
+    "closeCartDrawer": "Close cart drawer"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliveryAddress": "Delivery address",
+    "paymentMethod": "Payment method",
+    "cashOnDelivery": "Cash on Delivery",
+    "codDescription": "Pay with cash when your order is delivered.",
+    "cardStripe": "Card / Stripe",
+    "stripeDescription": "Pay securely online with card via Stripe.",
+    "placeOrder": "Place Order · {total}",
+    "payTotal": "Pay · {total}",
+    "addAddressFirst": "Please add a delivery address first.",
+    "orderPlaced": "Order placed",
+    "paymentSuccessful": "Payment successful",
+    "viewOrders": "View orders",
+    "paymentNotCompleted": "Payment not completed",
+    "tryAgain": "Try payment again",
+    "viewCart": "View cart"
+  },
+  "notFound": {
+    "badge": "404",
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have been moved.",
+    "backHome": "Back to home",
+    "browseProducts": "Browse products"
+  },
+  "pages": {
+    "help": {
+      "title": "Help center",
+      "subtitle": "Answers to common questions about shopping, checkout, orders, and your account.",
+      "quickLinks": {
+        "title": "Quick links",
+        "orders": "My orders",
+        "ordersDesc": "Track status and download invoices",
+        "cart": "Cart",
+        "cartDesc": "Review items before checkout",
+        "contact": "Contact us",
+        "contactDesc": "Reach our support team",
+        "terms": "Terms & conditions",
+        "termsDesc": "Marketplace policies"
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "checkout": {
+          "q": "How does checkout work?",
+          "a": "Add items to your cart, sign in, then choose Cash on Delivery or Stripe card payment. Prices are recalculated on the server — your cart stores product IDs only."
+        },
+        "shipping": {
+          "q": "Is shipping free?",
+          "a": "Orders over $75 qualify for free shipping by default. Store-specific thresholds may apply and are shown at checkout."
+        },
+        "returns": {
+          "q": "Can I return a product?",
+          "a": "Eligible items can be returned within 7 days of delivery. Contact the store support email listed on your order confirmation for return instructions."
+        },
+        "filters": {
+          "q": "Do catalog filters sync to the URL?",
+          "a": "Yes — category, price, rating, sort, and search all sync to the address bar so you can bookmark or share filtered views."
+        }
+      },
+      "stillNeedHelp": {
+        "title": "Still need help?",
+        "body": "Our demo support team responds within one business day for order and account questions.",
+        "cta": "Contact support"
+      }
+    },
+    "about": {
+      "title": "About CartPulse",
+      "subtitle": "A multi-store marketplace demo built to showcase modern e-commerce UX and architecture.",
+      "intro": "CartPulse connects shoppers with verified sellers across electronics, fashion, home appliances, and more. Browse with powerful filters, save a persistent cart, and check out with COD or Stripe.",
+      "mission": {
+        "title": "Our mission",
+        "body": "Demonstrate production-grade patterns — server-validated checkout, role-based dashboards, inventory sync, and bilingual storefront — in a single cohesive Next.js application."
+      },
+      "values": {
+        "title": "What we focus on",
+        "marketplace": {
+          "title": "Multi-store catalog",
+          "body": "Products from independent stores with unified search and checkout"
+        },
+        "secure": {
+          "title": "Trust & security",
+          "body": "Auth-protected checkout, API rate limits, and server-side pricing"
+        },
+        "dashboard": {
+          "title": "Role-based experience",
+          "body": "Customer My Account and admin back-office in one platform"
+        }
+      },
+      "stack": {
+        "title": "Built with",
+        "body": "Next.js 16, React 19, Prisma 7, PostgreSQL, Redux, NextAuth, Stripe, Tailwind CSS v4, and next-intl for English and Bengali."
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "subtitle": "Questions about an order, your account, or this demo marketplace? We're here to help.",
+      "reachUs": {
+        "title": "Get in touch",
+        "body": "For this demo environment, use the channels below. In production, these would route to your support desk."
+      },
+      "channels": {
+        "email": {
+          "label": "Email",
+          "value": "support@cartpulse.com"
+        },
+        "phone": {
+          "label": "Phone",
+          "value": "+1 (555) 012-3456"
+        },
+        "address": {
+          "label": "Office",
+          "value": "123 Marketplace Ave, Demo City, DC 10001"
+        }
+      },
+      "hours": {
+        "title": "Support hours",
+        "weekdays": "Monday – Friday: 9:00 AM – 6:00 PM (UTC+6)",
+        "weekend": "Saturday: 10:00 AM – 2:00 PM · Sunday: closed"
+      },
+      "orders": {
+        "title": "Order support",
+        "body": "Signed-in customers can view order details and download PDF invoices from My Account → Orders. Include your order ID when emailing support for faster help."
+      }
+    },
+    "terms": {
+      "title": "Terms & conditions",
+      "subtitle": "Please read these terms before using the CartPulse demo marketplace.",
+      "lastUpdated": "Last updated: July 2026 · Demo terms for evaluation purposes.",
+      "sections": {
+        "acceptance": {
+          "title": "1. Acceptance of terms",
+          "body": "By accessing CartPulse you agree to these terms. This is a demonstration marketplace; products and transactions are simulated for UX and technical evaluation."
+        },
+        "accounts": {
+          "title": "2. Accounts",
+          "body": "You must provide accurate information when registering. You are responsible for activity under your account credentials. Admins and super admins are seeded for demo access only."
+        },
+        "orders": {
+          "title": "3. Orders & fulfillment",
+          "body": "Order confirmation does not guarantee availability until stock is validated at checkout. Order status updates (paid, shipped, delivered) are managed through the admin panel in this demo."
+        },
+        "payments": {
+          "title": "4. Payments",
+          "body": "Stripe test mode and Cash on Delivery are supported. Do not use real payment credentials in this demo environment. All card flows use Stripe test keys when configured."
+        },
+        "returns": {
+          "title": "5. Returns & refunds",
+          "body": "Eligible items may be returned within 7 days per demo policy. Refund processing depends on payment method and is handled manually in this demonstration."
+        },
+        "liability": {
+          "title": "6. Limitation of liability",
+          "body": "CartPulse is provided as-is for demonstration. We make no warranties about merchant listings, pricing accuracy in seed data, or fitness for production use without further hardening."
+        }
+      }
+    }
+  },
+  "product": {
+    "buyNow": "Buy Now",
+    "add": "Add",
+    "inCart": "In cart ({count})",
+    "soldOut": "Sold out",
+    "freeDelivery": "Free delivery",
+    "standardShipping": "Standard shipping",
+    "new": "New",
+    "inStock": "{count} in stock",
+    "colors": "{count} colors"
+  }
+}
