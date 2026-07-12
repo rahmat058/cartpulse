@@ -1,7 +1,7 @@
 import './globals.css'
 import { cn } from '@/lib/utils'
-import type { Metadata, Viewport } from 'next'
 import { getLocale } from 'next-intl/server'
+import type { Metadata, Viewport } from 'next'
 import { Roboto, Geist } from 'next/font/google'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 
