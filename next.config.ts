@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
   reactStrictMode: true,
+  async redirects() {
+    return [
+      { source: '/favicon.ico', destination: '/favicon.svg', permanent: true },
+      { source: '/apple-touch-icon.png', destination: '/favicon.svg', permanent: true },
+      { source: '/apple-touch-icon-precomposed.png', destination: '/favicon.svg', permanent: true },
+    ]
+  },
   images: {
     remotePatterns: [
       {

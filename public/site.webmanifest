@@ -1,0 +1,23 @@
+{
+  "name": "CartPulse",
+  "short_name": "CartPulse",
+  "description": "Next.js storefront with Prisma catalog, Redux cart, and derived pricing.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#14b8a6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
