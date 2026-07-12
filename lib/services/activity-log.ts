@@ -26,8 +26,18 @@ function mapActivityRow(row: {
   summary: string
   metadata: Prisma.JsonValue
   createdAt: Date
-  actor: { id: string; name: string | null; email: string; role: 'ADMIN' | 'SUPER_ADMIN' } | null
+  actor: { id: string; name: string | null; email: string; role: string } | null
 }): AdminActivityLogRow {
+  const actor =
+    row.actor?.role === 'ADMIN' || row.actor?.role === 'SUPER_ADMIN'
+      ? {
+          id: row.actor.id,
+          name: row.actor.name,
+          email: row.actor.email,
+          role: row.actor.role as 'ADMIN' | 'SUPER_ADMIN',
+        }
+      : null
+
   return {
     id: row.id,
     action: row.action,
@@ -40,14 +50,7 @@ function mapActivityRow(row: {
         ? (row.metadata as Record<string, unknown>)
         : null,
     createdAt: row.createdAt.toISOString(),
-    actor: row.actor
-      ? {
-          id: row.actor.id,
-          name: row.actor.name,
-          email: row.actor.email,
-          role: row.actor.role,
-        }
-      : null,
+    actor,
   }
 }
 
@@ -82,34 +85,34 @@ export async function listActivityLogs(
   const skip = (page - 1) * pageSize
   const search = params.search?.trim()
 
+  const searchFilter: Prisma.ActivityLogWhereInput | undefined = search
+    ? {
+        OR: [
+          { summary: { contains: search, mode: 'insensitive' as const } },
+          { entityLabel: { contains: search, mode: 'insensitive' as const } },
+          { entityId: { contains: search, mode: 'insensitive' as const } },
+          {
+            actor: {
+              email: { contains: search, mode: 'insensitive' as const },
+              role: { in: ['ADMIN', 'SUPER_ADMIN'] },
+            },
+          },
+          {
+            actor: {
+              name: { contains: search, mode: 'insensitive' as const },
+              role: { in: ['ADMIN', 'SUPER_ADMIN'] },
+            },
+          },
+        ],
+      }
+    : undefined
+
   const where: Prisma.ActivityLogWhereInput = {
     AND: [
       ADMIN_PANEL_ACTOR_FILTER,
       ...(params.action ? [{ action: params.action }] : []),
       ...(params.entityType ? [{ entityType: params.entityType }] : []),
-      ...(search
-        ? [
-            {
-              OR: [
-                { summary: { contains: search, mode: 'insensitive' } },
-                { entityLabel: { contains: search, mode: 'insensitive' } },
-                { entityId: { contains: search, mode: 'insensitive' } },
-                {
-                  actor: {
-                    email: { contains: search, mode: 'insensitive' },
-                    role: { in: ['ADMIN', 'SUPER_ADMIN'] },
-                  },
-                },
-                {
-                  actor: {
-                    name: { contains: search, mode: 'insensitive' },
-                    role: { in: ['ADMIN', 'SUPER_ADMIN'] },
-                  },
-                },
-              ],
-            },
-          ]
-        : []),
+      ...(searchFilter ? [searchFilter] : []),
     ],
   }
 
