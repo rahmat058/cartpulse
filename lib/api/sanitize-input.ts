@@ -1,8 +1,8 @@
-import { stripRichText } from '@/lib/utils/rich-text'
+import { stripHtml } from '@/lib/utils/strip-html'
 
 /** Strip HTML/script from plain-text API fields. */
 export function sanitizePlainText(value: string): string {
-  return stripRichText(value)
+  return stripHtml(value)
 }
 
 export function sanitizeJsonInput<T>(value: T): T {

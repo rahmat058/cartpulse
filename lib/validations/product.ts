@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { stripRichText } from '@/lib/utils/rich-text'
+import { stripHtml } from '@/lib/utils/strip-html'
 import type { CreateProductVariantInput, ProductVariantType } from '@/types/admin'
 
 export const SIZE_VARIANT_HEX = '#e2e8f0'
@@ -110,7 +110,7 @@ export function createProductFormSchema(isEdit: boolean) {
         : z.string().optional(),
       emoji: z.string().min(1, 'Emoji is required'),
       imageUrls: z.array(z.string().url('Enter a valid image URL')),
-      description: z.string().refine((value) => stripRichText(value).length >= 10, {
+      description: z.string().refine((value) => stripHtml(value).length >= 10, {
         message: 'Description must be at least 10 characters',
       }),
       published: z.boolean(),

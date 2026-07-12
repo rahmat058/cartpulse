@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { isRichTextEmpty } from '@/lib/utils/rich-text'
+import { isHtmlEmpty } from '@/lib/utils/strip-html'
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
@@ -14,7 +14,7 @@ export function createStoreFormSchema(isEdit: boolean) {
     description: z
       .string()
       .optional()
-      .refine((value) => !value || !isRichTextEmpty(value), {
+      .refine((value) => !value || !isHtmlEmpty(value), {
         message: 'Description cannot be empty',
       }),
     supportEmail: z

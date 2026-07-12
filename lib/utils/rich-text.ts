@@ -1,6 +1,6 @@
-import DOMPurify from 'isomorphic-dompurify'
+import { isHtmlEmpty, stripHtml } from '@/lib/utils/strip-html'
 
-const ALLOWED_TAGS = [
+const ALLOWED_TAGS = new Set([
   'p',
   'br',
   'strong',
@@ -21,9 +21,39 @@ const ALLOWED_TAGS = [
   'a',
   'blockquote',
   'img',
-]
+])
 
-const ALLOWED_ATTR = ['href', 'target', 'rel', 'src', 'alt', 'class']
+const GLOBAL_ATTRS = new Set(['class', 'href', 'target', 'rel', 'src', 'alt'])
+
+/** Remove tags not on the allowlist and strip event handlers / javascript: URLs. */
+export function sanitizeRichText(html: string): string {
+  if (!html?.trim()) return ''
+
+  let sanitized = html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<(iframe|object|embed|form|input|button|textarea|select)[^>]*>[\s\S]*?<\/\1>/gi, '')
+    .replace(/<(iframe|object|embed|input|button|textarea|select)[^>]*\/?>/gi, '')
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/data:text\/html/gi, '')
+
+  sanitized = sanitized.replace(/<\/?([a-z0-9]+)([^>]*)>/gi, (match, tagName: string, attrs: string) => {
+    const tag = tagName.toLowerCase()
+    if (!ALLOWED_TAGS.has(tag)) return ''
+
+    if (match.startsWith('</')) return `</${tag}>`
+
+    const safeAttrs = [...attrs.matchAll(/([a-z0-9:-]+)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi)]
+      .filter(([, name]) => GLOBAL_ATTRS.has(name.toLowerCase()))
+      .map(([full]) => full)
+      .join(' ')
+
+    return safeAttrs ? `<${tag} ${safeAttrs}>` : `<${tag}>`
+  })
+
+  return sanitized.trim()
+}
 
 export function normalizeRichTextHtml(html: string): string {
   const trimmed = html.trim()
@@ -31,19 +61,10 @@ export function normalizeRichTextHtml(html: string): string {
   return html
 }
 
-export function sanitizeRichText(html: string): string {
-  if (!html?.trim()) return ''
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR,
-  }).trim()
-}
-
 export function stripRichText(html: string): string {
-  if (!html?.trim()) return ''
-  return DOMPurify.sanitize(html, { ALLOWED_TAGS: [] }).replace(/\s+/g, ' ').trim()
+  return stripHtml(html)
 }
 
 export function isRichTextEmpty(html?: string | null): boolean {
-  return stripRichText(html ?? '').length === 0
+  return isHtmlEmpty(html)
 }
