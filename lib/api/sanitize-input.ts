@@ -25,16 +25,4 @@ export function sanitizeJsonInput<T>(value: T): T {
   return value
 }
 
-const SUSPICIOUS_PATTERNS = [
-  /<script/i,
-  /javascript:/i,
-  /on\w+\s*=/i,
-  /data:text\/html/i,
-  /%3Cscript/i,
-  /&#x3c;script/i,
-]
-
-export function hasSuspiciousRequestContent(pathname: string, search: string): boolean {
-  const haystack = decodeURIComponent(`${pathname}${search}`)
-  return SUSPICIOUS_PATTERNS.some((pattern) => pattern.test(haystack))
-}
+export { hasSuspiciousRequestContent } from '@/lib/api/suspicious-request'

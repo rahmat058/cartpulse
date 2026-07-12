@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { getClientIp } from '@/lib/api/client-ip'
 import { isMutatingMethod, isOriginAllowed } from '@/lib/api/origin-check'
-import { hasSuspiciousRequestContent } from '@/lib/api/sanitize-input'
+import { hasSuspiciousRequestContent } from '@/lib/api/suspicious-request'
 import { apiJson, applySecurityHeaders } from '@/lib/api/security-headers'
 import { buildRateLimitKey, checkRateLimit, resolveRateLimitBucket } from '@/lib/api/rate-limit'
 
