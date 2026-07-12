@@ -12,7 +12,7 @@ For **service docs, role guides, and feature checklist** — see **[docs/](./doc
 
 | Requirement    | Version / notes                       |
 | -------------- | ------------------------------------- |
-| **Node.js**    | `24.11.0` (see `.nvmrc`)              |
+| **Node.js**    | `24.11.0` (see `package.json engines`)              |
 | **Yarn**       | Package manager for this repo         |
 | **PostgreSQL** | Local instance or hosted Postgres URL |
 
