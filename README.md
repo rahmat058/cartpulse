@@ -1,6 +1,10 @@
 # CartPulse
 
-Next.js 16 e-commerce platform with PostgreSQL, Redux cart, NextAuth, Stripe/COD checkout, and customer + admin dashboards.
+![CartPulse Marketplace — storefront preview](https://res.cloudinary.com/dcsmzfbrd/image/upload/v1783869820/personal-projects/cartpulse_ta7xuk.png)
+
+**CartPulse** is a full-stack multi-store e-commerce marketplace built with Next.js 16. It includes a public storefront, customer dashboard, admin panel, Prisma + PostgreSQL catalog, Redux cart, NextAuth, Stripe/COD checkout, digital library, and bilingual UI (`en` / `bn`).
+
+**Live demo:** [cartpulse-beta.vercel.app](https://cartpulse-beta.vercel.app)
 
 For architecture, routes, roles, APIs, and design patterns — see **[ARCHITECTURE.MD](./ARCHITECTURE.MD)**.
 
@@ -8,13 +12,85 @@ For **service docs, role guides, and feature checklist** — see **[docs/](./doc
 
 ---
 
+## Tech Stack
+
+### Core
+
+<div>
+<img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img src="https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript_5.9-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/Node.js_24-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
+<img src="https://img.shields.io/badge/Motion-000000?style=for-the-badge&logo=framer&logoColor=white">
+<img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+</div>
+
+### Database & API
+
+<div>
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+<img src="https://img.shields.io/badge/Prisma_7-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
+<img src="https://img.shields.io/badge/Zod_4-3E63DD?style=for-the-badge&logo=zod&logoColor=white">
+<img src="https://img.shields.io/badge/React_Hook_Form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white">
+<img src="https://img.shields.io/badge/TipTap_3-000000?style=for-the-badge&logo=tiptap&logoColor=white">
+</div>
+
+### Auth, state & data fetching
+
+<div>
+<img src="https://img.shields.io/badge/NextAuth_v5-000000?style=for-the-badge&logo=auth0&logoColor=white">
+<img src="https://img.shields.io/badge/Redux_Toolkit-764ABC?style=for-the-badge&logo=redux&logoColor=white">
+<img src="https://img.shields.io/badge/TanStack_Query_5-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
+<img src="https://img.shields.io/badge/TanStack_Table_8-FF4154?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/next--intl_4-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img src="https://img.shields.io/badge/next--themes-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+</div>
+
+### Payments, email & media
+
+<div>
+<img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white">
+<img src="https://img.shields.io/badge/Resend-000000?style=for-the-badge&logo=resend&logoColor=white">
+<img src="https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white">
+<img src="https://img.shields.io/badge/React_Email-000000?style=for-the-badge&logo=react&logoColor=61DAFB">
+<img src="https://img.shields.io/badge/React_PDF-000000?style=for-the-badge&logo=react&logoColor=61DAFB">
+</div>
+
+### UI & tooling
+
+<div>
+<img src="https://img.shields.io/badge/shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
+<img src="https://img.shields.io/badge/Lucide-000000?style=for-the-badge&logo=lucide&logoColor=white">
+<img src="https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logo=apacheecharts&logoColor=white">
+<img src="https://img.shields.io/badge/Swiper_14-6332F6?style=for-the-badge&logo=swiper&logoColor=white">
+<img src="https://img.shields.io/badge/Sonner-000000?style=for-the-badge&logo=sonner&logoColor=white">
+<img src="https://img.shields.io/badge/ESLint_9-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
+<img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black">
+</div>
+
+**Key dependencies:** `@prisma/client` · `@prisma/adapter-pg` · `next-auth` · `@auth/prisma-adapter` · `@reduxjs/toolkit` · `react-redux` · `@tanstack/react-query` · `@tanstack/react-table` · `stripe` · `@stripe/stripe-js` · `next-intl` · `next-themes` · `lucide-react` · `tailwind-merge` · `zod` · `resend` · `cloudinary` · `bcryptjs` · `date-fns` · `xlsx` · `@lottiefiles/dotlottie-react`
+
+---
+
+## Features
+
+- **Storefront** — catalog search/filters, variants, flash deals, store directory, cart drawer, checkout
+- **Auth** — credentials + Google/GitHub OAuth, email verification, password reset, role-based access
+- **Customer dashboard** — orders, wishlist, reviews, addresses, profile, notifications, digital library
+- **Admin panel** — products, stores, categories, coupons, orders, analytics, activity log, export
+- **Commerce** — server-side pricing, inventory decrement, COD + Stripe, promo codes, order emails
+- **i18n** — English + Bengali routing (`/bn/*`)
+
+---
+
 ## Prerequisites
 
-| Requirement    | Version / notes                       |
-| -------------- | ------------------------------------- |
-| **Node.js**    | `24.11.0` (see `package.json engines`)              |
-| **Yarn**       | Package manager for this repo         |
-| **PostgreSQL** | Local instance or hosted Postgres URL |
+| Requirement    | Version / notes                        |
+| -------------- | -------------------------------------- |
+| **Node.js**    | `24.11.0` (see `package.json` engines) |
+| **Yarn**       | Package manager for this repo          |
+| **PostgreSQL** | Local instance or hosted Postgres URL  |
 
 ---
 
@@ -24,7 +100,7 @@ For **service docs, role guides, and feature checklist** — see **[docs/](./doc
 
 ```bash
 cd cartpulse
-nvm use          # installs/uses Node 24.11.0 from .nvmrc
+nvm use          # installs/uses Node 24.11.0
 yarn install
 ```
 
@@ -55,9 +131,9 @@ Optional (enable features when set):
 ### 3. Database
 
 ```bash
-yarn db:push      # apply Prisma schema + generate client
+yarn db:push        # apply Prisma schema + generate client
 yarn generate:data  # build data/products.json (200 products)
-yarn db:seed      # seed stores, categories, products, coupons, demo users
+yarn db:seed        # seed stores, categories, products, coupons, demo users
 ```
 
 `postinstall` runs `prisma generate` automatically after `yarn install`.
@@ -96,28 +172,45 @@ Seeded by `yarn db:seed`:
 | Admin       | `admin@platform.com`      | `password123` | `/admin`      | `/dashboard` (also works) |
 | Customer    | `customer@demo.com`       | `password123` | —             | `/dashboard`              |
 
-**Admins & super admins** have two areas: **Admin panel** (`/admin`) for store management and **My Account** (`/dashboard`) for personal orders, wishlist, **digital library**, notifications, and profile. Cross-links: header **My Account** (with profile photo when set), sidebar **Admin panel**, storefront header user icon → `/dashboard`.
+**Admins & super admins** have two areas: **Admin panel** (`/admin`) for store management and **My Account** (`/dashboard`) for personal orders, wishlist, **digital library**, notifications, and profile.
 
-**Digital products:** Admins can mark products as digital with a download URL. After payment, items appear in the customer **Library** (`/dashboard/library`) with secure download via `/api/library/[productId]`. Demo customer seed includes 2 library items from a paid order.
+**Digital products:** Admins can mark products as digital with a download URL. After payment, items appear in the customer **Library** (`/dashboard/library`) with secure download via `/api/library/[productId]`.
 
 ---
 
 ## Scripts
 
-| Command              | Description                                              |
-| -------------------- | -------------------------------------------------------- |
-| `yarn dev`           | Next.js dev server (Turbopack)                           |
-| `yarn build`         | Production build                                         |
-| `yarn start`         | Run production server                                    |
-| `yarn lint`          | ESLint                                                   |
-| `yarn typecheck`     | `tsc --noEmit`                                           |
-| `yarn db:push`       | Push schema to DB + regenerate Prisma Client             |
-| `yarn db:generate`   | Regenerate Prisma Client only                            |
-| `yarn db:seed`       | Seed demo data                                           |
-| `yarn db:studio`     | Prisma Studio                                            |
-| `yarn db:test`       | Smoke-test DB counts                                     |
-| `yarn generate:data` | Regenerate `data/products.json`                          |
-| `yarn db:reset`      | **DROP + CREATE** database → push → generate data → seed |
+| Command                  | Description                                              |
+| ------------------------ | -------------------------------------------------------- |
+| `yarn dev`               | Next.js dev server (Turbopack)                           |
+| `yarn build`             | Production build                                         |
+| `yarn start`             | Run production server                                    |
+| `yarn lint`              | ESLint                                                   |
+| `yarn typecheck`         | `tsc --noEmit`                                           |
+| `yarn db:push`           | Push schema to DB + regenerate Prisma Client             |
+| `yarn db:migrate:deploy` | Apply migrations on production/hosted DB                 |
+| `yarn db:generate`       | Regenerate Prisma Client only                            |
+| `yarn db:seed`           | Seed demo data                                           |
+| `yarn db:studio`         | Prisma Studio                                            |
+| `yarn db:test`           | Smoke-test DB counts                                     |
+| `yarn generate:data`     | Regenerate `data/products.json`                          |
+| `yarn db:reset`          | **DROP + CREATE** database → push → generate data → seed |
+
+---
+
+## Vercel deployment
+
+1. Set env vars in **Vercel → Settings → Environment Variables** (same as `.env`, with production URLs for `AUTH_URL` and `NEXT_PUBLIC_APP_URL`)
+2. Use **Node.js 24.x**
+3. Push schema + seed against your hosted database before first deploy:
+
+```bash
+yarn db:push
+yarn generate:data
+yarn db:seed
+```
+
+4. Redeploy after changing env vars
 
 ---
 
