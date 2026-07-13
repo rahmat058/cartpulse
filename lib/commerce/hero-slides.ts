@@ -28,7 +28,7 @@ type HeroSlideConfig = {
   imagePosition?: string
 }
 
-/** Curated wide hero images — stable loremflickr locks, category-relevant subjects. */
+/** Curated wide hero images — Cloudinary assets, category-relevant subjects. */
 const HERO_SLIDE_CONFIG: HeroSlideConfig[] = [
   {
     id: 'summer-sale',

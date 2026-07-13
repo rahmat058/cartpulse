@@ -35,7 +35,10 @@ function mapAdminProductRow(row: {
   _count: { variants: number }
   variants?: Array<CreateProductVariantInput & { stock: number }>
 }): AdminProductRow {
-  const imageUrls = normalizeProductImageUrls(row.imageUrls, row.imageUrl)
+  const imageUrls = normalizeProductImageUrls(row.imageUrls, row.imageUrl, {
+    categorySlug: row.category.slug,
+    productId: row.id,
+  })
   const stock =
     row.variants && row.variants.length > 0
       ? row.variants.reduce((sum, variant) => sum + variant.stock, 0)

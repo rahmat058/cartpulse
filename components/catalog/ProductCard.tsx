@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BadgeCheck, Heart, ShoppingCart, Star, Truck } from 'lucide-react'
@@ -17,6 +17,7 @@ import {
   isNewProduct,
   isSoldOut,
 } from '@/lib/utils/productDisplay'
+import { repairProductImageUrl } from '@/lib/utils/product-images'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useCartDrawer } from '@/components/providers/CartDrawerProvider'
 import { cn } from '@/lib/utils/cn'
@@ -259,10 +260,24 @@ export function ProductCard({ product, index, linkToDetail = false, layout = 'co
 }
 
 function ProductThumb({ product }: { product: Product }) {
-  if (product.imageUrl) {
+  const [failed, setFailed] = useState(false)
+  const src =
+    product.imageUrl
+      ? repairProductImageUrl(product.imageUrl, {
+          categorySlug: product.category,
+          productId: product.id,
+        })
+      : undefined
+
+  if (src && !failed) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={product.imageUrl} alt="" className="h-full w-full object-cover" />
+      <img
+        src={src}
+        alt=""
+        className="h-full w-full object-cover"
+        onError={() => setFailed(true)}
+      />
     )
   }
   return <>{product.emoji}</>

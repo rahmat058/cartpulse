@@ -12,8 +12,102 @@ function slugify(value) {
     .replace(/(^-|-$)/g, '')
 }
 
-function categoryImage(keywords, lock) {
-  return `https://loremflickr.com/800/800/${encodeURIComponent(keywords)}?lock=${lock}`
+function categoryImage(categorySlug, lock) {
+  const pools = {
+    'electronics-gadget': [
+      'photo-1505740420928-5e560c06d30e',
+      'photo-1523275335684-37898b6baf30',
+      'photo-1511707171634-5f897ff02aa9',
+      'photo-1498049794561-7780e7231661',
+      'photo-1546868871-7041f2a55e12',
+      'photo-1484704849700-f032a568e944',
+      'photo-1587829741301-dc798b83add3',
+      'photo-1593640408182-31c70c8268f5',
+      'photo-1526170375885-4d8ecf77b99f',
+      'photo-1572569511254-d8f925fe2cbb',
+      'photo-1606220945770-b5b6c2c55bf1',
+      'photo-1517336714731-489689fd1ca8',
+    ],
+    'personal-care': [
+      'photo-1556228578-0d85b1a4d571',
+      'photo-1596462502278-27bfdc403348',
+      'photo-1522335789203-aabd1fc54bc9',
+      'photo-1631214524020-7e18db9a8f92',
+      'photo-1611930022073-b7a4ba5fcccd',
+      'photo-1570172619644-dfd03ed5d881',
+      'photo-1512496015851-a90fb38ba796',
+      'photo-1598440947619-2c35fc9aa908',
+      'photo-1608571423902-eed4a5ad8108',
+    ],
+    appliances: [
+      'photo-1556910103-1c02745aae4d',
+      'photo-1556909114-f6e7ad7d3136',
+      'photo-1585515320310-259814833e62',
+      'photo-1585659722983-3a675dabf23d',
+      'photo-1590794056226-79ef3a8147e1',
+      'photo-1570222094114-d054a817e56b',
+      'photo-1556911220-bff31c812dba',
+      'photo-1600585152220-90363fe7e115',
+    ],
+    'kitchen-dining': [
+      'photo-1556911220-bff31c812dba',
+      'photo-1556909114-f6e7ad7d3136',
+      'photo-1600585152220-90363fe7e115',
+      'photo-1578749556568-bc2c40e68b61',
+      'photo-1490645935967-10de6ba17061',
+      'photo-1504674900247-0877df9cc836',
+      'photo-1565299624946-b28f40a0ae38',
+      'photo-1546548970-71785318a17b',
+    ],
+    'food-grocery': [
+      'photo-1542838132-92c53300491e',
+      'photo-1610832958506-aa56368176cf',
+      'photo-1586201375761-83865001e31c',
+      'photo-1516594798947-e65505dbb29d',
+      'photo-1567306301408-9b74779a11af',
+      'photo-1509440159596-0249088772ff',
+      'photo-1546069901-ba9599a7e63c',
+      'photo-1512621776951-a57141f2eefd',
+      'photo-1490818387583-1baba5e638af',
+    ],
+    fashion: [
+      'photo-1445205170230-053b83016050',
+      'photo-1515886657613-9f3515b0c78f',
+      'photo-1490481651871-ab68de25d43d',
+      'photo-1469334031218-e382a71b716b',
+      'photo-1551028719-00167b16eac5',
+      'photo-1542272604-787c3835535d',
+      'photo-1549298916-b41d501d3772',
+      'photo-1487222477894-8943e31ef7b2',
+      'photo-1434389677669-e08b4cac3105',
+      'photo-1523381210434-271e8be1f52b',
+    ],
+    'automobiles-helmets': [
+      'photo-1558981403-c5f9899a28bc',
+      'photo-1558618666-fcd25c85cd64',
+      'photo-1609630875171-b1321377ee65',
+      'photo-1568772585407-9361f9bf3a87',
+      'photo-1552519507-da3b142c6e3d',
+      'photo-1492144534655-ae79c964c9d7',
+      'photo-1503376780353-7e6692767b70',
+      'photo-1486006920555-c77dcf18193c',
+    ],
+    'health-care': [
+      'photo-1576091160399-112ba8d25d1d',
+      'photo-1584308666744-24d5c474f2ae',
+      'photo-1579154204601-01588f351e67',
+      'photo-1530497610245-94d3c16cda28',
+      'photo-1607619056574-7b8d3ee536b2',
+      'photo-1581595220892-b0739db3b8c5',
+      'photo-1579684385127-1ef15d508118',
+      'photo-1631815588090-d4bfec5b1ccb',
+      'photo-1582719471384-894fbb16e074',
+    ],
+  }
+
+  const pool = pools[categorySlug] || pools['electronics-gadget']
+  const photoId = pool[(Math.max(1, Number(lock)) - 1) % pool.length]
+  return `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=800&h=800&q=80`
 }
 
 const stores = [
@@ -458,7 +552,7 @@ function buildProducts() {
         stock: 12 + ((itemIndex * 5) % 40),
         rating: Math.round((3.9 + (itemIndex % 10) * 0.1) * 10) / 10,
         emoji: config.emoji,
-        imageUrl: categoryImage(config.imageKeywords, imageLock++),
+        imageUrl: categoryImage(categorySlug, imageLock++),
         published: true,
         description: `${name} — curated for CartPulse demos in the ${categorySlug.replace(/-/g, ' ')} category.`,
       }
@@ -488,7 +582,7 @@ function buildProducts() {
     stock: 5,
     rating: 3.8,
     emoji: '🧪',
-    imageUrl: categoryImage('usb,cable,gadget', imageLock++),
+    imageUrl: categoryImage('electronics-gadget', imageLock++),
     published: false,
     description: 'Unpublished draft SKU for admin publish/unpublish demos.',
   })

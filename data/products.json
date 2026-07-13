@@ -26,7 +26,7 @@
       "health-care"
     ],
     "currency": "USD",
-    "generatedAt": "2026-07-08T13:57:02.941Z"
+    "generatedAt": "2026-07-13T09:19:49.150Z"
   },
   "stores": [
     {
@@ -186,7 +186,7 @@
       "stock": 33,
       "rating": 3.9,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=1",
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Sony WH-1000XM5 Wireless Headphones — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -229,7 +229,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=2",
+      "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "AirPulse Pro ANC Earbuds — curated for CartPulse demos in the electronics gadget category."
     },
@@ -242,7 +242,7 @@
       "stock": 33,
       "rating": 4.1,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=3",
+      "imageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Studio Monitor Headphones Pro — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -285,7 +285,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=4",
+      "imageUrl": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wireless Neckband Earphones Sport — curated for CartPulse demos in the electronics gadget category."
     },
@@ -298,7 +298,7 @@
       "stock": 33,
       "rating": 4.3,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=5",
+      "imageUrl": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Desktop Bluetooth Speaker Mini — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -341,7 +341,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=6",
+      "imageUrl": "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Over-Ear Travel Headphones Lite — curated for CartPulse demos in the electronics gadget category."
     },
@@ -354,7 +354,7 @@
       "stock": 33,
       "rating": 4.5,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=7",
+      "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Gaming Headset RGB Surround — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -397,7 +397,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=8",
+      "imageUrl": "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Mechanical Keyboard K2 Pro — curated for CartPulse demos in the electronics gadget category."
     },
@@ -410,7 +410,7 @@
       "stock": 33,
       "rating": 4.7,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=9",
+      "imageUrl": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Low-Profile Wireless Keyboard — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -453,7 +453,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=10",
+      "imageUrl": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "4K Webcam Auto-Focus Pro — curated for CartPulse demos in the electronics gadget category."
     },
@@ -466,7 +466,7 @@
       "stock": 33,
       "rating": 3.9,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=11",
+      "imageUrl": "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "USB-C Hub 7-in-1 Aluminum — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -509,7 +509,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=12",
+      "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Thunderbolt Dock Mini Station — curated for CartPulse demos in the electronics gadget category."
     },
@@ -522,7 +522,7 @@
       "stock": 33,
       "rating": 4.1,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=13",
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Portable SSD 1TB USB-C — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -565,7 +565,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=14",
+      "imageUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Smart Watch Fitness Tracker — curated for CartPulse demos in the electronics gadget category."
     },
@@ -578,7 +578,7 @@
       "stock": 33,
       "rating": 4.3,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=15",
+      "imageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tablet Stand Adjustable Aluminum — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -621,7 +621,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=16",
+      "imageUrl": "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Noise-Canceling Earbuds Sport — curated for CartPulse demos in the electronics gadget category."
     },
@@ -634,7 +634,7 @@
       "stock": 33,
       "rating": 4.5,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=17",
+      "imageUrl": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wireless Charging Pad Fast — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -677,7 +677,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=18",
+      "imageUrl": "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "LED Ring Light Streaming Kit — curated for CartPulse demos in the electronics gadget category."
     },
@@ -690,7 +690,7 @@
       "stock": 33,
       "rating": 4.7,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=19",
+      "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Graphics Tablet Drawing Pad — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -733,7 +733,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=20",
+      "imageUrl": "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Portable Power Bank 20000mAh — curated for CartPulse demos in the electronics gadget category."
     },
@@ -746,7 +746,7 @@
       "stock": 33,
       "rating": 3.9,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=21",
+      "imageUrl": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Smart Home Speaker Voice — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -789,7 +789,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=22",
+      "imageUrl": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Ergonomic Mouse Vertical Pro — curated for CartPulse demos in the electronics gadget category."
     },
@@ -802,7 +802,7 @@
       "stock": 33,
       "rating": 4.1,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=23",
+      "imageUrl": "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dual Monitor Arm Mount — curated for CartPulse demos in the electronics gadget category.",
       "variants": [
@@ -845,7 +845,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=24",
+      "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Action Camera 4K Waterproof — curated for CartPulse demos in the electronics gadget category."
     },
@@ -858,7 +858,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "💻",
-      "imageUrl": "https://loremflickr.com/800/800/gadget%2Celectronics%2Cheadphones?lock=25",
+      "imageUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Foldable Phone Tripod Stand — curated for CartPulse demos in the electronics gadget category."
     },
@@ -871,7 +871,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=26",
+      "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Hydrating Face Cleanser Gel — curated for CartPulse demos in the personal care category."
     },
@@ -884,7 +884,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=27",
+      "imageUrl": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Vitamin C Brightening Serum — curated for CartPulse demos in the personal care category."
     },
@@ -897,7 +897,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=28",
+      "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Retinol Night Repair Cream — curated for CartPulse demos in the personal care category."
     },
@@ -910,7 +910,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=29",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "SPF 50 Daily Sunscreen Lotion — curated for CartPulse demos in the personal care category."
     },
@@ -923,7 +923,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=30",
+      "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Niacinamide Pore Refining Toner — curated for CartPulse demos in the personal care category."
     },
@@ -936,7 +936,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=31",
+      "imageUrl": "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Hyaluronic Acid Moisture Boost — curated for CartPulse demos in the personal care category."
     },
@@ -949,7 +949,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=32",
+      "imageUrl": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Charcoal Detox Face Mask — curated for CartPulse demos in the personal care category."
     },
@@ -962,7 +962,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=33",
+      "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Gentle Micellar Makeup Remover — curated for CartPulse demos in the personal care category."
     },
@@ -975,7 +975,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=34",
+      "imageUrl": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Coconut Body Butter Rich — curated for CartPulse demos in the personal care category."
     },
@@ -988,7 +988,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=35",
+      "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tea Tree Acne Spot Treatment — curated for CartPulse demos in the personal care category."
     },
@@ -1001,7 +1001,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=36",
+      "imageUrl": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Argan Oil Hair Repair Serum — curated for CartPulse demos in the personal care category."
     },
@@ -1014,7 +1014,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=37",
+      "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Sulfate-Free Shampoo Volume — curated for CartPulse demos in the personal care category."
     },
@@ -1027,7 +1027,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=38",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Conditioning Hair Mask Deep — curated for CartPulse demos in the personal care category."
     },
@@ -1040,7 +1040,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=39",
+      "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Electric Toothbrush Sonic Pro — curated for CartPulse demos in the personal care category."
     },
@@ -1053,7 +1053,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=40",
+      "imageUrl": "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Whitening Toothpaste Enamel Safe — curated for CartPulse demos in the personal care category."
     },
@@ -1066,7 +1066,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=41",
+      "imageUrl": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Antiperspirant Deodorant Fresh — curated for CartPulse demos in the personal care category."
     },
@@ -1079,7 +1079,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=42",
+      "imageUrl": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Beard Oil Sandalwood Blend — curated for CartPulse demos in the personal care category."
     },
@@ -1092,7 +1092,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=43",
+      "imageUrl": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Safety Razor Stainless Classic — curated for CartPulse demos in the personal care category."
     },
@@ -1105,7 +1105,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=44",
+      "imageUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Shaving Cream Sensitive Skin — curated for CartPulse demos in the personal care category."
     },
@@ -1118,7 +1118,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=45",
+      "imageUrl": "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Lip Balm SPF Shea Butter — curated for CartPulse demos in the personal care category."
     },
@@ -1131,7 +1131,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=46",
+      "imageUrl": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Hand Cream Shea Recovery — curated for CartPulse demos in the personal care category."
     },
@@ -1144,7 +1144,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=47",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Foot Peel Exfoliating Socks — curated for CartPulse demos in the personal care category."
     },
@@ -1157,7 +1157,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=48",
+      "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Bamboo Cotton Swabs Pack — curated for CartPulse demos in the personal care category."
     },
@@ -1170,7 +1170,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=49",
+      "imageUrl": "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cotton Rounds Reusable Set — curated for CartPulse demos in the personal care category."
     },
@@ -1183,7 +1183,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🧴",
-      "imageUrl": "https://loremflickr.com/800/800/skincare%2Ccosmetics%2Cbeauty?lock=50",
+      "imageUrl": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Travel Toiletry Organizer Bag — curated for CartPulse demos in the personal care category."
     },
@@ -1196,7 +1196,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=51",
+      "imageUrl": "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Countertop Blender 1200W Pro — curated for CartPulse demos in the appliances category."
     },
@@ -1209,7 +1209,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=52",
+      "imageUrl": "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Air Fryer 6-Quart Digital — curated for CartPulse demos in the appliances category."
     },
@@ -1222,7 +1222,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=53",
+      "imageUrl": "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Robot Vacuum Smart Mapping — curated for CartPulse demos in the appliances category."
     },
@@ -1235,7 +1235,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=54",
+      "imageUrl": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cordless Stick Vacuum Lite — curated for CartPulse demos in the appliances category."
     },
@@ -1248,7 +1248,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=55",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Steam Iron Ceramic Soleplate — curated for CartPulse demos in the appliances category."
     },
@@ -1261,7 +1261,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=56",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Garment Steamer Handheld — curated for CartPulse demos in the appliances category."
     },
@@ -1274,7 +1274,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=57",
+      "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Electric Kettle Temperature Control — curated for CartPulse demos in the appliances category."
     },
@@ -1287,7 +1287,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=58",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Toaster 4-Slice Stainless — curated for CartPulse demos in the appliances category."
     },
@@ -1300,7 +1300,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=59",
+      "imageUrl": "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Microwave Compact 0.9 Cu Ft — curated for CartPulse demos in the appliances category."
     },
@@ -1313,7 +1313,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=60",
+      "imageUrl": "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Rice Cooker Fuzzy Logic 10-Cup — curated for CartPulse demos in the appliances category."
     },
@@ -1326,7 +1326,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=61",
+      "imageUrl": "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Slow Cooker 7-Quart Programmable — curated for CartPulse demos in the appliances category."
     },
@@ -1339,7 +1339,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=62",
+      "imageUrl": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Food Processor 14-Cup Deluxe — curated for CartPulse demos in the appliances category."
     },
@@ -1352,7 +1352,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=63",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Stand Mixer 5-Qt Tilt Head — curated for CartPulse demos in the appliances category."
     },
@@ -1365,7 +1365,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=64",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Espresso Machine Pump Driven — curated for CartPulse demos in the appliances category."
     },
@@ -1378,7 +1378,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=65",
+      "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dehumidifier 50-Pint Energy Star — curated for CartPulse demos in the appliances category."
     },
@@ -1391,7 +1391,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=66",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Portable Air Conditioner 10000 BTU — curated for CartPulse demos in the appliances category."
     },
@@ -1404,7 +1404,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=67",
+      "imageUrl": "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tower Fan Oscillating Quiet — curated for CartPulse demos in the appliances category."
     },
@@ -1417,7 +1417,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=68",
+      "imageUrl": "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Space Heater Ceramic Safety — curated for CartPulse demos in the appliances category."
     },
@@ -1430,7 +1430,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=69",
+      "imageUrl": "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Humidifier Ultrasonic Cool Mist — curated for CartPulse demos in the appliances category."
     },
@@ -1443,7 +1443,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=70",
+      "imageUrl": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Water Purifier Pitcher Filter — curated for CartPulse demos in the appliances category."
     },
@@ -1456,7 +1456,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=71",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Electric Pressure Cooker 8-Qt — curated for CartPulse demos in the appliances category."
     },
@@ -1469,7 +1469,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=72",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Induction Cooktop Single Burner — curated for CartPulse demos in the appliances category."
     },
@@ -1482,7 +1482,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=73",
+      "imageUrl": "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Waffle Maker Belgian Deep — curated for CartPulse demos in the appliances category."
     },
@@ -1495,7 +1495,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=74",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Bread Maker 2-Lb Loaf — curated for CartPulse demos in the appliances category."
     },
@@ -1508,7 +1508,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🔌",
-      "imageUrl": "https://loremflickr.com/800/800/appliance%2Ckitchen%2Cblender?lock=75",
+      "imageUrl": "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Ice Maker Countertop 26 Lbs — curated for CartPulse demos in the appliances category."
     },
@@ -1521,7 +1521,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=76",
+      "imageUrl": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Stainless Chef Knife 8-Inch — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1534,7 +1534,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=77",
+      "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Nonstick Saucepan Set 3-Piece — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1547,7 +1547,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=78",
+      "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cast Iron Skillet 12-Inch — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1560,7 +1560,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=79",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Ceramic Dinner Plate Set 12 — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1573,7 +1573,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=80",
+      "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wine Glass Stemware Set of 6 — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1586,7 +1586,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=81",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Bamboo Cutting Board Large — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1599,7 +1599,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=82",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Silicone Spatula Utensil 5-Pack — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1612,7 +1612,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=83",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Mixing Bowl Set Nesting Steel — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1625,7 +1625,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=84",
+      "imageUrl": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "French Press Coffee Maker — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1638,7 +1638,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=85",
+      "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Pour-Over Dripper Ceramic — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1651,7 +1651,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=86",
+      "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Insulated Travel Mug 16oz — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1664,7 +1664,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=87",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Glass Food Storage Containers — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1677,7 +1677,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=88",
+      "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dish Rack Stainless Expandable — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1690,7 +1690,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=89",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Table Runner Linen Natural — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1703,7 +1703,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=90",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cloth Napkins Cotton 12-Pack — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1716,7 +1716,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=91",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Serving Platter Oval Porcelain — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1729,7 +1729,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=92",
+      "imageUrl": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Salad Bowl Wooden Acacia — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1742,7 +1742,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=93",
+      "imageUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Steak Knife Set Serrated 6 — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1755,7 +1755,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=94",
+      "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Measuring Cup Set Stainless — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1768,7 +1768,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=95",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Digital Kitchen Scale Precision — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1781,7 +1781,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=96",
+      "imageUrl": "https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Oven Mitts Silicone Heat Resistant — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1794,7 +1794,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=97",
+      "imageUrl": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Spice Rack Wall Mount 20 Jars — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1807,7 +1807,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=98",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Colander Stainless Perforated — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1820,7 +1820,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=99",
+      "imageUrl": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Grater Box 4-Sided Stainless — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1833,7 +1833,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🍽️",
-      "imageUrl": "https://loremflickr.com/800/800/kitchen%2Cdining%2Ccookware?lock=100",
+      "imageUrl": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cocktail Shaker Set Bartender — curated for CartPulse demos in the kitchen dining category."
     },
@@ -1846,7 +1846,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=101",
+      "imageUrl": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Organic Rolled Oats 2 lb — curated for CartPulse demos in the food grocery category."
     },
@@ -1859,7 +1859,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=102",
+      "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Extra Virgin Olive Oil 1L — curated for CartPulse demos in the food grocery category."
     },
@@ -1872,7 +1872,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=103",
+      "imageUrl": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Almond Butter Creamy 16oz — curated for CartPulse demos in the food grocery category."
     },
@@ -1885,7 +1885,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=104",
+      "imageUrl": "https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Whole Grain Pasta Penne 1lb — curated for CartPulse demos in the food grocery category."
     },
@@ -1898,7 +1898,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=105",
+      "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Jasmine Rice Premium 5 lb — curated for CartPulse demos in the food grocery category."
     },
@@ -1911,7 +1911,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=106",
+      "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dark Chocolate Bar 70% Cocoa — curated for CartPulse demos in the food grocery category."
     },
@@ -1924,7 +1924,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=107",
+      "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Granola Honey Almond Clusters — curated for CartPulse demos in the food grocery category."
     },
@@ -1937,7 +1937,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=108",
+      "imageUrl": "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cold Brew Coffee Concentrate — curated for CartPulse demos in the food grocery category."
     },
@@ -1950,7 +1950,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=109",
+      "imageUrl": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Herbal Green Tea 100 Bags — curated for CartPulse demos in the food grocery category."
     },
@@ -1963,7 +1963,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=110",
+      "imageUrl": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Sparkling Water Lime 12-Pack — curated for CartPulse demos in the food grocery category."
     },
@@ -1976,7 +1976,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=111",
+      "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Organic Honey Raw 12oz — curated for CartPulse demos in the food grocery category."
     },
@@ -1989,7 +1989,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=112",
+      "imageUrl": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Peanut Butter Crunchy 18oz — curated for CartPulse demos in the food grocery category."
     },
@@ -2002,7 +2002,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=113",
+      "imageUrl": "https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Trail Mix Nut Berry Blend — curated for CartPulse demos in the food grocery category."
     },
@@ -2015,7 +2015,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=114",
+      "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Canned Chickpeas No Salt 4-Pack — curated for CartPulse demos in the food grocery category."
     },
@@ -2028,7 +2028,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=115",
+      "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tomato Sauce Marinara Jar — curated for CartPulse demos in the food grocery category."
     },
@@ -2041,7 +2041,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=116",
+      "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Gluten-Free Crackers Sea Salt — curated for CartPulse demos in the food grocery category."
     },
@@ -2054,7 +2054,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=117",
+      "imageUrl": "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Protein Bars Chocolate 12-Count — curated for CartPulse demos in the food grocery category."
     },
@@ -2067,7 +2067,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=118",
+      "imageUrl": "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Instant Oatmeal Variety Pack — curated for CartPulse demos in the food grocery category."
     },
@@ -2080,7 +2080,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=119",
+      "imageUrl": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Maple Syrup Grade A 12oz — curated for CartPulse demos in the food grocery category."
     },
@@ -2093,7 +2093,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=120",
+      "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Coconut Water Natural 6-Pack — curated for CartPulse demos in the food grocery category."
     },
@@ -2106,7 +2106,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=121",
+      "imageUrl": "https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dried Mango Slices Unsweetened — curated for CartPulse demos in the food grocery category."
     },
@@ -2119,7 +2119,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=122",
+      "imageUrl": "https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Quinoa Tri-Color Organic 2 lb — curated for CartPulse demos in the food grocery category."
     },
@@ -2132,7 +2132,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=123",
+      "imageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Black Beans Organic 4-Pack — curated for CartPulse demos in the food grocery category."
     },
@@ -2145,7 +2145,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=124",
+      "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Sourdough Bread Loaf Artisan — curated for CartPulse demos in the food grocery category."
     },
@@ -2158,7 +2158,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🛒",
-      "imageUrl": "https://loremflickr.com/800/800/grocery%2Cfood%2Corganic?lock=125",
+      "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Frozen Berry Blend Antioxidant — curated for CartPulse demos in the food grocery category."
     },
@@ -2171,7 +2171,7 @@
       "stock": 33,
       "rating": 3.9,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=126",
+      "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Merino Wool Crewneck Sweater — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2214,7 +2214,7 @@
       "stock": 33,
       "rating": 4,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=127",
+      "imageUrl": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Everyday Cotton T-Shirt Pack — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2257,7 +2257,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=128",
+      "imageUrl": "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Linen Resort Button Shirt — curated for CartPulse demos in the fashion category."
     },
@@ -2270,7 +2270,7 @@
       "stock": 33,
       "rating": 4.2,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=129",
+      "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Slim Fit Chino Pants — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2313,7 +2313,7 @@
       "stock": 33,
       "rating": 4.3,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=130",
+      "imageUrl": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "High-Rise Denim Jeans Classic — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2356,7 +2356,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=131",
+      "imageUrl": "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Performance Running Shorts — curated for CartPulse demos in the fashion category."
     },
@@ -2369,7 +2369,7 @@
       "stock": 33,
       "rating": 4.5,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=132",
+      "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Water-Resistant Windbreaker Jacket — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2412,7 +2412,7 @@
       "stock": 33,
       "rating": 4.6,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=133",
+      "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Fleece Quarter-Zip Pullover — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2455,7 +2455,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=134",
+      "imageUrl": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Relaxed Fit Oxford Shirt — curated for CartPulse demos in the fashion category."
     },
@@ -2468,7 +2468,7 @@
       "stock": 33,
       "rating": 4.8,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=135",
+      "imageUrl": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Midi Wrap Dress Floral — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2511,7 +2511,7 @@
       "stock": 33,
       "rating": 3.9,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=136",
+      "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Pleated A-Line Skirt — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2554,7 +2554,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=137",
+      "imageUrl": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wool Blend Overcoat Long — curated for CartPulse demos in the fashion category."
     },
@@ -2567,7 +2567,7 @@
       "stock": 33,
       "rating": 4.1,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=138",
+      "imageUrl": "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Leather Belt Reversible — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2610,7 +2610,7 @@
       "stock": 33,
       "rating": 4.2,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=139",
+      "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Canvas Sneakers Low Top — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2653,7 +2653,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=140",
+      "imageUrl": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Running Shoes Glide 6 — curated for CartPulse demos in the fashion category."
     },
@@ -2666,7 +2666,7 @@
       "stock": 33,
       "rating": 4.4,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=141",
+      "imageUrl": "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Leather Ankle Boots Chelsea — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2709,7 +2709,7 @@
       "stock": 33,
       "rating": 4.5,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=142",
+      "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Crossbody Bag Quilted — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2752,7 +2752,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=143",
+      "imageUrl": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Canvas Weekender Tote — curated for CartPulse demos in the fashion category."
     },
@@ -2765,7 +2765,7 @@
       "stock": 33,
       "rating": 4.7,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=144",
+      "imageUrl": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Minimal Laptop Backpack — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2808,7 +2808,7 @@
       "stock": 33,
       "rating": 4.8,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=145",
+      "imageUrl": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Polarized Aviator Sunglasses — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2851,7 +2851,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=146",
+      "imageUrl": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wool Beanie Rib Knit — curated for CartPulse demos in the fashion category."
     },
@@ -2864,7 +2864,7 @@
       "stock": 33,
       "rating": 4,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=147",
+      "imageUrl": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Silk Scarf Print Lightweight — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2907,7 +2907,7 @@
       "stock": 33,
       "rating": 4.1,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=148",
+      "imageUrl": "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Cashmere Touch Gloves Lined — curated for CartPulse demos in the fashion category.",
       "variants": [
@@ -2950,7 +2950,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=149",
+      "imageUrl": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Athletic Socks Cushion 6-Pack — curated for CartPulse demos in the fashion category."
     },
@@ -2963,7 +2963,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "👕",
-      "imageUrl": "https://loremflickr.com/800/800/fashion%2Cclothing%2Capparel?lock=150",
+      "imageUrl": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Wide-Brim Sun Hat Straw — curated for CartPulse demos in the fashion category."
     },
@@ -2976,7 +2976,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=151",
+      "imageUrl": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Full-Face Motorcycle Helmet DOT — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -2989,7 +2989,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=152",
+      "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Modular Flip-Up Helmet Matte — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3002,7 +3002,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=153",
+      "imageUrl": "https://images.unsplash.com/photo-1532298229144-0ec71c25f3ea?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Open-Face Cruiser Helmet Vintage — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3015,7 +3015,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=154",
+      "imageUrl": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dual-Sport Adventure Helmet — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3028,7 +3028,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=155",
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Bluetooth Helmet Communicator Kit — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3041,7 +3041,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=156",
+      "imageUrl": "https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Anti-Fog Visor Insert Pinlock — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3054,7 +3054,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=157",
+      "imageUrl": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Riding Gloves Leather Perforated — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3067,7 +3067,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=158",
+      "imageUrl": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Armored Motorcycle Jacket Textile — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3080,7 +3080,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=159",
+      "imageUrl": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Riding Jeans Kevlar Lined — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3093,7 +3093,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=160",
+      "imageUrl": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Motorcycle Boots Waterproof — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3106,7 +3106,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=161",
+      "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tank Bag Magnetic Mount — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3119,7 +3119,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=162",
+      "imageUrl": "https://images.unsplash.com/photo-1532298229144-0ec71c25f3ea?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tail Bag Expandable 35L — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3132,7 +3132,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=163",
+      "imageUrl": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Phone Mount Handlebar Vibration — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3145,7 +3145,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=164",
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Chain Lube Spray High Performance — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3158,7 +3158,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=165",
+      "imageUrl": "https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Tire Pressure Monitor Caps — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3171,7 +3171,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=166",
+      "imageUrl": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "LED Headlight Bulb H4 Pair — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3184,7 +3184,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=167",
+      "imageUrl": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Car Phone Holder Vent Clip — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3197,7 +3197,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=168",
+      "imageUrl": "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Dash Cam Front 1080p Wide — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3210,7 +3210,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=169",
+      "imageUrl": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Jump Starter Portable 1000A — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3223,7 +3223,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=170",
+      "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Microfiber Car Wash Mitt — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3236,7 +3236,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=171",
+      "imageUrl": "https://images.unsplash.com/photo-1532298229144-0ec71c25f3ea?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Seat Cover Universal Neoprene — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3249,7 +3249,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=172",
+      "imageUrl": "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Roof Cargo Bag Waterproof — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3262,7 +3262,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=173",
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Emergency Roadside Kit 42-Piece — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3275,7 +3275,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=174",
+      "imageUrl": "https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Motorcycle Cover Outdoor UV — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3288,7 +3288,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🏍️",
-      "imageUrl": "https://loremflickr.com/800/800/motorcycle%2Chelmet%2Cauto?lock=175",
+      "imageUrl": "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Helmet Carrying Backpack Padded — curated for CartPulse demos in the automobiles helmets category."
     },
@@ -3301,7 +3301,7 @@
       "stock": 12,
       "rating": 3.9,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=176",
+      "imageUrl": "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Digital Blood Pressure Monitor — curated for CartPulse demos in the health care category."
     },
@@ -3314,7 +3314,7 @@
       "stock": 17,
       "rating": 4,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=177",
+      "imageUrl": "https://images.unsplash.com/photo-1581595220892-b0739db3b8c5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Pulse Oximeter Fingertip — curated for CartPulse demos in the health care category."
     },
@@ -3327,7 +3327,7 @@
       "stock": 22,
       "rating": 4.1,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=178",
+      "imageUrl": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Infrared Forehead Thermometer — curated for CartPulse demos in the health care category."
     },
@@ -3340,7 +3340,7 @@
       "stock": 27,
       "rating": 4.2,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=179",
+      "imageUrl": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "First Aid Kit 120-Piece Home — curated for CartPulse demos in the health care category."
     },
@@ -3353,7 +3353,7 @@
       "stock": 32,
       "rating": 4.3,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=180",
+      "imageUrl": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Adhesive Bandages Assorted Box — curated for CartPulse demos in the health care category."
     },
@@ -3366,7 +3366,7 @@
       "stock": 37,
       "rating": 4.4,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=181",
+      "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Antiseptic Wipes Individually Wrapped — curated for CartPulse demos in the health care category."
     },
@@ -3379,7 +3379,7 @@
       "stock": 42,
       "rating": 4.5,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=182",
+      "imageUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Reusable Hot Cold Gel Pack — curated for CartPulse demos in the health care category."
     },
@@ -3392,7 +3392,7 @@
       "stock": 47,
       "rating": 4.6,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=183",
+      "imageUrl": "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Compression Knee Sleeve Pair — curated for CartPulse demos in the health care category."
     },
@@ -3405,7 +3405,7 @@
       "stock": 12,
       "rating": 4.7,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=184",
+      "imageUrl": "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Foam Roller Muscle Recovery — curated for CartPulse demos in the health care category."
     },
@@ -3418,7 +3418,7 @@
       "stock": 17,
       "rating": 4.8,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=185",
+      "imageUrl": "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Resistance Bands Set 5 Levels — curated for CartPulse demos in the health care category."
     },
@@ -3431,7 +3431,7 @@
       "stock": 22,
       "rating": 3.9,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=186",
+      "imageUrl": "https://images.unsplash.com/photo-1581595220892-b0739db3b8c5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Yoga Mat Extra Thick Non-Slip — curated for CartPulse demos in the health care category."
     },
@@ -3444,7 +3444,7 @@
       "stock": 27,
       "rating": 4,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=187",
+      "imageUrl": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Massage Gun Percussion Lite — curated for CartPulse demos in the health care category."
     },
@@ -3457,7 +3457,7 @@
       "stock": 32,
       "rating": 4.1,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=188",
+      "imageUrl": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Multivitamin Daily 90 Tablets — curated for CartPulse demos in the health care category."
     },
@@ -3470,7 +3470,7 @@
       "stock": 37,
       "rating": 4.2,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=189",
+      "imageUrl": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Omega-3 Fish Oil 120 Softgels — curated for CartPulse demos in the health care category."
     },
@@ -3483,7 +3483,7 @@
       "stock": 42,
       "rating": 4.3,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=190",
+      "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Vitamin D3 5000 IU 180 Count — curated for CartPulse demos in the health care category."
     },
@@ -3496,7 +3496,7 @@
       "stock": 47,
       "rating": 4.4,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=191",
+      "imageUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Probiotic Digestive 60 Capsules — curated for CartPulse demos in the health care category."
     },
@@ -3509,7 +3509,7 @@
       "stock": 12,
       "rating": 4.5,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=192",
+      "imageUrl": "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Electrolyte Powder Hydration 30 — curated for CartPulse demos in the health care category."
     },
@@ -3522,7 +3522,7 @@
       "stock": 17,
       "rating": 4.6,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=193",
+      "imageUrl": "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Protein Powder Whey Vanilla 2lb — curated for CartPulse demos in the health care category."
     },
@@ -3535,7 +3535,7 @@
       "stock": 22,
       "rating": 4.7,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=194",
+      "imageUrl": "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Sleep Support Melatonin 5mg — curated for CartPulse demos in the health care category."
     },
@@ -3548,7 +3548,7 @@
       "stock": 27,
       "rating": 4.8,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=195",
+      "imageUrl": "https://images.unsplash.com/photo-1581595220892-b0739db3b8c5?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Hand Sanitizer Gel 32oz Pump — curated for CartPulse demos in the health care category."
     },
@@ -3561,7 +3561,7 @@
       "stock": 32,
       "rating": 3.9,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=196",
+      "imageUrl": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Disposable Face Masks 50-Pack — curated for CartPulse demos in the health care category."
     },
@@ -3574,7 +3574,7 @@
       "stock": 37,
       "rating": 4,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=197",
+      "imageUrl": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "N95 Respirator Masks 10-Pack — curated for CartPulse demos in the health care category."
     },
@@ -3587,7 +3587,7 @@
       "stock": 42,
       "rating": 4.1,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=198",
+      "imageUrl": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Nebulizer Compressor Home Kit — curated for CartPulse demos in the health care category."
     },
@@ -3600,7 +3600,7 @@
       "stock": 47,
       "rating": 4.2,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=199",
+      "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Glucose Monitor Starter Kit — curated for CartPulse demos in the health care category."
     },
@@ -3613,7 +3613,7 @@
       "stock": 12,
       "rating": 4.3,
       "emoji": "🩺",
-      "imageUrl": "https://loremflickr.com/800/800/health%2Cmedical%2Cwellness?lock=200",
+      "imageUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&h=800&q=80",
       "published": true,
       "description": "Compression Socks Travel 3-Pair — curated for CartPulse demos in the health care category."
     },
@@ -3626,7 +3626,7 @@
       "stock": 5,
       "rating": 3.8,
       "emoji": "🧪",
-      "imageUrl": "https://loremflickr.com/800/800/usb%2Ccable%2Cgadget?lock=201",
+      "imageUrl": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&h=800&q=80",
       "published": false,
       "description": "Unpublished draft SKU for admin publish/unpublish demos."
     }

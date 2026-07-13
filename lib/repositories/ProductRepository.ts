@@ -62,8 +62,17 @@ export class ProductRepository extends BaseRepository {
       stock: row.stock,
       rating: row.rating,
       emoji: row.emoji,
-      imageUrl: primaryProductImageUrl(normalizeProductImageUrls(row.imageUrls, row.imageUrl)) ?? undefined,
-      imageUrls: normalizeProductImageUrls(row.imageUrls, row.imageUrl),
+      imageUrl:
+        primaryProductImageUrl(
+          normalizeProductImageUrls(row.imageUrls, row.imageUrl, {
+            categorySlug: row.category.slug,
+            productId: row.id,
+          }),
+        ) ?? undefined,
+      imageUrls: normalizeProductImageUrls(row.imageUrls, row.imageUrl, {
+        categorySlug: row.category.slug,
+        productId: row.id,
+      }),
       description: row.description,
       published: row.published,
       isDigital: row.isDigital,
