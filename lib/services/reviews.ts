@@ -1,3 +1,4 @@
+import { accelerateArgs, CATALOG_CACHE, REVIEW_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 
 export type ProductReviewItem = {
@@ -16,13 +17,18 @@ function displayAuthor(name: string | null, email: string | null): string {
 }
 
 export async function listProductReviews(productId: string): Promise<ProductReviewItem[]> {
-  const reviews = await prisma.review.findMany({
-    where: { productId },
-    include: {
-      user: { select: { name: true, email: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+  const reviews = await prisma.review.findMany(
+    accelerateArgs(
+      {
+        where: { productId },
+        include: {
+          user: { select: { name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      REVIEW_CACHE,
+    ),
+  )
 
   return reviews.map((review) => ({
     id: review.id,
@@ -61,10 +67,15 @@ export async function createProductReview(
     throw new Error('You have already reviewed this product')
   }
 
-  const product = await prisma.product.findFirst({
-    where: { id: input.productId, published: true },
-    select: { id: true },
-  })
+  const product = await prisma.product.findFirst(
+    accelerateArgs(
+      {
+        where: { id: input.productId, published: true },
+        select: { id: true },
+      },
+      CATALOG_CACHE,
+    ),
+  )
 
   if (!product) {
     throw new Error('Product not found')
@@ -95,9 +106,14 @@ export async function createProductReview(
 }
 
 export async function listUserReviews(userId: string) {
-  return prisma.review.findMany({
-    where: { userId },
-    include: { product: true },
-    orderBy: { createdAt: 'desc' },
-  })
+  return prisma.review.findMany(
+    accelerateArgs(
+      {
+        where: { userId },
+        include: { product: true },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      REVIEW_CACHE,
+    ),
+  )
 }

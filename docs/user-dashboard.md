@@ -164,7 +164,7 @@ OAuth-only users can still set a password on the profile page — this links cre
 
 ## Orders table
 
-Admin-style data table with **server-side offset pagination**, debounced search, status filter, and CSV/XLSX export of the **current page**.
+Admin-style data table with **server-side offset pagination**, debounced search (`SEARCH_DEBOUNCE_MS = 600`), status filter, and CSV/XLSX export of the **current page**. Order list reads use Accelerate `ORDER_CACHE`.
 
 ```typescript
 // components/dashboard/UserOrdersTable.tsx

@@ -69,20 +69,20 @@ For **service docs, role guides, and feature checklist** — see **[docs/](./doc
 <img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black">
 </div>
 
-**Key dependencies:** `@prisma/client` · `@prisma/adapter-pg` · `next-auth` · `@auth/prisma-adapter` · `@reduxjs/toolkit` · `react-redux` · `@tanstack/react-query` · `@tanstack/react-table` · `stripe` · `@stripe/stripe-js` · `next-intl` · `next-themes` · `lucide-react` · `tailwind-merge` · `zod` · `resend` · `cloudinary` · `bcryptjs` · `date-fns` · `xlsx` · `@lottiefiles/dotlottie-react`
+**Key dependencies:** `@prisma/client` · `@prisma/extension-accelerate` · `@prisma/adapter-pg` · `next-auth` · `@auth/prisma-adapter` · `@reduxjs/toolkit` · `react-redux` · `@tanstack/react-query` · `@tanstack/react-table` · `stripe` · `@stripe/stripe-js` · `next-intl` · `next-themes` · `lucide-react` · `tailwind-merge` · `zod` · `resend` · `cloudinary` · `bcryptjs` · `date-fns` · `xlsx` · `@lottiefiles/dotlottie-react`
 
 ---
 
 ## Features
 
-- **Storefront** — catalog search/filters (debounced), variants, flash deals, store directory, cart drawer, checkout
+- **Storefront** — token-aware catalog search (debounced 600ms), filters, variants, flash deals, store directory, cart drawer, checkout
 - **Catalog pagination** — cursor-based **Load more** (`cursor` / `nextCursor`); never dumps the full catalog
 - **Admin / account tables** — server-side offset pagination (`page` / `pageSize`) with debounced search
 - **Auth** — credentials + Google/GitHub OAuth, email verification, password reset, role-based access
 - **Customer dashboard** — orders, wishlist, reviews, addresses, profile, notifications, digital library
 - **Admin panel** — products, stores, categories, coupons, orders, analytics, activity log, export
 - **Commerce** — server-side pricing, inventory decrement, COD + Stripe, promo codes, order emails
-- **Performance** — homepage ISR (`revalidate = 60`), CDN cache headers on public catalog GETs
+- **Performance** — homepage ISR (`revalidate = 60`), CDN cache on public catalog GETs, **Prisma Accelerate** connection pool + `cacheStrategy` on hot reads
 - **i18n** — English + Bengali routing (`/bn/*`)
 
 ---
@@ -115,13 +115,13 @@ cp .env.example .env
 
 Edit `.env` and set at minimum:
 
-| Variable                  | Required | Notes                                         |
-| ------------------------- | -------- | --------------------------------------------- |
-| `DATABASE_URL`            | Yes      | Direct `postgres://…` for migrate / db push   |
-| `DATABASE_ACCELERATE_URL` | Yes      | Prisma Accelerate URL (`prisma+postgres://…`) |
-| `AUTH_SECRET`             | Yes      | `openssl rand -base64 32`                     |
-| `AUTH_URL`                | Yes      | `http://localhost:3000` for local dev         |
-| `NEXT_PUBLIC_APP_URL`     | Yes      | Same as `AUTH_URL` locally                    |
+| Variable                  | Required | Notes                                                                   |
+| ------------------------- | -------- | ----------------------------------------------------------------------- |
+| `DATABASE_URL`            | Yes      | Direct `postgres://…` for migrate / `db:push` / `db:reset`              |
+| `DATABASE_ACCELERATE_URL` | Yes      | Prisma Accelerate `prisma+postgres://…` — app runtime (`lib/prisma.ts`) |
+| `AUTH_SECRET`             | Yes      | `openssl rand -base64 32`                                               |
+| `AUTH_URL`                | Yes      | `http://localhost:3000` for local dev                                   |
+| `NEXT_PUBLIC_APP_URL`     | Yes      | Same as `AUTH_URL` locally                                              |
 
 Optional (enable features when set):
 
@@ -205,8 +205,9 @@ Seeded by `yarn db:seed`:
 ## Vercel deployment
 
 1. Set env vars in **Vercel → Settings → Environment Variables** (same as `.env`, with production URLs for `AUTH_URL` and `NEXT_PUBLIC_APP_URL`)
-2. Use **Node.js 24.x**
-3. Push schema + seed against your hosted database before first deploy:
+2. Set **both** `DATABASE_URL` (direct TCP) and `DATABASE_ACCELERATE_URL` (Accelerate)
+3. Use **Node.js 24.x**
+4. Push schema + seed against your hosted database before first deploy:
 
 ```bash
 yarn db:push
@@ -214,7 +215,7 @@ yarn generate:data
 yarn db:seed
 ```
 
-4. Redeploy after changing env vars
+5. Redeploy after changing env vars
 
 ---
 
@@ -254,21 +255,23 @@ Object.keys(localStorage)
 
 ## Troubleshooting
 
-| Problem                                  | Fix                                                                                                                |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Wrong Node version                       | `nvm install 24.11.0 && nvm use`                                                                                   |
-| `Failed to fetch products` / API 500     | Check `DATABASE_URL`, then `yarn db:push && yarn db:seed`                                                          |
-| Stale cart or user name after `db:reset` | Clear `cartpulse*` localStorage + auth cookies (see above)                                                         |
-| Prisma client out of date                | `yarn db:generate` or `yarn db:push`                                                                               |
-| Auth.js `ClientFetchError` on storefront | Ensure dev server is running; `/api/auth/session` must not be blocked (see ARCHITECTURE)                           |
-| Google/GitHub `AccessDenied` on sign-in  | Restart dev server after auth code changes; ensure redirect URIs match table above exactly                         |
-| OAuth `Configuration` / server error     | Check terminal logs; ensure `User.image` column exists (`yarn db:push`) and Cloudinary is set if uploading avatars |
-| Stripe checkout not redirecting          | Set Stripe keys in `.env`, restart `yarn dev`, choose **Card / Stripe** at checkout                                |
-| Avatar upload fails                      | Set `CLOUDINARY_*` in `.env`; only available when signed in with **email + password**                              |
-| Notifications inbox empty after ship     | Run `yarn db:push` (adds `notifications` table); change order status again — old updates are not backfilled        |
-| Library empty after buying digital item  | Order must reach `PAID`; run `yarn db:push` (digital fields + `library_items`); re-seed for demo library items     |
-| Admin cannot find personal dashboard     | Go to `/dashboard` or click **My Account** in admin header / storefront header (not auto-redirected on login)      |
-| Catalog / Load more feels empty or stuck | Confirm API returns `meta.nextCursor` / `hasMore`; filters reset the cursor (new first page)                       |
-| Slow Vercel TTFB on catalog              | Public catalog GETs should send `Cache-Control` with `s-maxage`; co-locate Vercel region + Postgres near users     |
+| Problem                                  | Fix                                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Wrong Node version                       | `nvm install 24.11.0 && nvm use`                                                                                         |
+| `Failed to fetch products` / API 500     | Check `DATABASE_URL` + `DATABASE_ACCELERATE_URL`, then `yarn db:push && yarn db:seed`                                    |
+| Stale cart or user name after `db:reset` | Clear `cartpulse*` localStorage + auth cookies (see above)                                                               |
+| Prisma client out of date                | `yarn db:generate` or `yarn db:push`                                                                                     |
+| Accelerate / Prisma cache stays at 0%    | Ensure `DATABASE_ACCELERATE_URL` is set and reads use `accelerateArgs` / `cacheStrategy` (`lib/api/accelerate-cache.ts`) |
+| Auth.js `ClientFetchError` on storefront | Ensure dev server is running; `/api/auth/session` must not be blocked (see ARCHITECTURE)                                 |
+| Google/GitHub `AccessDenied` on sign-in  | Restart dev server after auth code changes; ensure redirect URIs match table above exactly                               |
+| OAuth `Configuration` / server error     | Check terminal logs; ensure `User.image` column exists (`yarn db:push`) and Cloudinary is set if uploading avatars       |
+| Stripe checkout not redirecting          | Set Stripe keys in `.env`, restart `yarn dev`, choose **Card / Stripe** at checkout                                      |
+| Avatar upload fails                      | Set `CLOUDINARY_*` in `.env`; only available when signed in with **email + password**                                    |
+| Notifications inbox empty after ship     | Run `yarn db:push` (adds `notifications` table); change order status again — old updates are not backfilled              |
+| Library empty after buying digital item  | Order must reach `PAID`; run `yarn db:push` (digital fields + `library_items`); re-seed for demo library items           |
+| Admin cannot find personal dashboard     | Go to `/dashboard` or click **My Account** in admin header / storefront header (not auto-redirected on login)            |
+| Catalog / Load more feels empty or stuck | Confirm API returns `meta.nextCursor` / `hasMore`; filters reset the cursor (new first page)                             |
+| Search “mobile” returns helmet gear      | Token search is required (`lib/utils/product-search.ts`); redeploy if still on old `contains` description matching       |
+| Slow Vercel TTFB on catalog              | Public catalog GETs should send `Cache-Control` with `s-maxage`; co-locate Vercel region + Postgres near users           |
 
 Stripe test cards and webhook setup are documented in **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** under **Storefront → Checkout**.

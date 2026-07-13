@@ -1,21 +1,27 @@
+import { accelerateArgs, CATALOG_CACHE, USER_DATA_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/services/products'
 
 export async function listWishlist(userId: string) {
-  const rows = await prisma.wishlistItem.findMany({
-    where: { userId },
-    include: {
-      product: {
+  const rows = await prisma.wishlistItem.findMany(
+    accelerateArgs(
+      {
+        where: { userId },
         include: {
-          store: true,
-          category: true,
-          variants: true,
-          defaultVariant: true,
+          product: {
+            include: {
+              store: true,
+              category: true,
+              variants: true,
+              defaultVariant: true,
+            },
+          },
         },
+        orderBy: { createdAt: 'desc' as const },
       },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+      USER_DATA_CACHE,
+    ),
+  )
 
   return rows
     .filter((row) => row.product.published)
@@ -28,19 +34,29 @@ export async function listWishlist(userId: string) {
 }
 
 export async function listWishlistProductIds(userId: string): Promise<string[]> {
-  const rows = await prisma.wishlistItem.findMany({
-    where: { userId },
-    select: { productId: true },
-    orderBy: { createdAt: 'desc' },
-  })
+  const rows = await prisma.wishlistItem.findMany(
+    accelerateArgs(
+      {
+        where: { userId },
+        select: { productId: true },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      USER_DATA_CACHE,
+    ),
+  )
   return rows.map((row) => row.productId)
 }
 
 export async function addWishlistItem(userId: string, productId: string) {
-  const product = await prisma.product.findFirst({
-    where: { id: productId, published: true },
-    select: { id: true },
-  })
+  const product = await prisma.product.findFirst(
+    accelerateArgs(
+      {
+        where: { id: productId, published: true },
+        select: { id: true },
+      },
+      CATALOG_CACHE,
+    ),
+  )
   if (!product) throw new Error('Product not found')
 
   return prisma.wishlistItem.upsert({

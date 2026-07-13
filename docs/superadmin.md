@@ -59,7 +59,7 @@ const users = await listUsers({ search, role, page, pageSize })
 // { data, total, page, pageSize }
 ```
 
-Admin UI debounces search (300ms) before refetch — same pattern as orders/stores/coupons.
+Admin UI debounces search (`SEARCH_DEBOUNCE_MS = 600`) before refetch — same pattern as orders/stores/coupons.
 
 ### Update role & permissions
 

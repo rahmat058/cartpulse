@@ -10,13 +10,16 @@ Modules: `products.ts`, `CatalogService.ts`, `categories.ts`, `stores.ts`, `prod
 
 ### Key exports
 
-| Function                                | Description                                                         |
-| --------------------------------------- | ------------------------------------------------------------------- |
-| `getProducts(query)`                    | **Cursor**-paginated catalog (`cursor`, `pageSize`, filters, sort)  |
-| `getProductBySlug(slug)`                | Single product for PDP (strips `digitalAssetUrl` from public DTO)   |
-| `getProductsByIds(ids)`                 | Batch load for cart/checkout pricing (lean list DTO)                |
-| `getFeaturedProducts(limit)`            | Home shelves / featured                                             |
-| `parseCatalogQueryParams(searchParams)` | Parse URL filters → query (`cursor`, `pageSize` / `limit`, …)       |
+| Function                                | Description                                                           |
+| --------------------------------------- | --------------------------------------------------------------------- |
+| `getProducts(query)`                    | **Cursor**-paginated catalog (`cursor`, `pageSize`, filters, sort)    |
+| `getProductBySlug(slug)`                | Single product for PDP (strips `digitalAssetUrl` from public DTO)     |
+| `getProductsByIds(ids)`                 | Batch load for cart/checkout pricing (lean list DTO)                  |
+| `getFeaturedProducts(limit)`            | Home shelves / featured                                               |
+| `parseCatalogQueryParams(searchParams)` | Parse URL filters → query (`cursor`, `pageSize` / `limit`, search, …) |
+| Search filter                           | `productSearchWhere()` — token match on name / slug / description     |
+
+Storefront repository reads use Accelerate `CATALOG_CACHE` (`ttl: 60`, `swr: 120`).
 
 ### Code demo — API route (cursor + CDN)
 
@@ -78,6 +81,7 @@ const productsById = Object.fromEntries(products.map((p) => [p.id, p]))
 | Method                    | Description                                                                  |
 | ------------------------- | ---------------------------------------------------------------------------- |
 | `parseCatalogQueryParams` | `search`, `category`, prices, `sort`, `cursor`, `pageSize` / `limit`         |
+| `buildWhere`              | Category tree + **token search** (`lib/utils/product-search.ts`) + stock OR  |
 | `getProducts`             | Cursor page via `findPublishedAfterCursor`; lean list DTO; `nextCursor` meta |
 | `getProductBySlug`        | Slug lookup with store + category + variants                                 |
 | `getProductsByIds`        | Batch by ID for cart validation                                              |

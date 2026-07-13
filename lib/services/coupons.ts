@@ -1,3 +1,4 @@
+import { accelerateArgs, COUPON_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { NOT_DELETED } from '@/lib/services/soft-delete'
 import type { CouponDefinition } from '@/types/commerce'
@@ -6,9 +7,14 @@ export async function getActiveCouponByCode(code: string): Promise<CouponDefinit
   const normalized = code.trim().toUpperCase()
   if (!normalized) return null
 
-  const coupon = await prisma.coupon.findFirst({
-    where: { code: normalized, ...NOT_DELETED },
-  })
+  const coupon = await prisma.coupon.findFirst(
+    accelerateArgs(
+      {
+        where: { code: normalized, ...NOT_DELETED },
+      },
+      COUPON_CACHE,
+    ),
+  )
   if (!coupon || !coupon.active) return null
 
   const now = new Date()
@@ -27,14 +33,19 @@ export async function getActiveCouponByCode(code: string): Promise<CouponDefinit
 
 export async function listActiveCoupons(): Promise<CouponDefinition[]> {
   const now = new Date()
-  const rows = await prisma.coupon.findMany({
-    where: {
-      ...NOT_DELETED,
-      active: true,
-      OR: [{ startsAt: null }, { startsAt: { lte: now } }],
-    },
-    orderBy: { code: 'asc' },
-  })
+  const rows = await prisma.coupon.findMany(
+    accelerateArgs(
+      {
+        where: {
+          ...NOT_DELETED,
+          active: true,
+          OR: [{ startsAt: null }, { startsAt: { lte: now } }],
+        },
+        orderBy: { code: 'asc' as const },
+      },
+      COUPON_CACHE,
+    ),
+  )
 
   return rows
     .filter((row) => {

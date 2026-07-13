@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import type { OrderStatus } from '@/app/generated/prisma/client'
+import { accelerateArgs, ADMIN_LIST_CACHE, CATALOG_CACHE, ORDER_CACHE } from '@/lib/api/accelerate-cache'
 import { getActiveCouponByCode, recordCouponUsage } from '@/lib/services/coupons'
 import {
   assertSufficientStockForOrderLines,
@@ -158,13 +159,18 @@ export async function createOrderFromCart(
 }
 
 export async function listUserOrders(userId: string) {
-  return prisma.order.findMany({
-    where: { userId },
-    include: {
-      items: { include: { product: true, variant: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+  return prisma.order.findMany(
+    accelerateArgs(
+      {
+        where: { userId },
+        include: {
+          items: { include: { product: true, variant: true } },
+        },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      ORDER_CACHE,
+    ),
+  )
 }
 
 export async function listUserOrdersPage(
@@ -188,16 +194,21 @@ export async function listUserOrdersPage(
   }
 
   const [total, rows] = await Promise.all([
-    prisma.order.count({ where }),
-    prisma.order.findMany({
-      where,
-      include: {
-        items: { include: { product: true, variant: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-      skip,
-      take: pageSize,
-    }),
+    prisma.order.count(accelerateArgs({ where }, ORDER_CACHE)),
+    prisma.order.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: {
+            items: { include: { product: true, variant: true } },
+          },
+          orderBy: { createdAt: 'desc' as const },
+          skip,
+          take: pageSize,
+        },
+        ORDER_CACHE,
+      ),
+    ),
   ])
 
   const data = rows.map((order) => ({
@@ -212,14 +223,19 @@ export async function listUserOrdersPage(
 }
 
 export async function listAllOrders(filters?: { status?: OrderStatus }) {
-  return prisma.order.findMany({
-    where: filters?.status ? { status: filters.status } : undefined,
-    include: {
-      items: { include: { product: true, variant: true } },
-      user: { select: { id: true, name: true, email: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+  return prisma.order.findMany(
+    accelerateArgs(
+      {
+        where: filters?.status ? { status: filters.status } : undefined,
+        include: {
+          items: { include: { product: true, variant: true } },
+          user: { select: { id: true, name: true, email: true } },
+        },
+        orderBy: { createdAt: 'desc' as const },
+      },
+      ORDER_CACHE,
+    ),
+  )
 }
 
 export async function listAllOrdersPage(filters?: {
@@ -260,30 +276,40 @@ export async function listAllOrdersPage(filters?: {
   }
 
   const [total, data] = await Promise.all([
-    prisma.order.count({ where }),
-    prisma.order.findMany({
-      where,
-      include: {
-        items: { include: { product: true, variant: true } },
-        user: { select: { id: true, name: true, email: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-      skip,
-      take: pageSize,
-    }),
+    prisma.order.count(accelerateArgs({ where }, ORDER_CACHE)),
+    prisma.order.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: {
+            items: { include: { product: true, variant: true } },
+            user: { select: { id: true, name: true, email: true } },
+          },
+          orderBy: { createdAt: 'desc' as const },
+          skip,
+          take: pageSize,
+        },
+        ORDER_CACHE,
+      ),
+    ),
   ])
 
   return { data, total, page, pageSize }
 }
 
 export async function getOrderById(id: string, userId?: string) {
-  return prisma.order.findFirst({
-    where: { id, ...(userId ? { userId } : {}) },
-    include: {
-      items: { include: { product: true, variant: true } },
-      user: { select: { id: true, name: true, email: true } },
-    },
-  })
+  return prisma.order.findFirst(
+    accelerateArgs(
+      {
+        where: { id, ...(userId ? { userId } : {}) },
+        include: {
+          items: { include: { product: true, variant: true } },
+          user: { select: { id: true, name: true, email: true } },
+        },
+      },
+      ORDER_CACHE,
+    ),
+  )
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus) {
@@ -383,13 +409,18 @@ export async function markOrderPaid(orderId: string, stripeSessionId: string) {
 
 export async function getAdminKpis() {
   const [orderCount, userCount, revenueAgg, lowStock] = await Promise.all([
-    prisma.order.count(),
-    prisma.user.count(),
-    prisma.order.aggregate({
-      where: { status: { in: ['PAID', 'SHIPPED', 'DELIVERED'] } },
-      _sum: { total: true },
-    }),
-    prisma.product.count({ where: { stock: { lte: 5 } } }),
+    prisma.order.count(accelerateArgs({}, ORDER_CACHE)),
+    prisma.user.count(accelerateArgs({}, ADMIN_LIST_CACHE)),
+    prisma.order.aggregate(
+      accelerateArgs(
+        {
+          where: { status: { in: ['PAID', 'SHIPPED', 'DELIVERED'] } },
+          _sum: { total: true },
+        },
+        ORDER_CACHE,
+      ),
+    ),
+    prisma.product.count(accelerateArgs({ where: { stock: { lte: 5 } } }, CATALOG_CACHE)),
   ])
 
   return {
@@ -404,11 +435,16 @@ export async function getAnalytics(rangeDays = 30) {
   const since = new Date()
   since.setDate(since.getDate() - rangeDays)
 
-  const orders = await prisma.order.findMany({
-    where: { createdAt: { gte: since }, status: { not: 'CANCELLED' } },
-    include: { items: { include: { product: true } } },
-    orderBy: { createdAt: 'asc' },
-  })
+  const orders = await prisma.order.findMany(
+    accelerateArgs(
+      {
+        where: { createdAt: { gte: since }, status: { not: 'CANCELLED' as const } },
+        include: { items: { include: { product: true } } },
+        orderBy: { createdAt: 'asc' as const },
+      },
+      ORDER_CACHE,
+    ),
+  )
 
   const byDay = new Map<string, { revenue: number; orders: number }>()
   for (const order of orders) {
@@ -464,25 +500,30 @@ export async function listUsers(options?: { role?: AppRole; search?: string; pag
   }
 
   const [total, data] = await Promise.all([
-    prisma.user.count({ where }),
-    prisma.user.findMany({
-      where,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        permCreate: true,
-        permRead: true,
-        permUpdate: true,
-        permDelete: true,
-        createdAt: true,
-        _count: { select: { orders: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-      skip,
-      take: pageSize,
-    }),
+    prisma.user.count(accelerateArgs({ where }, ADMIN_LIST_CACHE)),
+    prisma.user.findMany(
+      accelerateArgs(
+        {
+          where,
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            permCreate: true,
+            permRead: true,
+            permUpdate: true,
+            permDelete: true,
+            createdAt: true,
+            _count: { select: { orders: true } },
+          },
+          orderBy: { createdAt: 'desc' as const },
+          skip,
+          take: pageSize,
+        },
+        ADMIN_LIST_CACHE,
+      ),
+    ),
   ])
 
   return { data, total, page, pageSize }

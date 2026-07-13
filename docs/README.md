@@ -2,7 +2,7 @@
 
 Developer docs for the CartPulse e-commerce platform. For project setup, see the root [README.md](../README.md). For high-level architecture, see [ARCHITECTURE.MD](../ARCHITECTURE.MD).
 
-**Recent (pagination & performance):** storefront catalog uses **cursor** Load more; admin / My Orders use **offset** (`page` / `pageSize`); search is debounced; home ISR + CDN `s-maxage` on public catalog GETs. Details: [storefront.md](./storefront.md), [ARCHITECTURE.MD](../ARCHITECTURE.MD#catalog-pagination-cursor).
+**Recent updates:** cursor catalog Load more · offset admin/orders tables · search debounce **600ms** · token-aware product search · home ISR + CDN `s-maxage` · **Prisma Accelerate** (`DATABASE_ACCELERATE_URL` + `cacheStrategy` presets). Details: [storefront.md](./storefront.md), [ARCHITECTURE.MD](../ARCHITECTURE.MD#prisma-accelerate).
 
 ---
 

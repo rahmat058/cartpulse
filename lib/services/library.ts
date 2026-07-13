@@ -1,3 +1,4 @@
+import { accelerateArgs, USER_DATA_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { isDigitalProduct } from '@/lib/utils/digital-products'
 
@@ -64,20 +65,30 @@ const libraryInclude = {
 } as const
 
 export async function listUserLibrary(userId: string) {
-  const rows = await prisma.libraryItem.findMany({
-    where: { userId },
-    include: libraryInclude,
-    orderBy: { createdAt: 'desc' },
-  })
+  const rows = await prisma.libraryItem.findMany(
+    accelerateArgs(
+      {
+        where: { userId },
+        include: libraryInclude,
+        orderBy: { createdAt: 'desc' as const },
+      },
+      USER_DATA_CACHE,
+    ),
+  )
 
   return rows.map(mapLibraryItem)
 }
 
 export async function userOwnsLibraryProduct(userId: string, productId: string) {
-  const row = await prisma.libraryItem.findUnique({
-    where: { userId_productId: { userId, productId } },
-    select: { id: true },
-  })
+  const row = await prisma.libraryItem.findUnique(
+    accelerateArgs(
+      {
+        where: { userId_productId: { userId, productId } },
+        select: { id: true },
+      },
+      USER_DATA_CACHE,
+    ),
+  )
   return Boolean(row)
 }
 

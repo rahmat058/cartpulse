@@ -2,7 +2,9 @@
 
 All business logic lives in `lib/services/`. API routes and server pages should call services — not Prisma directly.
 
-**Pagination helpers** (not a service): `lib/api/pagination.ts` — when to use **cursor** (storefront Load more) vs **offset** (admin / account tables). Debounce: `hooks/use-debounced-value.ts`.
+**Pagination helpers** (not a service): `lib/api/pagination.ts` — when to use **cursor** (storefront Load more) vs **offset** (admin / account tables). Debounce: `hooks/use-debounced-value.ts` (`SEARCH_DEBOUNCE_MS = 600`).
+
+**Prisma Accelerate:** runtime client uses `DATABASE_ACCELERATE_URL` (`lib/prisma.ts`). Hot reads wrap args with `accelerateArgs(..., PRESET)` from `lib/api/accelerate-cache.ts` (products, orders, reviews, coupons, categories, stores, library, wishlist, admin lists). Auth / writes stay uncached. Migrations use direct `DATABASE_URL` via `prisma.config.ts`.
 
 ---
 

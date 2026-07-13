@@ -85,7 +85,7 @@ permDelete: false,  // delete disabled by default
 
 ### List + export (offset pagination)
 
-Admin product table loads **one server page** at a time. Search is debounced (300ms) before refetch.
+Admin product table loads **one server page** at a time. Search is debounced (`SEARCH_DEBOUNCE_MS = 600`) before refetch. List queries use Accelerate `ADMIN_LIST_CACHE`.
 
 ```typescript
 // components/dashboard/AdminProductsPage.tsx

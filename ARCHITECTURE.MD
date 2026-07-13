@@ -1,6 +1,6 @@
 # CartPulse — Architecture
 
-Next.js 16 marketplace with **Prisma 7 + PostgreSQL**, bilingual storefront (`en` / `bn`), Redux cart/wishlist, NextAuth v5, COD + Stripe checkout, customer **My Account**, and an **Admin** panel.
+Next.js 16 marketplace with **Prisma 7 + PostgreSQL + Accelerate**, bilingual storefront (`en` / `bn`), Redux cart/wishlist, NextAuth v5, COD + Stripe checkout, customer **My Account**, and an **Admin** panel.
 
 There is **no mock catalog API** — products, variants, and orders live in PostgreSQL.
 
@@ -62,7 +62,7 @@ cartpulse/
 ├── hooks/                    # use-cart, use-wishlist, admin hooks
 ├── i18n/                     # next-intl routing + navigation helpers
 ├── lib/
-│   ├── api/                  # Rate limits, origin checks, guards
+│   ├── api/                  # Rate limits, origin checks, guards, Accelerate cache presets
 │   ├── commerce/             # Home shelves, sort/pricing strategies
 │   ├── export/               # Admin + user table CSV/XLSX export
 │   ├── repositories/         # Prisma data access
@@ -108,19 +108,20 @@ Locale prefix: `/bn/products`, `/bn/checkout`, etc.
 - **Cart** — Redux (`lib/store/`) persisted to `localStorage` (`cartpulse-cart-v1`); stores `productId`, `variantId`, `quantity` only — **no prices**
 - **Wishlist** — synced via `/api/wishlist` when signed in
 - **Pricing at checkout** — server re-fetches product prices from DB, validates cart lines with Zod (`lib/validations/cart.ts`), and recalculates totals via `resolveLineUnitPrice()` (variant-aware); client totals are display-only
-- **Search debounce** — `useDebouncedValue` (`SEARCH_DEBOUNCE_MS = 300`) on header/catalog search and admin table search before hitting the API
+- **Search debounce** — `useDebouncedValue` (`SEARCH_DEBOUNCE_MS = 600`) on header/catalog search and admin table search; clears stale suggestions while typing
+- **Product search** — token/word-boundary matching (`lib/utils/product-search.ts`) so `mobile` does not match `automobiles` in descriptions
 
 ### Catalog pagination (cursor)
 
 Storefront **Load more** uses Prisma cursor pagination (no schema change). Default `pageSize` is `24` (`CATALOG_DEFAULT_PAGE_SIZE`, max `100`).
 
-| Param / field     | Role                                                                 |
-| ----------------- | -------------------------------------------------------------------- |
-| `pageSize` / `limit` | Page size                                                          |
-| `cursor`          | Last product `id` from previous page                                 |
-| `meta.nextCursor` | Opaque cursor for the next request (product id), or `null`           |
-| `meta.hasMore`    | Whether another page exists                                          |
-| `meta.totalProducts` | Filtered total count (for result chrome)                          |
+| Param / field        | Role                                                       |
+| -------------------- | ---------------------------------------------------------- |
+| `pageSize` / `limit` | Page size                                                  |
+| `cursor`             | Last product `id` from previous page                       |
+| `meta.nextCursor`    | Opaque cursor for the next request (product id), or `null` |
+| `meta.hasMore`       | Whether another page exists                                |
+| `meta.totalProducts` | Filtered total count (for result chrome)                   |
 
 ```http
 GET /api/products?sort=name-asc&pageSize=24
@@ -133,14 +134,31 @@ Home shelves request a **first page only** (`pageSize: 8–20`) — they do not 
 
 ### Caching & ISR (Vercel)
 
-| Surface                         | Behavior                                                                 |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| Home `/`                        | `export const revalidate = 60` (ISR). No `force-dynamic`.                |
-| Public catalog GETs             | `apiJsonPublic` + proxy `nextPublicApiResponse` → `s-maxage=60`, SWR 300 |
-| Auth-gated pages                | NextAuth only on `/admin`, `/dashboard`, `/checkout` (not public shop)   |
-| Private / mutating APIs         | `Cache-Control: no-store`                                                |
+| Surface                 | Behavior                                                                 |
+| ----------------------- | ------------------------------------------------------------------------ |
+| Home `/`                | `export const revalidate = 60` (ISR). No `force-dynamic`.                |
+| Public catalog GETs     | `apiJsonPublic` + proxy `nextPublicApiResponse` → `s-maxage=60`, SWR 300 |
+| **Prisma Accelerate**   | Runtime via `DATABASE_ACCELERATE_URL`; `cacheStrategy` on hot reads      |
+| Auth-gated pages        | NextAuth only on `/admin`, `/dashboard`, `/checkout` (not public shop)   |
+| Private / mutating APIs | `Cache-Control: no-store`                                                |
 
-Helpers: `lib/api/cache-headers.ts`, `lib/api/security-headers.ts`, `lib/api/pagination.ts`.
+Helpers: `lib/api/cache-headers.ts`, `lib/api/security-headers.ts`, `lib/api/pagination.ts`, `lib/api/accelerate-cache.ts`.
+
+### Prisma Accelerate
+
+| Concern          | Implementation                                                                                                  |
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
+| Env              | `DATABASE_URL` = direct `postgres://…` (CLI / migrate); `DATABASE_ACCELERATE_URL` = `prisma+postgres://…` (app) |
+| Client           | `lib/prisma.ts` — `accelerateUrl` + `withAccelerate()` (no `PrismaPg` adapter at runtime)                       |
+| CLI              | `prisma.config.ts` → `env('DATABASE_URL')`                                                                      |
+| Query cache      | `accelerateArgs(args, PRESET)` adds `cacheStrategy: { ttl, swr }` without breaking Prisma `include` types       |
+| Presets          | `CATALOG_CACHE`, `ORDER_CACHE`, `REVIEW_CACHE`, `COUPON_CACHE`, `USER_DATA_CACHE`, `ADMIN_LIST_CACHE`, …        |
+| Do **not** cache | Auth, verification tokens, notifications, and all writes                                                        |
+
+```typescript
+// lib/repositories/ProductRepository.ts (storefront)
+await this.db.product.findMany(accelerateArgs({ where, include: productInclude, orderBy }, CATALOG_CACHE))
+```
 
 ### Products, variants & stock
 
@@ -301,18 +319,18 @@ Navigation:
 
 ### Routes
 
-| Route                      | Purpose                                                                           |
-| -------------------------- | --------------------------------------------------------------------------------- |
-| `/dashboard`               | Account overview                                                                  |
+| Route                      | Purpose                                                             |
+| -------------------------- | ------------------------------------------------------------------- |
+| `/dashboard`               | Account overview                                                    |
 | `/dashboard/orders`        | Order history — **offset** API pagination, debounced search, export |
-| `/dashboard/orders/[id]`   | Order detail + PDF download                                                       |
-| `/dashboard/profile`       | Photo, name, password (provider-aware)                                            |
-| `/dashboard/addresses`     | Saved shipping addresses (`localStorage`)                                         |
-| `/dashboard/wishlist`      | Saved products (`/api/wishlist`)                                                  |
-| `/dashboard/reviews`       | User product reviews                                                              |
-| `/dashboard/library`       | Digital library — purchased downloads + secure access                             |
-| `/dashboard/notifications` | Order update inbox — unread badge in sidebar                                      |
-| `/dashboard/settings`      | Sign-in method badge, account security                                            |
+| `/dashboard/orders/[id]`   | Order detail + PDF download                                         |
+| `/dashboard/profile`       | Photo, name, password (provider-aware)                              |
+| `/dashboard/addresses`     | Saved shipping addresses (`localStorage`)                           |
+| `/dashboard/wishlist`      | Saved products (`/api/wishlist`)                                    |
+| `/dashboard/reviews`       | User product reviews                                                |
+| `/dashboard/library`       | Digital library — purchased downloads + secure access               |
+| `/dashboard/notifications` | Order update inbox — unread badge in sidebar                        |
+| `/dashboard/settings`      | Sign-in method badge, account security                              |
 
 ### Notifications inbox
 
@@ -483,17 +501,17 @@ Demo accounts (seeded):
 
 ## Public storefront APIs
 
-| Method | Route                  | Description                                                                 |
-| ------ | ---------------------- | --------------------------------------------------------------------------- |
-| GET    | `/api/products`        | **Cursor**-paginated list (`cursor`, `pageSize`, filters, search, sort)     |
-| GET    | `/api/products?ids=`   | Batch by id (cart / wishlist hydration)                                     |
-| GET    | `/api/products/[slug]` | Single product (download URL stripped from public DTO)                      |
-| GET    | `/api/categories`      | Category tree (CDN-cached)                                                  |
-| GET    | `/api/stores`          | Published stores (CDN-cached)                                               |
-| GET    | `/api/coupons`         | Validate coupon                                                             |
-| POST   | `/api/coupons`         | Apply coupon (checkout)                                                     |
-| POST   | `/api/checkout`        | Create order (COD or Stripe session)                                        |
-| POST   | `/api/webhooks/stripe` | Stripe payment webhook                                                      |
+| Method | Route                  | Description                                                             |
+| ------ | ---------------------- | ----------------------------------------------------------------------- |
+| GET    | `/api/products`        | **Cursor**-paginated list (`cursor`, `pageSize`, filters, search, sort) |
+| GET    | `/api/products?ids=`   | Batch by id (cart / wishlist hydration)                                 |
+| GET    | `/api/products/[slug]` | Single product (download URL stripped from public DTO)                  |
+| GET    | `/api/categories`      | Category tree (CDN-cached)                                              |
+| GET    | `/api/stores`          | Published stores (CDN-cached)                                           |
+| GET    | `/api/coupons`         | Validate coupon                                                         |
+| POST   | `/api/coupons`         | Apply coupon (checkout)                                                 |
+| POST   | `/api/checkout`        | Create order (COD or Stripe session)                                    |
+| POST   | `/api/webhooks/stripe` | Stripe payment webhook                                                  |
 
 Admin tables and My Orders use **offset** pagination (`page` / `pageSize` / `total`) — see `lib/api/pagination.ts`.
 
@@ -503,22 +521,24 @@ Admin `PATCH /api/orders/[id]` updates order status (admin-only).
 
 ## Cross-cutting concerns
 
-| Topic                | Implementation                                                                       |
-| -------------------- | ------------------------------------------------------------------------------------ |
-| **i18n**             | `next-intl` — locales `en`, `bn`; `localePrefix: 'as-needed'`                        |
-| **Route protection** | `proxy.ts` — auth gates only for `/admin`, `/dashboard`, `/checkout`; public shop skips NextAuth for ISR/CDN |
-| **Pagination**       | Cursor (storefront Load more) vs offset (admin / My Orders) — `lib/api/pagination.ts` |
-| **Search debounce**  | `hooks/use-debounced-value.ts` + `SEARCH_DEBOUNCE_MS`                                |
-| **CDN cache**        | Public catalog GETs — `PUBLIC_CATALOG_CACHE_CONTROL` (`s-maxage=60`)                 |
-| **Cart persistence** | Redux → `localStorage`; clear after `yarn db:reset` (see README)                     |
-| **Order PDF**        | `@react-pdf/renderer` in `lib/pdf/OrderDetailPdfDocument.tsx`                        |
-| **Soft deletes**     | `deletedAt` on users/products; `lib/services/soft-delete.ts`                         |
-| **Image upload**     | Cloudinary — admin products (`/api/admin/upload`), user avatars (`/api/user/avatar`) |
-| **User.image**       | OAuth profile photo or Cloudinary avatar URL on `User` model                         |
-| **Notifications**    | `Notification` model — order status inbox per user; `NotificationType.ORDER_UPDATE`  |
-| **Cart validation**  | `lib/validations/cart.ts` — Zod schema + `sanitizeCartItemsById()` at checkout       |
-| **Digital products** | `isDigital` + `digitalAssetUrl` on Product; `lib/utils/digital-products.ts`          |
-| **Library**          | `LibraryItem` model — `grantLibraryAccessForOrder()` on paid orders                  |
+| Topic                 | Implementation                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **i18n**              | `next-intl` — locales `en`, `bn`; `localePrefix: 'as-needed'`                                                |
+| **Route protection**  | `proxy.ts` — auth gates only for `/admin`, `/dashboard`, `/checkout`; public shop skips NextAuth for ISR/CDN |
+| **Pagination**        | Cursor (storefront Load more) vs offset (admin / My Orders) — `lib/api/pagination.ts`                        |
+| **Search debounce**   | `hooks/use-debounced-value.ts` + `SEARCH_DEBOUNCE_MS` (600)                                                  |
+| **Product search**    | Token match — `lib/utils/product-search.ts` (avoids mid-word hits like `mobile` ⊂ `automobiles`)             |
+| **CDN cache**         | Public catalog GETs — `PUBLIC_CATALOG_CACHE_CONTROL` (`s-maxage=60`)                                         |
+| **Prisma Accelerate** | `DATABASE_ACCELERATE_URL` + `lib/api/accelerate-cache.ts` `cacheStrategy` presets                            |
+| **Cart persistence**  | Redux → `localStorage`; clear after `yarn db:reset` (see README)                                             |
+| **Order PDF**         | `@react-pdf/renderer` in `lib/pdf/OrderDetailPdfDocument.tsx`                                                |
+| **Soft deletes**      | `deletedAt` on users/products; `lib/services/soft-delete.ts`                                                 |
+| **Image upload**      | Cloudinary — admin products (`/api/admin/upload`), user avatars (`/api/user/avatar`)                         |
+| **User.image**        | OAuth profile photo or Cloudinary avatar URL on `User` model                                                 |
+| **Notifications**     | `Notification` model — order status inbox per user; `NotificationType.ORDER_UPDATE`                          |
+| **Cart validation**   | `lib/validations/cart.ts` — Zod schema + `sanitizeCartItemsById()` at checkout                               |
+| **Digital products**  | `isDigital` + `digitalAssetUrl` on Product; `lib/utils/digital-products.ts`                                  |
+| **Library**           | `LibraryItem` model — `grantLibraryAccessForOrder()` on paid orders                                          |
 
 ---
 
@@ -556,7 +576,7 @@ Storefront → lib/commerce/* → Service / Repository
 
 Top-level categories: `Electronics & Gadget` · `Personal Care` · `Appliances` · `Kitchen & Dining` · `Food & Grocery` · `Fashion` · `Automobiles & Helmets` · `Health Care`
 
-- **200** published products (+ 1 draft), **3** digital demo products, Lorem Flickr images by category
+- **200** published products (+ 1 draft), **3** digital demo products, category-curated **Unsplash** images (runtime remap for old DB URLs)
 - **8** stores (several verified)
 
 Regenerate and reseed:
@@ -571,4 +591,5 @@ Full wipe:
 ```bash
 yarn db:reset
 # then clear localStorage + cookies — see README
+# db:reset requires DATABASE_URL as a direct postgres:// URL (not Accelerate)
 ```

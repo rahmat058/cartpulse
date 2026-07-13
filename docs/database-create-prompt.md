@@ -4,13 +4,28 @@ description: Guidelines for writing Next.js apps with Prisma Postgres
 alwaysApply: false
 ---
 
+# CartPulse production DB config (current)
+
+CartPulse **does use Prisma Accelerate** in production/dev cloud:
+
+| Env                       | Purpose                                                                    |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `DATABASE_URL`            | Direct `postgres://…` — `prisma.config.ts`, migrate, `db:push`, `db:reset` |
+| `DATABASE_ACCELERATE_URL` | `prisma+postgres://…` — app runtime (`lib/prisma.ts` + `withAccelerate`)   |
+
+Hot reads use `accelerateArgs(..., cacheStrategy)` from `lib/api/accelerate-cache.ts`. See [ARCHITECTURE.MD](../ARCHITECTURE.MD#prisma-accelerate) and root [README.md](../README.md).
+
+The sections below are a **greenfield Prisma Postgres bootstrap** prompt (adapter-only). Prefer the CartPulse pattern above when editing this repo.
+
+---
+
 # Bootstrap Next.js app with Prisma Postgres (Prisma v7)
 
 > **Note**: This guide is updated for **Prisma ORM 7**. Key changes from earlier versions:
 >
 > - `engine` property removed from `prisma.config.ts`
 > - `url` removed from datasource in `schema.prisma` (now only in `prisma.config.ts`)
-> - Use `@prisma/adapter-pg` driver adapter for direct TCP connections
+> - Use `@prisma/adapter-pg` driver adapter for direct TCP connections **or** Accelerate (`accelerateUrl` + `@prisma/extension-accelerate`) — CartPulse uses Accelerate at runtime
 > - `--no-engine` flag is no longer required for `prisma generate`
 > - Requires Node.js 20.19+ and TypeScript 5.4.0+
 
@@ -157,19 +172,19 @@ DATABASE_URL="postgres://..."
 When using `npx prisma init`, the `prisma.config.ts` is **auto-generated** with the correct configuration:
 
 ```typescript
-import "dotenv/config"; // ✅ Auto-included by prisma init
-import { defineConfig, env } from "prisma/config";
+import 'dotenv/config' // ✅ Auto-included by prisma init
+import { defineConfig, env } from 'prisma/config'
 
 export default defineConfig({
-  schema: "prisma/schema.prisma",
+  schema: 'prisma/schema.prisma',
   migrations: {
-    path: "prisma/migrations",
+    path: 'prisma/migrations',
   },
   // ✅ NO engine property - removed in Prisma v7
   datasource: {
-    url: env("DATABASE_URL"),
+    url: env('DATABASE_URL'),
   },
-});
+})
 ```
 
 **Note**: If you need to manually create this file, ensure `import "dotenv/config"` is at the top.
@@ -204,24 +219,24 @@ model User {
 Create `lib/prisma.ts` file:
 
 ```typescript
-import { PrismaClient } from "../app/generated/prisma/client"; // ✅ CRITICAL: Include /client
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from '../app/generated/prisma/client' // ✅ CRITICAL: Include /client
+import { PrismaPg } from '@prisma/adapter-pg'
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
-});
+})
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
     adapter,
-  });
+  })
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
-export default prisma;
+export default prisma
 ```
 
 ## ADD NPM SCRIPTS TO PACKAGE.JSON
@@ -246,42 +261,42 @@ Update your `package.json` to include these scripts:
 Create `scripts/test-database.ts` to verify your setup:
 
 ```typescript
-import "dotenv/config"; // ✅ CRITICAL: Load environment variables
-import prisma from "../lib/prisma";
+import 'dotenv/config' // ✅ CRITICAL: Load environment variables
+import prisma from '../lib/prisma'
 
 async function testDatabase() {
-  console.log("🔍 Testing Prisma Postgres connection...\n");
+  console.log('🔍 Testing Prisma Postgres connection...\n')
 
   try {
     // Test 1: Check connection
-    console.log("✅ Connected to database!");
+    console.log('✅ Connected to database!')
 
     // Test 2: Create a test user
-    console.log("\n📝 Creating a test user...");
+    console.log('\n📝 Creating a test user...')
     const newUser = await prisma.user.create({
       data: {
-        email: "demo@example.com",
-        name: "Demo User",
+        email: 'demo@example.com',
+        name: 'Demo User',
       },
-    });
-    console.log("✅ Created user:", newUser);
+    })
+    console.log('✅ Created user:', newUser)
 
     // Test 3: Fetch all users
-    console.log("\n📋 Fetching all users...");
-    const allUsers = await prisma.user.findMany();
-    console.log(`✅ Found ${allUsers.length} user(s):`);
+    console.log('\n📋 Fetching all users...')
+    const allUsers = await prisma.user.findMany()
+    console.log(`✅ Found ${allUsers.length} user(s):`)
     allUsers.forEach((user) => {
-      console.log(`   - ${user.name} (${user.email})`);
-    });
+      console.log(`   - ${user.name} (${user.email})`)
+    })
 
-    console.log("\n🎉 All tests passed! Your database is working perfectly.\n");
+    console.log('\n🎉 All tests passed! Your database is working perfectly.\n')
   } catch (error) {
-    console.error("❌ Error:", error);
-    process.exit(1);
+    console.error('❌ Error:', error)
+    process.exit(1)
   }
 }
 
-testDatabase();
+testDatabase()
 ```
 
 ## CORRECT API ROUTE IMPLEMENTATION (App Router)
@@ -289,38 +304,32 @@ testDatabase();
 Create `app/api/users/route.ts` with GET and POST handlers:
 
 ```typescript
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../../lib/prisma";
+import { NextRequest, NextResponse } from 'next/server'
+import prisma from '../../../lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
-    const users = await prisma.user.findMany();
-    return NextResponse.json(users);
+    const users = await prisma.user.findMany()
+    return NextResponse.json(users)
   } catch (error) {
-    console.error("Error fetching users:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch users" },
-      { status: 500 },
-    );
+    console.error('Error fetching users:', error)
+    return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json()
     const user = await prisma.user.create({
       data: {
         email: body.email,
         name: body.name,
       },
-    });
-    return NextResponse.json(user, { status: 201 });
+    })
+    return NextResponse.json(user, { status: 201 })
   } catch (error) {
-    console.error("Error creating user:", error);
-    return NextResponse.json(
-      { error: "Failed to create user" },
-      { status: 500 },
-    );
+    console.error('Error creating user:', error)
+    return NextResponse.json({ error: 'Failed to create user' }, { status: 500 })
   }
 }
 ```

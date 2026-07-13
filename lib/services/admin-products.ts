@@ -1,3 +1,4 @@
+import { accelerateArgs, ADMIN_LIST_CACHE, CATALOG_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { deleteCloudinaryImages } from '@/lib/cloudinary'
 import { mapDbProduct } from '@/lib/services/products'
@@ -149,18 +150,23 @@ export async function listAdminProducts(options?: {
           : { name: 'asc' as const }
 
   const [total, rows] = await Promise.all([
-    prisma.product.count({ where }),
-    prisma.product.findMany({
-      where,
-      include: {
-        store: true,
-        category: true,
-        _count: { select: { variants: true } },
-      },
-      orderBy,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    }),
+    prisma.product.count(accelerateArgs({ where }, ADMIN_LIST_CACHE)),
+    prisma.product.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: {
+            store: true,
+            category: true,
+            _count: { select: { variants: true } },
+          },
+          orderBy,
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+        },
+        ADMIN_LIST_CACHE,
+      ),
+    ),
   ])
 
   return {
@@ -198,15 +204,20 @@ export async function listAdminProducts(options?: {
 }
 
 export async function getAdminProduct(id: string): Promise<AdminProductRow | null> {
-  const row = await prisma.product.findFirst({
-    where: { id, ...NOT_DELETED },
-    include: {
-      store: true,
-      category: true,
-      variants: { orderBy: { isDefault: 'desc' } },
-      _count: { select: { variants: true } },
-    },
-  })
+  const row = await prisma.product.findFirst(
+    accelerateArgs(
+      {
+        where: { id, ...NOT_DELETED },
+        include: {
+          store: true,
+          category: true,
+          variants: { orderBy: { isDefault: 'desc' as const } },
+          _count: { select: { variants: true } },
+        },
+      },
+      ADMIN_LIST_CACHE,
+    ),
+  )
 
   if (!row) return null
 

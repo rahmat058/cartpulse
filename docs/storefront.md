@@ -32,7 +32,7 @@ Bengali locale: prefix with `/bn` (e.g. `/bn/products`).
 
 ### Filter flow
 
-URL search params drive **server-side** Prisma queries — shareable and back-button friendly. Catalog search is **debounced** (`useDebouncedValue`, 300ms) before updating the URL / refetching.
+URL search params drive **server-side** Prisma queries — shareable and back-button friendly. Header + catalog search are **debounced** (`useDebouncedValue`, `SEARCH_DEBOUNCE_MS = 600`) before fetching suggestions / updating the URL. Matching uses **token/word-boundary** search (`lib/utils/product-search.ts`) so terms like `mobile` do not hit mid-word substrings in `automobiles`.
 
 ```typescript
 // hooks/use-catalog-filters.ts → CatalogQueryParams
@@ -41,15 +41,17 @@ URL search params drive **server-side** Prisma queries — shareable and back-bu
 // app/api/products/route.ts
 const query = parseCatalogQueryParams(searchParams)
 const products = await getProducts(query) // cursor page — never the full catalog
-return apiJsonPublic(products)            // CDN: s-maxage=60
+return apiJsonPublic(products) // CDN: s-maxage=60
 ```
+
+Storefront product queries also apply Prisma Accelerate `cacheStrategy` via `accelerateArgs(..., CATALOG_CACHE)` in `ProductRepository`.
 
 ### Cursor pagination (Load more)
 
-| Style | Where | Params |
-| ----- | ----- | ------ |
+| Style      | Where                              | Params                                     |
+| ---------- | ---------------------------------- | ------------------------------------------ |
 | **Cursor** | `/products` Load more, suggestions | `cursor`, `pageSize` (default 24, max 100) |
-| **Offset** | Admin / My Orders tables | `page`, `pageSize`, `total` |
+| **Offset** | Admin / My Orders tables           | `page`, `pageSize`, `total`                |
 
 ```http
 GET /api/products?sort=name-asc&pageSize=24
@@ -58,7 +60,7 @@ GET /api/products?sort=name-asc&pageSize=24&cursor=<lastProductId>
 
 Response meta includes `nextCursor`, `hasMore`, `totalProducts`. The grid appends pages via `appendCatalogFromQuery` — no client-side slicing of a full dump.
 
-Helpers: `lib/api/pagination.ts`, `hooks/use-debounced-value.ts`, `ProductRepository.findPublishedAfterCursor`.
+Helpers: `lib/api/pagination.ts`, `hooks/use-debounced-value.ts`, `lib/utils/product-search.ts`, `ProductRepository.findPublishedAfterCursor`.
 
 ### Product card — quick add
 

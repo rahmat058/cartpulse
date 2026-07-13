@@ -1,4 +1,5 @@
 import type { Product } from '@/types/cart'
+import { accelerateArgs, ORDER_CACHE } from '@/lib/api/accelerate-cache'
 import { getProducts, getFeaturedProducts } from '@/lib/services/products'
 import { listStores } from '@/lib/services/stores'
 import prisma from '@/lib/prisma'
@@ -181,21 +182,26 @@ export class HomePageComposer {
 
 /** Optional helper for client-only recently-ordered hydration (not used on SSR home). */
 export async function loadRecentlyOrderedProducts(userId: string, take = 10): Promise<Product[]> {
-  const items = await prisma.orderItem.findMany({
-    where: { order: { userId, status: { not: 'CANCELLED' } } },
-    include: {
-      product: {
+  const items = await prisma.orderItem.findMany(
+    accelerateArgs(
+      {
+        where: { order: { userId, status: { not: 'CANCELLED' as const } } },
         include: {
-          store: true,
-          category: true,
-          variants: { orderBy: { isDefault: 'desc' as const } },
-          defaultVariant: true,
+          product: {
+            include: {
+              store: true,
+              category: true,
+              variants: { orderBy: { isDefault: 'desc' as const } },
+              defaultVariant: true,
+            },
+          },
         },
+        orderBy: { order: { createdAt: 'desc' as const } },
+        take: 24,
       },
-    },
-    orderBy: { order: { createdAt: 'desc' } },
-    take: 24,
-  })
+      ORDER_CACHE,
+    ),
+  )
 
   const seen = new Set<string>()
   const products: Product[] = []

@@ -26,6 +26,8 @@ Modules: `orders.ts`, `inventory.ts`, `coupons.ts`, `StripeCheckoutService.ts`
 
 Library listing/download: `lib/services/library.ts` — see [user-services.md](./user-services.md).
 
+**Accelerate:** order list/detail/KPI/analytics reads use `ORDER_CACHE` (`ttl: 30`). Writes (`createOrderFromCart`, `updateOrderStatus`, `markOrderPaid`) are never cached.
+
 ### Code demo — checkout API (validated body)
 
 ```typescript

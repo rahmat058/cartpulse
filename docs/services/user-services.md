@@ -4,6 +4,8 @@ Modules: `wishlist.ts`, `reviews.ts`, `notifications.ts`, `library.ts`
 
 Used by the customer dashboard and storefront product pages.
 
+**Accelerate:** library / wishlist / review **reads** use short `USER_DATA_CACHE` / `REVIEW_CACHE`. Mutations and notification inbox queries are not cached.
+
 ---
 
 ## `library.ts` — digital product library

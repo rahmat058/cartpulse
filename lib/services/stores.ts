@@ -1,4 +1,4 @@
-import { accelerateArgs, STORE_CACHE } from '@/lib/api/accelerate-cache'
+import { accelerateArgs, CATALOG_CACHE, REVIEW_CACHE, STORE_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { NOT_DELETED } from '@/lib/services/soft-delete'
 import type { StoreInfo } from '@/types/cart'
@@ -47,17 +47,25 @@ export function mapStore(row: Omit<StoreRow, 'createdAt'> & { createdAt?: Date }
 
 async function buildStoreProfile(row: StoreRow): Promise<StoreProfile> {
   const [productCount, soldCount, reviewAgg] = await Promise.all([
-    prisma.product.count({
-      where: { storeId: row.id, published: true, ...NOT_DELETED },
-    }),
-    prisma.orderItem.count({
-      where: { product: { storeId: row.id } },
-    }),
-    prisma.review.aggregate({
-      where: { product: { storeId: row.id } },
-      _count: true,
-      _avg: { rating: true },
-    }),
+    prisma.product.count(
+      accelerateArgs(
+        { where: { storeId: row.id, published: true, ...NOT_DELETED } },
+        CATALOG_CACHE,
+      ),
+    ),
+    prisma.orderItem.count(
+      accelerateArgs({ where: { product: { storeId: row.id } } }, CATALOG_CACHE),
+    ),
+    prisma.review.aggregate(
+      accelerateArgs(
+        {
+          where: { product: { storeId: row.id } },
+          _count: true,
+          _avg: { rating: true },
+        },
+        REVIEW_CACHE,
+      ),
+    ),
   ])
 
   const reviewCount = reviewAgg._count
