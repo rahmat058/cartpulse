@@ -123,9 +123,7 @@ export function StorePageClient({ store }: { store: StoreProfile }) {
               </Button>
             </div>
 
-            {catalogStatus === 'loading' && (
-              <CatalogBrowseLayoutSkeleton showCategories={false} />
-            )}
+            {catalogStatus === 'loading' && <CatalogBrowseLayoutSkeleton showCategories={false} />}
 
             {catalogStatus === 'failed' && catalogError && (
               <CatalogError message={catalogError} onRetry={() => refetchCatalog()} />
@@ -183,7 +181,6 @@ export function StorePageClient({ store }: { store: StoreProfile }) {
           </div>
         </div>
       ) : null}
-
     </>
   )
 }
