@@ -13,7 +13,7 @@
 
 export const ADMIN_DEFAULT_PAGE_SIZE = 10
 export const ADMIN_MAX_PAGE_SIZE = 100
-export const SEARCH_DEBOUNCE_MS = 300
+export const SEARCH_DEBOUNCE_MS = 800
 
 export function clampPage(value: number | undefined, fallback = 1): number {
   if (!value || !Number.isFinite(value) || value < 1) return fallback
