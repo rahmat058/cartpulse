@@ -41,6 +41,9 @@ async function dropAndCreateDatabase() {
   if (!databaseUrl) {
     throw new Error('DATABASE_URL is not set')
   }
+  if (databaseUrl.startsWith('prisma://') || databaseUrl.startsWith('prisma+postgres://')) {
+    throw new Error('db:reset requires DATABASE_URL as a postgres:// TCP URL (not Accelerate)')
+  }
 
   const { database, adminUrl } = parseDatabaseUrl(databaseUrl)
   if (database === 'postgres') {

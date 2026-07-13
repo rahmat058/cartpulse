@@ -115,12 +115,13 @@ cp .env.example .env
 
 Edit `.env` and set at minimum:
 
-| Variable              | Required | Notes                                 |
-| --------------------- | -------- | ------------------------------------- |
-| `DATABASE_URL`        | Yes      | PostgreSQL connection string          |
-| `AUTH_SECRET`         | Yes      | `openssl rand -base64 32`             |
-| `AUTH_URL`            | Yes      | `http://localhost:3000` for local dev |
-| `NEXT_PUBLIC_APP_URL` | Yes      | Same as `AUTH_URL` locally            |
+| Variable                  | Required | Notes                                         |
+| ------------------------- | -------- | --------------------------------------------- |
+| `DATABASE_URL`            | Yes      | Direct `postgres://…` for migrate / db push   |
+| `DATABASE_ACCELERATE_URL` | Yes      | Prisma Accelerate URL (`prisma+postgres://…`) |
+| `AUTH_SECRET`             | Yes      | `openssl rand -base64 32`                     |
+| `AUTH_URL`                | Yes      | `http://localhost:3000` for local dev         |
+| `NEXT_PUBLIC_APP_URL`     | Yes      | Same as `AUTH_URL` locally                    |
 
 Optional (enable features when set):
 

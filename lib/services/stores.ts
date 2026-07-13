@@ -1,3 +1,4 @@
+import { accelerateArgs, STORE_CACHE } from '@/lib/api/accelerate-cache'
 import prisma from '@/lib/prisma'
 import { NOT_DELETED } from '@/lib/services/soft-delete'
 import type { StoreInfo } from '@/types/cart'
@@ -73,29 +74,39 @@ async function buildStoreProfile(row: StoreRow): Promise<StoreProfile> {
 }
 
 export async function listStoreProfiles(): Promise<StoreProfile[]> {
-  const rows = await prisma.store.findMany({
-    where: { active: true, ...NOT_DELETED },
-    orderBy: [{ verified: 'desc' }, { name: 'asc' }],
-  })
+  const rows = await prisma.store.findMany(
+    accelerateArgs(
+      {
+        where: { active: true, ...NOT_DELETED },
+        orderBy: [{ verified: 'desc' as const }, { name: 'asc' as const }],
+      },
+      STORE_CACHE,
+    ),
+  )
 
   return Promise.all(rows.map((row) => buildStoreProfile(row)))
 }
 
 export async function listStores(activeOnly = true, orderBy: 'name' | 'newest' = 'name') {
-  const rows = await prisma.store.findMany({
-    where: {
-      ...NOT_DELETED,
-      ...(activeOnly ? { active: true } : {}),
-    },
-    orderBy: orderBy === 'newest' ? { createdAt: 'desc' } : { name: 'asc' },
-    include: {
-      _count: {
-        select: {
-          products: { where: { published: true, ...NOT_DELETED } },
+  const rows = await prisma.store.findMany(
+    accelerateArgs(
+      {
+        where: {
+          ...NOT_DELETED,
+          ...(activeOnly ? { active: true } : {}),
+        },
+        orderBy: orderBy === 'newest' ? { createdAt: 'desc' as const } : { name: 'asc' as const },
+        include: {
+          _count: {
+            select: {
+              products: { where: { published: true, ...NOT_DELETED } },
+            },
+          },
         },
       },
-    },
-  })
+      STORE_CACHE,
+    ),
+  )
 
   return rows.map((row) => ({
     ...mapStore(row),
@@ -166,14 +177,21 @@ export async function getStoreById(storeId: string) {
 }
 
 export async function getStoreBySlug(slug: string) {
-  const row = await prisma.store.findFirst({ where: { slug, ...NOT_DELETED } })
+  const row = await prisma.store.findFirst(
+    accelerateArgs({ where: { slug, ...NOT_DELETED } }, STORE_CACHE),
+  )
   return row ? mapStore(row) : null
 }
 
 export async function getStoreProfile(slug: string): Promise<StoreProfile | null> {
-  const row = await prisma.store.findFirst({
-    where: { slug, active: true, ...NOT_DELETED },
-  })
+  const row = await prisma.store.findFirst(
+    accelerateArgs(
+      {
+        where: { slug, active: true, ...NOT_DELETED },
+      },
+      STORE_CACHE,
+    ),
+  )
 
   if (!row) return null
 
@@ -192,10 +210,15 @@ export async function requireStore(storeId: string) {
 }
 
 export async function getDefaultPricingSettings() {
-  const store = await prisma.store.findFirst({
-    where: { active: true, ...NOT_DELETED },
-    orderBy: { createdAt: 'asc' },
-  })
+  const store = await prisma.store.findFirst(
+    accelerateArgs(
+      {
+        where: { active: true, ...NOT_DELETED },
+        orderBy: { createdAt: 'asc' as const },
+      },
+      STORE_CACHE,
+    ),
+  )
 
   return {
     taxRate: store?.taxRate ?? 0.08,

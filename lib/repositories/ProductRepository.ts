@@ -1,4 +1,5 @@
 import type { Prisma } from '@/app/generated/prisma/client'
+import { accelerateArgs, CATALOG_CACHE, STORE_CACHE } from '@/lib/api/accelerate-cache'
 import { BaseRepository } from '@/lib/core/BaseRepository'
 import { SortStrategyRegistry } from '@/lib/commerce/SortStrategy'
 import { normalizeProductImageUrls, primaryProductImageUrl } from '@/lib/utils/product-images'
@@ -116,11 +117,16 @@ export class ProductRepository extends BaseRepository {
   }
 
   async findPublishedMany(where: Prisma.ProductWhereInput, sortBy: CatalogSortBy = 'name-asc'): Promise<DbProduct[]> {
-    return this.db.product.findMany({
-      where,
-      include: productInclude,
-      orderBy: this.getOrderBy(sortBy),
-    })
+    return this.db.product.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: productInclude,
+          orderBy: this.getOrderBy(sortBy),
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   async findPublishedPage(
@@ -128,13 +134,18 @@ export class ProductRepository extends BaseRepository {
     sortBy: CatalogSortBy = 'name-asc',
     options: { skip: number; take: number },
   ): Promise<DbProduct[]> {
-    return this.db.product.findMany({
-      where,
-      include: productInclude,
-      orderBy: this.getOrderBy(sortBy),
-      skip: options.skip,
-      take: options.take,
-    })
+    return this.db.product.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: productInclude,
+          orderBy: this.getOrderBy(sortBy),
+          skip: options.skip,
+          take: options.take,
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   /**
@@ -147,22 +158,27 @@ export class ProductRepository extends BaseRepository {
     options: { cursor?: string; take: number },
   ): Promise<DbProduct[]> {
     const take = Math.max(1, options.take)
-    return this.db.product.findMany({
-      where,
-      include: productInclude,
-      orderBy: this.getCursorOrderBy(sortBy),
-      ...(options.cursor
-        ? {
-            cursor: { id: options.cursor },
-            skip: 1,
-          }
-        : {}),
-      take: take + 1,
-    })
+    return this.db.product.findMany(
+      accelerateArgs(
+        {
+          where,
+          include: productInclude,
+          orderBy: this.getCursorOrderBy(sortBy),
+          ...(options.cursor
+            ? {
+                cursor: { id: options.cursor },
+                skip: 1,
+              }
+            : {}),
+          take: take + 1,
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   async countPublished(where: Prisma.ProductWhereInput): Promise<number> {
-    return this.db.product.count({ where })
+    return this.db.product.count(accelerateArgs({ where }, CATALOG_CACHE))
   }
 
   /** List DTO — omits download URL and trims long descriptions for catalog payloads. */
@@ -177,53 +193,73 @@ export class ProductRepository extends BaseRepository {
   }
 
   async findBySlug(slug: string, storeSlug?: string): Promise<DbProduct | null> {
-    return this.db.product.findFirst({
-      where: {
-        slug,
-        published: true,
-        ...this.activeOnly,
-        store: { ...this.activeOnly, ...(storeSlug ? { slug: storeSlug } : {}) },
-        category: this.activeOnly,
-      },
-      include: productInclude,
-    })
+    return this.db.product.findFirst(
+      accelerateArgs(
+        {
+          where: {
+            slug,
+            published: true,
+            ...this.activeOnly,
+            store: { ...this.activeOnly, ...(storeSlug ? { slug: storeSlug } : {}) },
+            category: this.activeOnly,
+          },
+          include: productInclude,
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   async findByIds(ids: string[]): Promise<DbProduct[]> {
     const uniqueIds = [...new Set(ids.filter(Boolean))]
     if (uniqueIds.length === 0) return []
 
-    return this.db.product.findMany({
-      where: {
-        id: { in: uniqueIds },
-        published: true,
-        ...this.activeOnly,
-        store: this.activeOnly,
-        category: this.activeOnly,
-      },
-      include: productInclude,
-    })
+    return this.db.product.findMany(
+      accelerateArgs(
+        {
+          where: {
+            id: { in: uniqueIds },
+            published: true,
+            ...this.activeOnly,
+            store: this.activeOnly,
+            category: this.activeOnly,
+          },
+          include: productInclude,
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   async findFeatured(limit = 6, storeSlug?: string): Promise<DbProduct[]> {
-    return this.db.product.findMany({
-      where: {
-        published: true,
-        ...this.activeOnly,
-        store: { ...this.activeOnly, ...(storeSlug ? { slug: storeSlug } : {}) },
-        category: this.activeOnly,
-      },
-      include: productInclude,
-      orderBy: { rating: 'desc' },
-      take: limit,
-    })
+    return this.db.product.findMany(
+      accelerateArgs(
+        {
+          where: {
+            published: true,
+            ...this.activeOnly,
+            store: { ...this.activeOnly, ...(storeSlug ? { slug: storeSlug } : {}) },
+            category: this.activeOnly,
+          },
+          include: productInclude,
+          orderBy: { rating: 'desc' as const },
+          take: limit,
+        },
+        CATALOG_CACHE,
+      ),
+    )
   }
 
   async getDefaultStore(): Promise<StoreInfo> {
-    const store = await this.db.store.findFirst({
-      where: this.activeOnly,
-      orderBy: { createdAt: 'asc' },
-    })
+    const store = await this.db.store.findFirst(
+      accelerateArgs(
+        {
+          where: this.activeOnly,
+          orderBy: { createdAt: 'asc' as const },
+        },
+        STORE_CACHE,
+      ),
+    )
     if (!store) {
       throw new Error('No store found. Run npm run db:seed first.')
     }

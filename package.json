@@ -30,6 +30,7 @@
     "@lottiefiles/dotlottie-react": "^0.19.9",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
+    "@prisma/extension-accelerate": "^3.0.1",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.10",
     "@react-pdf/renderer": "^4.5.1",

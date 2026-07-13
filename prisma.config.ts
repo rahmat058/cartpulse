@@ -7,6 +7,7 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   datasource: {
+    // Direct TCP URL for migrations / db push (not Accelerate).
     url: env('DATABASE_URL'),
   },
 })

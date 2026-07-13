@@ -7,19 +7,25 @@ import {
   rollUpCategoryProductCounts,
   type CategoryTreeShape,
 } from '@/lib/utils/category-tree'
+import { accelerateArgs, CATEGORY_CACHE } from '@/lib/api/accelerate-cache'
 
 export type CategoryTreeNode = CategoryTreeShape
 
 async function loadCategoryRows() {
-  return prisma.category.findMany({
-    where: NOT_DELETED,
-    include: {
-      _count: {
-        select: { products: { where: NOT_DELETED } },
+  return prisma.category.findMany(
+    accelerateArgs(
+      {
+        where: NOT_DELETED,
+        include: {
+          _count: {
+            select: { products: { where: NOT_DELETED } },
+          },
+        },
+        orderBy: [{ sortOrder: 'asc' as const }, { name: 'asc' as const }],
       },
-    },
-    orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
-  })
+      CATEGORY_CACHE,
+    ),
+  )
 }
 
 function mapCategoryRow(row: Awaited<ReturnType<typeof loadCategoryRows>>[number]): CategoryTreeShape {
@@ -56,9 +62,14 @@ export async function getCategorySlugsIncludingDescendants(slug: string): Promis
 /** @deprecated Prefer listCategoryTree */
 export async function listCategories(options?: { withChildren?: boolean }) {
   if (options?.withChildren) return listCategoryTree()
-  return prisma.category.findMany({
-    where: NOT_DELETED,
-    include: { _count: { select: { products: { where: NOT_DELETED } } } },
-    orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
-  })
+  return prisma.category.findMany(
+    accelerateArgs(
+      {
+        where: NOT_DELETED,
+        include: { _count: { select: { products: { where: NOT_DELETED } } } },
+        orderBy: [{ sortOrder: 'asc' as const }, { name: 'asc' as const }],
+      },
+      CATEGORY_CACHE,
+    ),
+  )
 }
