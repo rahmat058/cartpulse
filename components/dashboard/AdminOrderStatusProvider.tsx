@@ -2,10 +2,10 @@
 
 import { toast } from 'sonner'
 import type { OrderStatus } from '@/app/generated/prisma/client'
+import { AdminOrderStatusActions } from '@/components/dashboard/AdminOrderStatusActions'
 import { OrderDetailHeader } from '@/components/dashboard/OrderDetailHeader'
 import { OrderStatusStepper } from '@/components/dashboard/OrderStatusStepper'
-import { AdminOrderStatusActions } from '@/components/dashboard/AdminOrderStatusActions'
-import { createContext, useCallback, useContext, useState, useTransition, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react'
 
 type OrderStatusContextValue = {
   status: OrderStatus
@@ -33,31 +33,44 @@ export function AdminOrderStatusProvider({
   children: ReactNode
 }) {
   const [status, setStatus] = useState(initialStatus)
-  const [pending, startTransition] = useTransition()
+  const [pending, setPending] = useState(false)
+  const statusRef = useRef(status)
+  statusRef.current = status
+  const inFlightRef = useRef(false)
 
   const updateStatus = useCallback(
     (next: OrderStatus) => {
-      setStatus((previous) => {
-        startTransition(async () => {
-          try {
-            const response = await fetch(`/api/orders/${orderId}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ status: next }),
-            })
-            if (!response.ok) {
-              setStatus(previous)
-              toast.error('Failed to update status')
-              return
-            }
-            toast.success(`Order marked as ${next.toLowerCase()}`)
-          } catch {
+      if (inFlightRef.current || next === statusRef.current) return
+
+      const previous = statusRef.current
+      inFlightRef.current = true
+      statusRef.current = next
+      setStatus(next)
+      setPending(true)
+
+      void (async () => {
+        try {
+          const response = await fetch(`/api/orders/${orderId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: next }),
+          })
+          if (!response.ok) {
+            statusRef.current = previous
             setStatus(previous)
             toast.error('Failed to update status')
+            return
           }
-        })
-        return next
-      })
+          toast.success(`Order marked as ${next.toLowerCase()}`)
+        } catch {
+          statusRef.current = previous
+          setStatus(previous)
+          toast.error('Failed to update status')
+        } finally {
+          inFlightRef.current = false
+          setPending(false)
+        }
+      })()
     },
     [orderId],
   )

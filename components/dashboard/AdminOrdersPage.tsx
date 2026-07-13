@@ -62,29 +62,26 @@ export function AdminOrdersPage() {
       .finally(() => setLoading(false))
   }, [filter, debouncedSearch, dateFrom, dateTo, page, pageSize])
 
-  const updateStatus = useCallback(async (id: string, nextStatus: OrderStatus) => {
-    let previousStatus: OrderStatus | null = null
-    setOrders((current) =>
-      current.map((o) => {
-        if (o.id !== id) return o
-        previousStatus = o.status
-        return { ...o, status: nextStatus }
-      }),
-    )
-    const response = await fetch(`/api/orders/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: nextStatus }),
-    })
-    if (!response.ok) {
-      if (previousStatus) {
-        setOrders((current) => current.map((o) => (o.id === id ? { ...o, status: previousStatus! } : o)))
+  const updateStatus = useCallback(
+    async (id: string, nextStatus: OrderStatus) => {
+      const previousStatus = orders.find((o) => o.id === id)?.status
+      setOrders((current) => current.map((o) => (o.id === id ? { ...o, status: nextStatus } : o)))
+      const response = await fetch(`/api/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nextStatus }),
+      })
+      if (!response.ok) {
+        if (previousStatus) {
+          setOrders((current) => current.map((o) => (o.id === id ? { ...o, status: previousStatus } : o)))
+        }
+        toast.error('Failed to update status')
+        return
       }
-      toast.error('Failed to update status')
-      return
-    }
-    toast.success('Order updated')
-  }, [])
+      toast.success('Order updated')
+    },
+    [orders],
+  )
 
   const columns = useMemo<ColumnDef<OrderRow>[]>(
     () => [
@@ -207,7 +204,7 @@ export function AdminOrdersPage() {
                 setDateFrom(from)
                 setDateTo(to)
               }}
-              className="w-[15rem]"
+              className="w-60"
             />
           </div>
         }
