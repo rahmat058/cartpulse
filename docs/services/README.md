@@ -2,6 +2,8 @@
 
 All business logic lives in `lib/services/`. API routes and server pages should call services — not Prisma directly.
 
+**Pagination helpers** (not a service): `lib/api/pagination.ts` — when to use **cursor** (storefront Load more) vs **offset** (admin / account tables). Debounce: `hooks/use-debounced-value.ts`.
+
 ---
 
 ## Architecture
@@ -32,9 +34,9 @@ API route / Server page
 | `products.ts`              | `getProducts`, `getProductBySlug`, `getProductsByIds`               | [catalog.md](./catalog.md)               |
 | `CatalogService.ts`        | Class behind `products.ts` facade                                   | [catalog.md](./catalog.md)               |
 | `categories.ts`            | `listCategoryTree`, `getCategorySlugsIncludingDescendants`          | [catalog.md](./catalog.md)               |
-| `stores.ts`                | `listStores`, `getStoreProfile`, `getDefaultPricingSettings`        | [catalog.md](./catalog.md)               |
-| `products-client.ts`       | `fetchProducts` (browser)                                           | [catalog.md](./catalog.md)               |
-| `orders.ts`                | `createOrderFromCart`, `markOrderPaid`, `getAnalytics`              | [commerce.md](./commerce.md)             |
+| `stores.ts`                | `listStores`, `listAdminStoresPage`, `getStoreProfile`              | [catalog.md](./catalog.md)               |
+| `products-client.ts`       | `fetchProducts` (browser; passes `cursor` / `pageSize`)             | [catalog.md](./catalog.md)               |
+| `orders.ts`                | `createOrderFromCart`, `listAllOrdersPage`, `listUserOrdersPage`    | [commerce.md](./commerce.md)             |
 | `inventory.ts`             | `assertSufficientStockForOrderLines`, `decrementStockForOrderLines` | [commerce.md](./commerce.md)             |
 | `coupons.ts`               | `getActiveCouponByCode`, `recordCouponUsage`                        | [commerce.md](./commerce.md)             |
 | `StripeCheckoutService.ts` | `createCheckoutSession`, `verifySessionAndFulfill`                  | [commerce.md](./commerce.md)             |

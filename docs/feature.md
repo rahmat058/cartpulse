@@ -18,11 +18,11 @@ Living checklist for CartPulse. Legend:
 | ------------------- | ------ | ------------------------------------------------- |
 | Foundation & theme  | ✅     | Node 24.11.0, dark/light mode                     |
 | Auth                | ✅     | Credentials + OAuth linking + avatars             |
-| Storefront          | ✅     | Catalog, cart, checkout, variants, digital badges |
-| User dashboard      | ✅     | Orders, library, profile avatars, notifications   |
-| Admin panel         | ✅     | CRUD, export, permissions                         |
+| Storefront          | ✅     | Catalog, cursor Load more, cart, checkout, ISR    |
+| User dashboard      | ✅     | Orders (offset API), library, profile, notifs     |
+| Admin panel         | ✅     | CRUD, server offset tables, export, permissions   |
 | Super admin         | ✅     | Users, analytics, activity, settings              |
-| Services layer      | ✅     | 23 modules documented in `docs/services/`         |
+| Services layer      | ✅     | 23 modules + pagination helpers documented        |
 | Inventory           | ✅     | Stock decrement on COD + Stripe pay               |
 | i18n (en/bn)        | 🔶     | Routing works; translation coverage varies        |
 | Email (Resend)      | 🔶     | Requires `RESEND_API_KEY`                         |
@@ -82,7 +82,7 @@ Living checklist for CartPulse. Legend:
 | 2.2  | Strategy-driven home shelves                         | ✅     |
 | 2.3  | `/products` catalog grid + list view                 | ✅     |
 | 2.4  | `/products/[slug]` PDP (SSR)                         | ✅     |
-| 2.5  | Search with debounce + server query                  | ✅     |
+| 2.5  | Search with debounce + server query                  | ✅     | `useDebouncedValue` (300ms)                |
 | 2.6  | Sidebar filters (category, price, rating, stock)     | ✅     |
 | 2.7  | URL-synced `searchParams`                            | ✅     |
 | 2.8  | Sort strategies (price, rating, newest, name)        | ✅     |
@@ -103,6 +103,8 @@ Living checklist for CartPulse. Legend:
 | 2.23 | Info pages (`/help`, `/about`, `/contact`, `/terms`) | ✅     |
 | 2.24 | Bilingual storefront copy (en/bn)                    | 🔶     | Routing + key pages; coverage varies       |
 | 2.25 | Digital product badge on catalog + PDP               | ✅     | `Product.isDigital`; instant delivery copy |
+| 2.26 | Cursor pagination (Load more)                        | ✅     | `cursor` / `nextCursor`; no full-catalog dump |
+| 2.27 | Homepage ISR + limited shelf `pageSize`              | ✅     | `revalidate = 60`; shelves request 8–20    |
 
 ---
 
@@ -143,7 +145,7 @@ Living checklist for CartPulse. Legend:
 | ---- | ----------------------------------------- | ------ |
 | 4.1  | `/dashboard` overview                     | ✅     |
 | 4.2  | Sidebar navigation                        | ✅     |
-| 4.3  | Orders table (search, filter, pagination) | ✅     |
+| 4.3  | Orders table (search, filter, pagination) | ✅     | Server offset via `GET /api/orders`; debounced search |
 | 4.4  | Orders CSV / XLSX export                  | ✅     |
 | 4.5  | Order detail + line items                 | ✅     |
 | 4.6  | Order PDF download                        | ✅     |
@@ -167,7 +169,7 @@ Living checklist for CartPulse. Legend:
 | ---- | --------------------------------------- | ------ |
 | 5.1  | `/admin` KPI overview                   | ✅     |
 | 5.2  | Admin sidebar navigation                | ✅     |
-| 5.3  | Products table + search + pagination    | ✅     |
+| 5.3  | Products table + search + pagination    | ✅     | Server offset + debounced search            |
 | 5.4  | Products CSV / XLSX export              | ✅     |
 | 5.5  | Create / edit product form              | ✅     |
 | 5.6  | Variant management (COLOR + SIZE)       | ✅     |
@@ -216,9 +218,9 @@ Living checklist for CartPulse. Legend:
 | 7.1  | Prisma schema (all models)          | ✅     |
 | 7.2  | `VariantType` enum (COLOR, SIZE)    | ✅     |
 | 7.3  | Soft deletes (`deletedAt`)          | ✅     |
-| 7.4  | Public product API                  | ✅     |
+| 7.4  | Public product API                  | ✅     | Cursor pagination + CDN `s-maxage=60`                     |
 | 7.5  | Checkout API                        | ✅     |
-| 7.6  | Admin CRUD APIs                     | ✅     |
+| 7.6  | Admin CRUD APIs                     | ✅     | Offset pagination on list routes                          |
 | 7.7  | Wishlist / reviews APIs             | ✅     |
 | 7.8  | Auth APIs (register, verify, reset) | ✅     |
 | 7.9  | User profile + avatar APIs          | ✅     | `PATCH /api/user/profile`, `POST/DELETE /api/user/avatar` |
@@ -229,6 +231,8 @@ Living checklist for CartPulse. Legend:
 | 7.14 | `Notification` model + migration    | ✅     | `yarn db:push` required                                   |
 | 7.15 | `Product.isDigital` + `LibraryItem` | ✅     | Digital fields + unique `userId_productId`                |
 | 7.16 | `GET /api/library/[productId]`      | ✅     | Ownership check → redirect to asset URL                   |
+| 7.17 | Shared pagination helpers           | ✅     | `lib/api/pagination.ts` — cursor vs offset                |
+| 7.18 | Public catalog CDN cache headers    | ✅     | `apiJsonPublic`; proxy skips auth on public GETs          |
 
 ---
 
@@ -284,6 +288,7 @@ All services documented with code demos:
 | Stripe webhook as primary fulfillment | Low      | Success page works without webhook         |
 | Hard delete / data retention policy   | Low      | Soft delete only by design                 |
 | Automated E2E tests                   | Medium   | Manual testing documented in README        |
+| Co-locate Vercel + Postgres region    | Medium   | Reduces Asia→US hop TTFB on cold cache     |
 | `activity-log.ts` strict typing fixes | Low      | Pre-existing `typecheck` warnings          |
 
 ---
@@ -293,7 +298,7 @@ All services documented with code demos:
 After `yarn db:push && yarn db:seed && yarn dev`:
 
 - [ ] Homepage loads with product shelves
-- [ ] `/products` filters update URL and results
+- [ ] `/products` filters update URL; Load more uses `nextCursor`
 - [ ] PDP shows color swatches or size buttons
 - [ ] Add to cart → drawer shows correct count
 - [ ] Sign in as `customer@demo.com` → checkout works (COD for physical items)
@@ -302,8 +307,9 @@ After `yarn db:push && yarn db:seed && yarn dev`:
 - [ ] Admin marks order **Shipped** → customer sees notification at `/dashboard/notifications`
 - [ ] `/dashboard/profile` — upload avatar (credentials) or see OAuth photo
 - [ ] `/dashboard/settings` — shows sign-in method badge
-- [ ] `/dashboard/orders` shows table + export
+- [ ] `/dashboard/orders` paginates via API (debounced search) + export
 - [ ] Sign in as `admin@platform.com` → `/admin/products` CRUD **and** `/dashboard/orders` personal view
+- [ ] Admin tables (products/orders/users) change page without loading full lists
 - [ ] Edit product with variants → stock total syncs
 - [ ] Sign in as `superadmin@platform.com` → `/admin/users`, `/admin/activity`
 - [ ] Buy variant → stock decrements on order

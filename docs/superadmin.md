@@ -47,14 +47,19 @@ export function canAccessAdminPath(role, pathname) {
 
 ## Users management
 
-### List users
+### List users (offset pagination)
 
 ```typescript
 // app/api/admin/users/route.ts
 import { listUsers } from '@/lib/services/orders' // note: lives in orders.ts
+import { parsePageSearchParams } from '@/lib/api/pagination'
 
-const users = await listUsers({ search, role, page })
+const { page, pageSize, search } = parsePageSearchParams(searchParams)
+const users = await listUsers({ search, role, page, pageSize })
+// { data, total, page, pageSize }
 ```
+
+Admin UI debounces search (300ms) before refetch — same pattern as orders/stores/coupons.
 
 ### Update role & permissions
 

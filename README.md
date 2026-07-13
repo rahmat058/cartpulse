@@ -75,11 +75,14 @@ For **service docs, role guides, and feature checklist** — see **[docs/](./doc
 
 ## Features
 
-- **Storefront** — catalog search/filters, variants, flash deals, store directory, cart drawer, checkout
+- **Storefront** — catalog search/filters (debounced), variants, flash deals, store directory, cart drawer, checkout
+- **Catalog pagination** — cursor-based **Load more** (`cursor` / `nextCursor`); never dumps the full catalog
+- **Admin / account tables** — server-side offset pagination (`page` / `pageSize`) with debounced search
 - **Auth** — credentials + Google/GitHub OAuth, email verification, password reset, role-based access
 - **Customer dashboard** — orders, wishlist, reviews, addresses, profile, notifications, digital library
 - **Admin panel** — products, stores, categories, coupons, orders, analytics, activity log, export
 - **Commerce** — server-side pricing, inventory decrement, COD + Stripe, promo codes, order emails
+- **Performance** — homepage ISR (`revalidate = 60`), CDN cache headers on public catalog GETs
 - **i18n** — English + Bengali routing (`/bn/*`)
 
 ---
@@ -264,5 +267,7 @@ Object.keys(localStorage)
 | Notifications inbox empty after ship     | Run `yarn db:push` (adds `notifications` table); change order status again — old updates are not backfilled        |
 | Library empty after buying digital item  | Order must reach `PAID`; run `yarn db:push` (digital fields + `library_items`); re-seed for demo library items     |
 | Admin cannot find personal dashboard     | Go to `/dashboard` or click **My Account** in admin header / storefront header (not auto-redirected on login)      |
+| Catalog / Load more feels empty or stuck | Confirm API returns `meta.nextCursor` / `hasMore`; filters reset the cursor (new first page)                       |
+| Slow Vercel TTFB on catalog              | Public catalog GETs should send `Cache-Control` with `s-maxage`; co-locate Vercel region + Postgres near users     |
 
 Stripe test cards and webhook setup are documented in **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** under **Storefront → Checkout**.

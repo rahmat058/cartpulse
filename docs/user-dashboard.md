@@ -164,24 +164,26 @@ OAuth-only users can still set a password on the profile page — this links cre
 
 ## Orders table
 
-Upgraded to admin-style data table with search, status filter, pagination, and CSV/XLSX export.
+Admin-style data table with **server-side offset pagination**, debounced search, status filter, and CSV/XLSX export of the **current page**.
 
 ```typescript
 // components/dashboard/UserOrdersTable.tsx
-import { AdminDataTable } from '@/components/admin/AdminDataTable'
-import { TableExportMenu } from '@/components/admin/TableExportMenu'
-import { mapUserOrderRowsForExport } from '@/lib/export/admin-table-rows'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+// GET /api/orders?page=1&pageSize=10&search=...&status=PAID
 ```
 
-### Server page load
+### Client fetch (no SSR dump)
 
 ```typescript
 // app/[locale]/(user)/dashboard/orders/page.tsx
-import { listUserOrders } from '@/lib/services/orders'
+import { UserOrdersTable } from '@/components/dashboard/UserOrdersTable'
 
-const orders = await listUserOrders(user.id)
-return <UserOrdersTable orders={orders} />
+export default function DashboardOrdersPage() {
+  return <UserOrdersTable /> // self-fetches paginated /api/orders
+}
 ```
+
+Service: `listUserOrdersPage(userId, { page, pageSize, search, status })` in `lib/services/orders.ts`.
 
 ---
 

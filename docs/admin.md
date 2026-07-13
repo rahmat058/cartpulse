@@ -83,15 +83,21 @@ permDelete: false,  // delete disabled by default
 
 ## Products
 
-### List + export
+### List + export (offset pagination)
+
+Admin product table loads **one server page** at a time. Search is debounced (300ms) before refetch.
 
 ```typescript
 // components/dashboard/AdminProductsPage.tsx
-import { AdminDataTable } from '@/components/admin/AdminDataTable'
-import { TableExportMenu } from '@/components/admin/TableExportMenu'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 
-const products = await listAdminProducts({ search, page, pageSize })
+const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
+// GET /api/admin/products?page=1&pageSize=10&search=...
+const { data, total } = await listAdminProducts({ search: debouncedSearch, page, pageSize })
 ```
+
+Same offset pattern: **Orders**, **Stores**, **Coupons**, **Users**, **Activity** (`page` / `pageSize` / `total`). Storefront catalog uses **cursor** pagination instead — see [storefront.md](./storefront.md).
 
 ### Create / edit with variants
 
@@ -142,6 +148,14 @@ setValue('imageUrls', [...imageUrls, url])
 
 ## Orders
 
+### List (offset pagination)
+
+Admin orders table fetches **one page** from the API (`listAllOrdersPage`). Search is debounced before refetch — same helpers as products (`parsePageSearchParams`, `useDebouncedValue`).
+
+```typescript
+// GET /api/orders?page=1&pageSize=10&search=...&status=PAID
+```
+
 ### Status workflow
 
 ```
@@ -176,10 +190,10 @@ await logAdminActivity({
 
 ## Categories, stores, coupons
 
-Each uses the same admin page pattern:
+List endpoints use **offset** pagination (`page` / `pageSize` / `total`) with debounced search. UI pattern:
 
 ```typescript
-// hooks/use-admin-resource.ts
+// hooks/use-admin-resource.ts + useDebouncedValue
 const { data, loading, error, refetch } = useAdminResource<AdminCouponRow>({
   endpoint: '/api/admin/coupons',
 })

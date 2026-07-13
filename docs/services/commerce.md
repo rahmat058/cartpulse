@@ -14,13 +14,15 @@ Modules: `orders.ts`, `inventory.ts`, `coupons.ts`, `StripeCheckoutService.ts`
 | --------------------- | ----------------------------------------------------------- |
 | `createOrderFromCart` | Validate cart, price, stock; create `PENDING` order         |
 | `markOrderPaid`       | Stripe success — decrement stock, set `PAID`, grant library |
-| `listUserOrders`      | Customer order history                                      |
-| `listAllOrders`       | Admin order table                                           |
+| `listUserOrders`      | Full customer history (legacy / SSR helpers)                |
+| `listUserOrdersPage`  | **Offset**-paginated My Orders (`page`, `pageSize`, search) |
+| `listAllOrders`       | Unpaged admin list (KPIs / dashboard)                       |
+| `listAllOrdersPage`   | **Offset**-paginated admin orders table                     |
 | `getOrderById`        | Detail view (owner or admin)                                |
 | `updateOrderStatus`   | Admin: status change + notification + library on `PAID`     |
 | `getAdminKpis`        | Dashboard KPI cards                                         |
 | `getAnalytics`        | Revenue / orders charts (super admin)                       |
-| `listUsers`           | Admin user table (super admin)                              |
+| `listUsers`           | **Offset**-paginated user table (super admin)               |
 
 Library listing/download: `lib/services/library.ts` — see [user-services.md](./user-services.md).
 

@@ -236,8 +236,10 @@ const logs = await listActivityLogs({
   search: searchParams.get('q') ?? undefined,
   action: searchParams.get('action') ?? undefined,
 })
-return NextResponse.json(logs)
+return NextResponse.json(logs) // { data, total, page, pageSize }
 ```
+
+UI debounces `q` via `useDebouncedValue` before calling this route.
 
 ---
 

@@ -87,7 +87,7 @@ Public shopping experience wrapped in `StorefrontShell` (header, footer, cart dr
 | Route               | Purpose                                                      |
 | ------------------- | ------------------------------------------------------------ |
 | `/`                 | Home — hero, category tiles, strategy-driven product shelves |
-| `/products`         | Catalog — search, filters, sort, pagination                  |
+| `/products`         | Catalog — search, filters, sort, **cursor** Load more        |
 | `/products/[slug]`  | Product detail — variants, reviews, related products         |
 | `/stores`           | Store directory                                              |
 | `/stores/[slug]`    | Single-store listing                                         |
@@ -104,10 +104,43 @@ Locale prefix: `/bn/products`, `/bn/checkout`, etc.
 
 ### Data & state
 
-- **Catalog / PDP** — `GET /api/products`, `/api/products/[slug]`, `/api/categories`, `/api/stores`
+- **Catalog / PDP** — `GET /api/products` (cursor-paginated), `/api/products/[slug]`, `/api/categories`, `/api/stores`
 - **Cart** — Redux (`lib/store/`) persisted to `localStorage` (`cartpulse-cart-v1`); stores `productId`, `variantId`, `quantity` only — **no prices**
 - **Wishlist** — synced via `/api/wishlist` when signed in
 - **Pricing at checkout** — server re-fetches product prices from DB, validates cart lines with Zod (`lib/validations/cart.ts`), and recalculates totals via `resolveLineUnitPrice()` (variant-aware); client totals are display-only
+- **Search debounce** — `useDebouncedValue` (`SEARCH_DEBOUNCE_MS = 300`) on header/catalog search and admin table search before hitting the API
+
+### Catalog pagination (cursor)
+
+Storefront **Load more** uses Prisma cursor pagination (no schema change). Default `pageSize` is `24` (`CATALOG_DEFAULT_PAGE_SIZE`, max `100`).
+
+| Param / field     | Role                                                                 |
+| ----------------- | -------------------------------------------------------------------- |
+| `pageSize` / `limit` | Page size                                                          |
+| `cursor`          | Last product `id` from previous page                                 |
+| `meta.nextCursor` | Opaque cursor for the next request (product id), or `null`           |
+| `meta.hasMore`    | Whether another page exists                                          |
+| `meta.totalProducts` | Filtered total count (for result chrome)                          |
+
+```http
+GET /api/products?sort=name-asc&pageSize=24
+GET /api/products?sort=name-asc&pageSize=24&cursor=<lastProductId>
+```
+
+Repository: `ProductRepository.findPublishedAfterCursor` — `orderBy: [sort, { id: 'asc' }]`, `cursor: { id }`, `skip: 1`, `take: pageSize + 1`.
+
+Home shelves request a **first page only** (`pageSize: 8–20`) — they do not load the full catalog.
+
+### Caching & ISR (Vercel)
+
+| Surface                         | Behavior                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| Home `/`                        | `export const revalidate = 60` (ISR). No `force-dynamic`.                |
+| Public catalog GETs             | `apiJsonPublic` + proxy `nextPublicApiResponse` → `s-maxage=60`, SWR 300 |
+| Auth-gated pages                | NextAuth only on `/admin`, `/dashboard`, `/checkout` (not public shop)   |
+| Private / mutating APIs         | `Cache-Control: no-store`                                                |
+
+Helpers: `lib/api/cache-headers.ts`, `lib/api/security-headers.ts`, `lib/api/pagination.ts`.
 
 ### Products, variants & stock
 
@@ -271,7 +304,7 @@ Navigation:
 | Route                      | Purpose                                                                           |
 | -------------------------- | --------------------------------------------------------------------------------- |
 | `/dashboard`               | Account overview                                                                  |
-| `/dashboard/orders`        | Order history — searchable data table, status filter, pagination, CSV/XLSX export |
+| `/dashboard/orders`        | Order history — **offset** API pagination, debounced search, export |
 | `/dashboard/orders/[id]`   | Order detail + PDF download                                                       |
 | `/dashboard/profile`       | Photo, name, password (provider-aware)                                            |
 | `/dashboard/addresses`     | Saved shipping addresses (`localStorage`)                                         |
@@ -450,16 +483,19 @@ Demo accounts (seeded):
 
 ## Public storefront APIs
 
-| Method | Route                  | Description                            |
-| ------ | ---------------------- | -------------------------------------- |
-| GET    | `/api/products`        | Paginated list (filters, search, sort) |
-| GET    | `/api/products/[slug]` | Single product                         |
-| GET    | `/api/categories`      | Category tree                          |
-| GET    | `/api/stores`          | Published stores                       |
-| GET    | `/api/coupons`         | Validate coupon                        |
-| POST   | `/api/coupons`         | Apply coupon (checkout)                |
-| POST   | `/api/checkout`        | Create order (COD or Stripe session)   |
-| POST   | `/api/webhooks/stripe` | Stripe payment webhook                 |
+| Method | Route                  | Description                                                                 |
+| ------ | ---------------------- | --------------------------------------------------------------------------- |
+| GET    | `/api/products`        | **Cursor**-paginated list (`cursor`, `pageSize`, filters, search, sort)     |
+| GET    | `/api/products?ids=`   | Batch by id (cart / wishlist hydration)                                     |
+| GET    | `/api/products/[slug]` | Single product (download URL stripped from public DTO)                      |
+| GET    | `/api/categories`      | Category tree (CDN-cached)                                                  |
+| GET    | `/api/stores`          | Published stores (CDN-cached)                                               |
+| GET    | `/api/coupons`         | Validate coupon                                                             |
+| POST   | `/api/coupons`         | Apply coupon (checkout)                                                     |
+| POST   | `/api/checkout`        | Create order (COD or Stripe session)                                        |
+| POST   | `/api/webhooks/stripe` | Stripe payment webhook                                                      |
+
+Admin tables and My Orders use **offset** pagination (`page` / `pageSize` / `total`) — see `lib/api/pagination.ts`.
 
 Admin `PATCH /api/orders/[id]` updates order status (admin-only).
 
@@ -470,7 +506,10 @@ Admin `PATCH /api/orders/[id]` updates order status (admin-only).
 | Topic                | Implementation                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------ |
 | **i18n**             | `next-intl` — locales `en`, `bn`; `localePrefix: 'as-needed'`                        |
-| **Route protection** | `proxy.ts` (Next.js 16 proxy, not legacy middleware)                                 |
+| **Route protection** | `proxy.ts` — auth gates only for `/admin`, `/dashboard`, `/checkout`; public shop skips NextAuth for ISR/CDN |
+| **Pagination**       | Cursor (storefront Load more) vs offset (admin / My Orders) — `lib/api/pagination.ts` |
+| **Search debounce**  | `hooks/use-debounced-value.ts` + `SEARCH_DEBOUNCE_MS`                                |
+| **CDN cache**        | Public catalog GETs — `PUBLIC_CATALOG_CACHE_CONTROL` (`s-maxage=60`)                 |
 | **Cart persistence** | Redux → `localStorage`; clear after `yarn db:reset` (see README)                     |
 | **Order PDF**        | `@react-pdf/renderer` in `lib/pdf/OrderDetailPdfDocument.tsx`                        |
 | **Soft deletes**     | `deletedAt` on users/products; `lib/services/soft-delete.ts`                         |

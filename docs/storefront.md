@@ -32,17 +32,33 @@ Bengali locale: prefix with `/bn` (e.g. `/bn/products`).
 
 ### Filter flow
 
-URL search params drive server-side Prisma queries — shareable and back-button friendly.
+URL search params drive **server-side** Prisma queries — shareable and back-button friendly. Catalog search is **debounced** (`useDebouncedValue`, 300ms) before updating the URL / refetching.
 
 ```typescript
-// hooks/use-catalog-filters.ts
-const [searchParams, setSearchParams] = useSearchParams()
-// ?search=phone&category=electronics&minPrice=100&sort=price-asc&page=2
+// hooks/use-catalog-filters.ts → CatalogQueryParams
+// ?search=phone&category=electronics&priceMin=100&sort=price-asc
 
 // app/api/products/route.ts
 const query = parseCatalogQueryParams(searchParams)
-const products = await getProducts(query)
+const products = await getProducts(query) // cursor page — never the full catalog
+return apiJsonPublic(products)            // CDN: s-maxage=60
 ```
+
+### Cursor pagination (Load more)
+
+| Style | Where | Params |
+| ----- | ----- | ------ |
+| **Cursor** | `/products` Load more, suggestions | `cursor`, `pageSize` (default 24, max 100) |
+| **Offset** | Admin / My Orders tables | `page`, `pageSize`, `total` |
+
+```http
+GET /api/products?sort=name-asc&pageSize=24
+GET /api/products?sort=name-asc&pageSize=24&cursor=<lastProductId>
+```
+
+Response meta includes `nextCursor`, `hasMore`, `totalProducts`. The grid appends pages via `appendCatalogFromQuery` — no client-side slicing of a full dump.
+
+Helpers: `lib/api/pagination.ts`, `hooks/use-debounced-value.ts`, `ProductRepository.findPublishedAfterCursor`.
 
 ### Product card — quick add
 

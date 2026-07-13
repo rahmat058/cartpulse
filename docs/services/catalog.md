@@ -10,26 +10,36 @@ Modules: `products.ts`, `CatalogService.ts`, `categories.ts`, `stores.ts`, `prod
 
 ### Key exports
 
-| Function                                | Description                                  |
-| --------------------------------------- | -------------------------------------------- |
-| `getProducts(query)`                    | Paginated catalog with filters, search, sort |
-| `getProductBySlug(slug)`                | Single product for PDP                       |
-| `getProductsByIds(ids)`                 | Batch load for cart/checkout pricing         |
-| `getFeaturedProducts()`                 | Home carousel / hero                         |
-| `parseCatalogQueryParams(searchParams)` | Parse URL filters → query object             |
+| Function                                | Description                                                         |
+| --------------------------------------- | ------------------------------------------------------------------- |
+| `getProducts(query)`                    | **Cursor**-paginated catalog (`cursor`, `pageSize`, filters, sort)  |
+| `getProductBySlug(slug)`                | Single product for PDP (strips `digitalAssetUrl` from public DTO)   |
+| `getProductsByIds(ids)`                 | Batch load for cart/checkout pricing (lean list DTO)                |
+| `getFeaturedProducts(limit)`            | Home shelves / featured                                             |
+| `parseCatalogQueryParams(searchParams)` | Parse URL filters → query (`cursor`, `pageSize` / `limit`, …)       |
 
-### Code demo — API route
+### Code demo — API route (cursor + CDN)
 
 ```typescript
 // app/api/products/route.ts
 import { getProducts, parseCatalogQueryParams } from '@/lib/services/products'
+import { apiJsonPublic } from '@/lib/api/security-headers'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
+  if (searchParams.get('ids')) {
+    // batch by id — cart / wishlist
+  }
   const query = parseCatalogQueryParams(searchParams)
   const products = await getProducts(query)
-  return NextResponse.json(products)
+  return apiJsonPublic(products) // Cache-Control: s-maxage=60, stale-while-revalidate=300
 }
+```
+
+```http
+GET /api/products?pageSize=24
+GET /api/products?pageSize=24&cursor=<productId>
+# meta: { nextCursor, hasMore, totalProducts, pageSize }
 ```
 
 ### Code demo — server page (PDP)
@@ -65,12 +75,12 @@ const productsById = Object.fromEntries(products.map((p) => [p.id, p]))
 
 ### Class methods
 
-| Method                    | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `parseCatalogQueryParams` | `search`, `category`, `minPrice`, `maxPrice`, `sort`, `page` |
-| `getProducts`             | Applies `NOT_DELETED`, published filter, variant includes    |
-| `getProductBySlug`        | Slug lookup with store + category + variants                 |
-| `getProductsByIds`        | Batch by ID for cart validation                              |
+| Method                    | Description                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| `parseCatalogQueryParams` | `search`, `category`, prices, `sort`, `cursor`, `pageSize` / `limit`         |
+| `getProducts`             | Cursor page via `findPublishedAfterCursor`; lean list DTO; `nextCursor` meta |
+| `getProductBySlug`        | Slug lookup with store + category + variants                                 |
+| `getProductsByIds`        | Batch by ID for cart validation                                              |
 
 ### Code demo — internal flow
 
