@@ -12,13 +12,13 @@
  */
 import NextAuth from 'next-auth'
 import { routing } from '@/i18n/routing'
-import { NextResponse, type NextFetchEvent, type NextMiddleware, type NextRequest } from 'next/server'
 import { authConfig } from '@/lib/auth.config'
 import createIntlMiddleware from 'next-intl/middleware'
 import { isPublicCatalogGet } from '@/lib/api/cache-headers'
-import { applyApiGuard, nextApiResponse, nextPublicApiResponse, normalizeApiPath } from '@/lib/api/guard'
 import { canAccessAdmin, canAccessAdminPath, canAccessDashboard } from '@/lib/auth-access'
 import { localeFromPathname, stripLocalePrefix, withLocalePath } from '@/i18n/locale-path'
+import { NextResponse, type NextFetchEvent, type NextProxy, type NextRequest } from 'next/server'
+import { applyApiGuard, nextApiResponse, nextPublicApiResponse, normalizeApiPath } from '@/lib/api/guard'
 
 const intlMiddleware = createIntlMiddleware(routing)
 const { auth } = NextAuth(authConfig)
@@ -98,15 +98,11 @@ const handleAuthedPages = auth((req) => {
   }
 
   return intlResponse
-}) as unknown as NextMiddleware
+}) as unknown as NextProxy
 
 function needsAuthGate(pathname: string): boolean {
   const withoutLocale = stripLocalePrefix(pathname)
-  return (
-    withoutLocale.startsWith('/admin') ||
-    withoutLocale.startsWith('/dashboard') ||
-    withoutLocale === '/checkout'
-  )
+  return withoutLocale.startsWith('/admin') || withoutLocale.startsWith('/dashboard') || withoutLocale === '/checkout'
 }
 
 export default function proxy(req: NextRequest, event: NextFetchEvent) {
