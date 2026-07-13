@@ -20,15 +20,31 @@ export function HeaderSearch({ className }: { className?: string }) {
   const listboxId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState(searchParams.get('search') ?? '')
-  const debouncedQuery = useDebouncedValue(query.trim(), SEARCH_DEBOUNCE_MS)
+  const trimmedQuery = query.trim()
+  const debouncedQuery = useDebouncedValue(trimmedQuery, SEARCH_DEBOUNCE_MS)
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const [loading, setLoading] = useState(false)
+  const requestIdRef = useRef(0)
 
   useEffect(() => {
     setQuery(searchParams.get('search') ?? '')
   }, [searchParams])
+
+  // While the user is still typing, drop stale hits and show a pending state.
+  useEffect(() => {
+    if (trimmedQuery.length < 2) {
+      requestIdRef.current += 1
+      setSuggestions([])
+      setLoading(false)
+      return
+    }
+    if (trimmedQuery !== debouncedQuery) {
+      setSuggestions([])
+      setLoading(true)
+    }
+  }, [trimmedQuery, debouncedQuery])
 
   useEffect(() => {
     if (debouncedQuery.length < 2) {
@@ -37,6 +53,7 @@ export function HeaderSearch({ className }: { className?: string }) {
       return
     }
 
+    const requestId = ++requestIdRef.current
     const controller = new AbortController()
     setLoading(true)
     void (async () => {
@@ -45,7 +62,7 @@ export function HeaderSearch({ className }: { className?: string }) {
           `/api/products?search=${encodeURIComponent(debouncedQuery)}&sort=name-asc&pageSize=8`,
           { signal: controller.signal },
         )
-        if (!response.ok) return
+        if (!response.ok || requestId !== requestIdRef.current) return
         const json = (await response.json()) as { data: Product[] }
         setSuggestions(
           (json.data ?? []).map((product) => ({
@@ -60,11 +77,13 @@ export function HeaderSearch({ className }: { className?: string }) {
         setActiveIndex(-1)
         setOpen(true)
       } catch (error) {
-        if ((error as Error).name !== 'AbortError') {
+        if ((error as Error).name !== 'AbortError' && requestId === requestIdRef.current) {
           setSuggestions([])
         }
       } finally {
-        setLoading(false)
+        if (requestId === requestIdRef.current) {
+          setLoading(false)
+        }
       }
     })()
 
@@ -109,6 +128,8 @@ export function HeaderSearch({ className }: { className?: string }) {
     }
   }
 
+  const showDropdown = open && trimmedQuery.length >= 2
+
   return (
     <form
       onSubmit={(event) => {
@@ -127,7 +148,7 @@ export function HeaderSearch({ className }: { className?: string }) {
             setOpen(true)
           }}
           onFocus={() => {
-            if (suggestions.length > 0) setOpen(true)
+            if (suggestions.length > 0 || trimmedQuery.length >= 2) setOpen(true)
           }}
           onBlur={() => {
             window.setTimeout(() => setOpen(false), 150)
@@ -151,7 +172,7 @@ export function HeaderSearch({ className }: { className?: string }) {
         </button>
       </div>
 
-      {open && query.trim().length >= 2 && (
+      {showDropdown && (
         <ul
           id={listboxId}
           role="listbox"
@@ -163,26 +184,27 @@ export function HeaderSearch({ className }: { className?: string }) {
           )}
           {!loading && suggestions.length === 0 && (
             <li className="px-4 py-3 text-sm text-slate-400" role="presentation">
-              {t('noMatches', { query: query.trim() })}
+              {t('noMatches', { query: trimmedQuery })}
             </li>
           )}
-          {suggestions.map((item, index) => (
-            <li key={item.id} id={`${listboxId}-option-${index}`} role="option" aria-selected={index === activeIndex}>
-              <button
-                type="button"
-                className={cn(
-                  'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm',
-                  index === activeIndex ? 'bg-teal-50 text-teal-800' : 'hover:bg-slate-50',
-                )}
-                onMouseDown={(event) => event.preventDefault()}
-                onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectSuggestion(item)}>
-                <span className="text-lg">{item.emoji}</span>
-                <span className="min-w-0 flex-1 truncate font-medium">{item.name}</span>
-                <span className="text-xs text-slate-400 capitalize">{item.category}</span>
-              </button>
-            </li>
-          ))}
+          {!loading &&
+            suggestions.map((item, index) => (
+              <li key={item.id} id={`${listboxId}-option-${index}`} role="option" aria-selected={index === activeIndex}>
+                <button
+                  type="button"
+                  className={cn(
+                    'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm',
+                    index === activeIndex ? 'bg-teal-50 text-teal-800' : 'hover:bg-slate-50',
+                  )}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onClick={() => selectSuggestion(item)}>
+                  <span className="text-lg">{item.emoji}</span>
+                  <span className="min-w-0 flex-1 truncate font-medium">{item.name}</span>
+                  <span className="text-xs text-slate-400 capitalize">{item.category}</span>
+                </button>
+              </li>
+            ))}
           {!loading && suggestions.length > 0 && (
             <li role="presentation" className="border-t border-slate-100">
               <button
@@ -190,7 +212,7 @@ export function HeaderSearch({ className }: { className?: string }) {
                 className="w-full px-4 py-2.5 text-left text-sm font-semibold text-teal-700 hover:bg-teal-50"
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => goToResults()}>
-                {t('seeAllResults', { query: query.trim() })}
+                {t('seeAllResults', { query: trimmedQuery })}
               </button>
             </li>
           )}

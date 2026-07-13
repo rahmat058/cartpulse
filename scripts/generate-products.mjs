@@ -253,7 +253,7 @@ const LEAF_CATALOGS = {
       'Smart Home Speaker Voice',
       'Ergonomic Mouse Vertical Pro',
       'Dual Monitor Arm Mount',
-      'Action Camera 4K Waterproof',
+      'Mobile Phone Tempered Glass Pack',
       'Foldable Phone Tripod Stand',
     ],
   },

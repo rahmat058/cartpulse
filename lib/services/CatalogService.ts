@@ -11,6 +11,7 @@ import {
 } from '@/lib/repositories/ProductRepository'
 import type { CatalogQueryParams, CatalogSortBy, Product, ProductCategory, ProductsResponse } from '@/types/cart'
 import { CATALOG_DEFAULT_PAGE_SIZE, CATALOG_MAX_PAGE_SIZE } from '@/types/cart'
+import { productSearchWhere } from '@/lib/utils/product-search'
 
 function clampPageSize(value: number | undefined, fallback = CATALOG_DEFAULT_PAGE_SIZE): number {
   if (!value || !Number.isFinite(value)) return fallback
@@ -71,6 +72,16 @@ export class CatalogService extends BaseService {
 
     const categorySlugs = query.category ? await getCategorySlugsIncludingDescendants(query.category) : null
 
+    const andFilters: Prisma.ProductWhereInput[] = []
+    if (query.inStockOnly) {
+      andFilters.push({
+        OR: [{ stock: { gt: 0 } }, { variants: { some: { stock: { gt: 0 } } } }],
+      })
+    }
+    if (query.search) {
+      andFilters.push(productSearchWhere(query.search))
+    }
+
     return {
       published: true,
       ...NOT_DELETED,
@@ -86,19 +97,7 @@ export class CatalogService extends BaseService {
         : NOT_DELETED,
       ...(Object.keys(priceFilter).length > 0 ? { price: priceFilter } : {}),
       ...(query.minRating !== undefined ? { rating: { gte: query.minRating } } : {}),
-      ...(query.inStockOnly
-        ? {
-            OR: [{ stock: { gt: 0 } }, { variants: { some: { stock: { gt: 0 } } } }],
-          }
-        : {}),
-      ...(query.search
-        ? {
-            OR: [
-              { name: { contains: query.search, mode: 'insensitive' as const } },
-              { description: { contains: query.search, mode: 'insensitive' as const } },
-            ],
-          }
-        : {}),
+      ...(andFilters.length > 0 ? { AND: andFilters } : {}),
     }
   }
 
