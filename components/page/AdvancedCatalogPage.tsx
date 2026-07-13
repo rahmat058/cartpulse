@@ -26,9 +26,9 @@ import { RelatedCategories } from '@/components/catalog/RelatedCategories'
 import { ActiveFilterChips } from '@/components/catalog/ActiveFilterChips'
 import { AdvancedProductGrid } from '@/components/catalog/AdvancedProductGrid'
 import {
+  CatalogBrowseLayoutSkeleton,
   CatalogPageSkeleton,
   CatalogProductGridSkeleton,
-  type CatalogPageSkeletonVariant,
 } from '@/components/catalog/CatalogSkeleton'
 import { CatalogError } from '@/components/catalog/CatalogError'
 import { Button } from '@/components/ui/Button'
@@ -38,11 +38,6 @@ const TIPS = [
   { icon: Filter, text: 'Server-side Prisma queries' },
   { icon: Layers, text: 'Grid or list view' },
 ]
-
-function resolveSkeletonVariant(category: string | null | undefined): CatalogPageSkeletonVariant {
-  if (category && category !== 'all') return 'category'
-  return 'products'
-}
 
 export function AdvancedCatalogPage() {
   const catalogStatus = useAppSelector(selectCatalogStatus)
@@ -57,13 +52,9 @@ export function AdvancedCatalogPage() {
   const { refetchCatalog } = useCatalogLoader(query)
   const { openCart } = useCartDrawer()
 
-  const skeletonVariant = resolveSkeletonVariant(
-    searchParams.get('category') ?? (categoryFilter !== 'all' ? categoryFilter : null),
-  )
-
-  const isInitialLoading = catalogStatus === 'loading' && catalogProducts.length === 0
-  const isRefetching = catalogStatus === 'loading' && catalogProducts.length > 0
-  const showCatalog = catalogStatus === 'succeeded' || isRefetching
+  const urlCategory = searchParams.get('category')
+  const isCategoryView =
+    Boolean(urlCategory && urlCategory !== 'all') || (categoryFilter !== 'all' && categoryFilter != null)
 
   const categoryContext = useMemo(() => {
     if (!categoryFilter || categoryFilter === 'all') return null
@@ -82,31 +73,39 @@ export function AdvancedCatalogPage() {
       return categoryFilter
     })()
 
+  const isLoadingProducts = catalogStatus === 'loading' || catalogStatus === 'idle' || catalogStatus === 'failed'
+  const hasProducts = catalogProducts.length > 0
+  const isInitialProductLoad = isLoadingProducts && !hasProducts && catalogStatus !== 'failed'
+  const isRefetching = catalogStatus === 'loading' && hasProducts
+  const showProductGrid = catalogStatus === 'succeeded' && hasProducts
+
+  // Full-page skeleton only before we can render the real header/hero.
+  const showFullPageSkeleton = isInitialProductLoad && isCategoryView && !categoryContext
+
   return (
     <>
       <StorefrontContainer as="main" className="py-8">
-        <Breadcrumbs
-          className="mb-4"
-          items={
-            categoryContext?.breadcrumbs ?? [
-              { label: 'Home', href: '/' },
-              { label: 'Search', href: '/products' },
-              { label: categoryTitle },
-            ]
-          }
-        />
-
-        {isInitialLoading ? (
-          <CatalogPageSkeleton variant={skeletonVariant} />
+        {showFullPageSkeleton ? (
+          <CatalogPageSkeleton variant="category" />
         ) : (
           <>
+            <Breadcrumbs
+              className="mb-4"
+              items={
+                categoryContext?.breadcrumbs ?? [
+                  { label: 'Home', href: '/' },
+                  { label: 'Search', href: '/products' },
+                  { label: categoryTitle },
+                ]
+              }
+            />
+
             {categoryContext ? (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="mb-6"
-              >
+                className="mb-6">
                 <CategoryHeroBanner context={categoryContext} productTotal={catalogTotal} />
                 <RelatedCategories categories={categoryContext.relatedCategories} />
                 <div className="mt-4 max-w-md lg:hidden">
@@ -118,8 +117,7 @@ export function AdvancedCatalogPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="mb-6"
-              >
+                className="mb-6">
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -129,7 +127,9 @@ export function AdvancedCatalogPage() {
                       </h1>
                     </div>
                     <p className="mt-1 text-sm text-slate-500">
-                      {catalogTotal} product{catalogTotal === 1 ? '' : 's'} on sale right now
+                      {isInitialProductLoad
+                        ? 'Loading products…'
+                        : `${catalogTotal} product${catalogTotal === 1 ? '' : 's'} on sale right now`}
                     </p>
                   </div>
                   <Button
@@ -137,8 +137,7 @@ export function AdvancedCatalogPage() {
                     variant="outline"
                     size="sm"
                     className="lg:hidden"
-                    onClick={() => setFiltersOpen(true)}
-                  >
+                    onClick={() => setFiltersOpen(true)}>
                     <SlidersHorizontal className="h-4 w-4" />
                     Filters
                   </Button>
@@ -162,17 +161,17 @@ export function AdvancedCatalogPage() {
               <CatalogError message={catalogError} onRetry={() => refetchCatalog()} />
             ) : null}
 
-            {showCatalog ? (
+            {isInitialProductLoad ? <CatalogBrowseLayoutSkeleton showCategories={!categoryContext} /> : null}
+
+            {isRefetching || showProductGrid ? (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05, duration: 0.35 }}
-                className="grid gap-6 lg:grid-cols-[272px_minmax(0,1fr)]"
-              >
+                className="grid gap-6 lg:grid-cols-[272px_minmax(0,1fr)]">
                 <section
                   className="glass-card hidden p-5 lg:sticky lg:top-32 lg:block lg:max-h-[calc(100vh-8rem)] lg:self-start lg:overflow-y-auto"
-                  aria-label="Filters"
-                >
+                  aria-label="Filters">
                   <CatalogToolbar hideCategoryFilter={Boolean(categoryContext)} />
                 </section>
 
@@ -180,8 +179,8 @@ export function AdvancedCatalogPage() {
                   {isRefetching ? (
                     <>
                       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                        <div className="h-7 w-40 animate-pulse rounded-full bg-muted/80" />
-                        <div className="h-4 w-36 animate-pulse rounded bg-muted/80" />
+                        <div className="bg-muted/80 h-7 w-40 animate-pulse rounded-full" />
+                        <div className="bg-muted/80 h-4 w-36 animate-pulse rounded" />
                       </div>
                       <CatalogProductGridSkeleton count={8} />
                     </>
@@ -222,8 +221,7 @@ export function AdvancedCatalogPage() {
                 type="button"
                 onClick={() => setFiltersOpen(false)}
                 className="rounded-md p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900"
-                aria-label="Close"
-              >
+                aria-label="Close">
                 <X className="h-4 w-4" />
               </button>
             </div>

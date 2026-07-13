@@ -12,7 +12,7 @@ import { useCart } from '@/hooks/use-cart'
 import { useCatalogLoader } from "@/hooks/useCatalogLoader";
 import { CategoryFilter } from "@/components/catalog/CategoryFilter";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
-import { CatalogSkeleton } from "@/components/catalog/CatalogSkeleton";
+import { CatalogBrowseLayoutSkeleton } from "@/components/catalog/CatalogSkeleton";
 import { CatalogError } from "@/components/catalog/CatalogError";
 import { CartPanel } from "@/components/cart/CartPanel";
 import { StorefrontContainer } from '@/components/layout/StorefrontContainer'
@@ -54,9 +54,7 @@ export function ShopApp() {
           animate={{ opacity: 1 }}
           className="mt-8"
         >
-          <div className="glass-card p-5 sm:p-6">
-            <CatalogSkeleton />
-          </div>
+          <CatalogBrowseLayoutSkeleton />
         </motion.div>
       )}
 

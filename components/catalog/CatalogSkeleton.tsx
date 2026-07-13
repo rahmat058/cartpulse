@@ -156,6 +156,34 @@ function CatalogResultsHeaderSkeleton() {
   )
 }
 
+/**
+ * Filters + product grid skeleton — matches the real catalog browse layout
+ * (use under a live Flash deals header or category hero).
+ */
+export function CatalogBrowseLayoutSkeleton({
+  showCategories = true,
+  className,
+}: {
+  showCategories?: boolean
+  className?: string
+}) {
+  return (
+    <div
+      className={cn('grid gap-6 lg:grid-cols-[272px_minmax(0,1fr)]', className)}
+      aria-busy="true"
+      aria-label="Loading products"
+    >
+      <section className="glass-card hidden p-5 lg:sticky lg:top-32 lg:block lg:self-start">
+        <CatalogFilterSidebarSkeleton showCategories={showCategories} />
+      </section>
+      <section className="glass-card p-5 sm:p-6">
+        <CatalogResultsHeaderSkeleton />
+        <CatalogProductGridSkeleton count={8} />
+      </section>
+    </div>
+  )
+}
+
 export type CatalogPageSkeletonVariant = 'products' | 'category'
 
 /**
@@ -177,21 +205,12 @@ export function CatalogPageSkeleton({
 
       {isCategory ? <CatalogCategoryHeroSkeleton /> : <CatalogFlashDealsHeaderSkeleton />}
 
-      <div className="grid gap-6 lg:grid-cols-[272px_minmax(0,1fr)]">
-        <section className="glass-card hidden p-5 lg:sticky lg:top-32 lg:block lg:self-start">
-          <CatalogFilterSidebarSkeleton showCategories={!isCategory} />
-        </section>
-
-        <section className="glass-card p-5 sm:p-6">
-          <CatalogResultsHeaderSkeleton />
-          <CatalogProductGridSkeleton count={8} />
-        </section>
-      </div>
+      <CatalogBrowseLayoutSkeleton showCategories={!isCategory} />
     </div>
   )
 }
 
-/** @deprecated Prefer `CatalogPageSkeleton` or `CatalogProductGridSkeleton`. */
+/** Prefer `CatalogBrowseLayoutSkeleton` / `CatalogPageSkeleton`. */
 export function CatalogSkeleton() {
-  return <CatalogProductGridSkeleton count={6} />
+  return <CatalogBrowseLayoutSkeleton />
 }

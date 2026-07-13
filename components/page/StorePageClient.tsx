@@ -17,7 +17,7 @@ import { RichTextContent } from '@/components/shared/RichTextContent'
 import { CatalogToolbar } from '@/components/catalog/CatalogToolbar'
 import { ActiveFilterChips } from '@/components/catalog/ActiveFilterChips'
 import { AdvancedProductGrid } from '@/components/catalog/AdvancedProductGrid'
-import { CatalogSkeleton } from '@/components/catalog/CatalogSkeleton'
+import { CatalogBrowseLayoutSkeleton } from '@/components/catalog/CatalogSkeleton'
 import { CatalogError } from '@/components/catalog/CatalogError'
 import { selectCatalogError, selectCatalogStatus } from '@/lib/store/selectors/cartSelectors'
 
@@ -124,9 +124,7 @@ export function StorePageClient({ store }: { store: StoreProfile }) {
             </div>
 
             {catalogStatus === 'loading' && (
-              <div className="glass-card p-6">
-                <CatalogSkeleton />
-              </div>
+              <CatalogBrowseLayoutSkeleton showCategories={false} />
             )}
 
             {catalogStatus === 'failed' && catalogError && (
