@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
+import { apiJson, apiJsonPublic } from '@/lib/api/security-headers'
 import { listStores } from '@/lib/services/stores'
 
 export async function GET() {
   try {
     const stores = await listStores(true)
-    return NextResponse.json({ data: stores })
+    return apiJsonPublic({ data: stores })
   } catch (error) {
     console.error('Error fetching stores:', error)
-    return NextResponse.json({ error: 'Failed to fetch stores' }, { status: 500 })
+    return apiJson({ error: 'Failed to fetch stores' }, { status: 500 })
   }
 }

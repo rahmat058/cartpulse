@@ -1,8 +1,8 @@
 import { setRequestLocale } from 'next-intl/server'
 import { HomePage } from '@/components/page/HomePage'
 
+/** Revalidate homepage HTML/data every 60s (ISR). Do not use force-dynamic here. */
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 export default async function StorefrontHomePage({
   params,

@@ -1,17 +1,11 @@
 import type { Product } from '@/types/cart'
 import { getProducts, getFeaturedProducts } from '@/lib/services/products'
 import { listStores } from '@/lib/services/stores'
-import { auth } from '@/lib/auth'
 import prisma from '@/lib/prisma'
-import { mapDbProduct } from '@/lib/services/products'
+import { mapListProduct } from '@/lib/repositories/ProductRepository'
 
 export type HomeShelfKind =
-  | 'recently-ordered'
-  | 'all-products'
-  | 'featured-stores'
-  | 'best-sellers'
-  | 'new-arrivals'
-  | 'recently-viewed'
+  'recently-ordered' | 'all-products' | 'featured-stores' | 'best-sellers' | 'new-arrivals' | 'recently-viewed'
 
 export interface HomeShelfMeta {
   kind: HomeShelfKind
@@ -57,6 +51,10 @@ abstract class ProductShelfStrategy implements HomeShelfStrategy {
   }
 }
 
+/**
+ * Personalized shelf — intentionally empty on the server so the home page can ISR.
+ * Client hydration can add a signed-in "recently ordered" shelf later without blocking TTFB.
+ */
 class RecentlyOrderedStrategy extends ProductShelfStrategy {
   readonly meta: HomeShelfMeta = {
     kind: 'recently-ordered',
@@ -67,34 +65,7 @@ class RecentlyOrderedStrategy extends ProductShelfStrategy {
   }
 
   async loadProducts(): Promise<Product[]> {
-    const session = await auth()
-    if (!session?.user?.id) return []
-
-    const items = await prisma.orderItem.findMany({
-      where: { order: { userId: session.user.id, status: { not: 'CANCELLED' } } },
-      include: {
-        product: {
-          include: {
-            store: true,
-            category: true,
-            variants: { orderBy: { isDefault: 'desc' as const } },
-            defaultVariant: true,
-          },
-        },
-      },
-      orderBy: { order: { createdAt: 'desc' } },
-      take: 24,
-    })
-
-    const seen = new Set<string>()
-    const products: Product[] = []
-    for (const item of items) {
-      if (seen.has(item.productId) || !item.product.published) continue
-      seen.add(item.productId)
-      products.push(mapDbProduct(item.product))
-      if (products.length >= 10) break
-    }
-    return products
+    return []
   }
 }
 
@@ -107,8 +78,8 @@ class AllProductsStrategy extends ProductShelfStrategy {
   }
 
   async loadProducts(): Promise<Product[]> {
-    const catalog = await getProducts({ sortBy: 'name-asc' })
-    return catalog.data.slice(0, 20)
+    const catalog = await getProducts({ sortBy: 'name-asc', pageSize: 20 })
+    return catalog.data
   }
 }
 
@@ -134,8 +105,8 @@ class NewArrivalsStrategy extends ProductShelfStrategy {
   }
 
   async loadProducts(): Promise<Product[]> {
-    const catalog = await getProducts({ sortBy: 'newest' })
-    return catalog.data.slice(0, 10)
+    const catalog = await getProducts({ sortBy: 'newest', pageSize: 10 })
+    return catalog.data
   }
 }
 
@@ -149,8 +120,8 @@ class RecentlyViewedStrategy extends ProductShelfStrategy {
   }
 
   async loadProducts(): Promise<Product[]> {
-    const catalog = await getProducts({ sortBy: 'rating-desc' })
-    return catalog.data.slice(0, 8)
+    const catalog = await getProducts({ sortBy: 'rating-desc', pageSize: 8 })
+    return catalog.data
   }
 }
 
@@ -188,16 +159,14 @@ export class HomePageComposer {
   private readonly strategies: HomeShelfStrategy[]
 
   constructor(strategies?: HomeShelfStrategy[]) {
-    this.strategies =
-      strategies ??
-      [
-        new RecentlyOrderedStrategy(),
-        new AllProductsStrategy(),
-        new FeaturedStoresStrategy(),
-        new BestSellersStrategy(),
-        new NewArrivalsStrategy(),
-        new RecentlyViewedStrategy(),
-      ]
+    this.strategies = strategies ?? [
+      new RecentlyOrderedStrategy(),
+      new AllProductsStrategy(),
+      new FeaturedStoresStrategy(),
+      new BestSellersStrategy(),
+      new NewArrivalsStrategy(),
+      new RecentlyViewedStrategy(),
+    ]
   }
 
   async compose(): Promise<HomeShelfPayload[]> {
@@ -208,4 +177,33 @@ export class HomePageComposer {
       return shelf.products.length > 0
     })
   }
+}
+
+/** Optional helper for client-only recently-ordered hydration (not used on SSR home). */
+export async function loadRecentlyOrderedProducts(userId: string, take = 10): Promise<Product[]> {
+  const items = await prisma.orderItem.findMany({
+    where: { order: { userId, status: { not: 'CANCELLED' } } },
+    include: {
+      product: {
+        include: {
+          store: true,
+          category: true,
+          variants: { orderBy: { isDefault: 'desc' as const } },
+          defaultVariant: true,
+        },
+      },
+    },
+    orderBy: { order: { createdAt: 'desc' } },
+    take: 24,
+  })
+
+  const seen = new Set<string>()
+  const products: Product[] = []
+  for (const item of items) {
+    if (seen.has(item.productId) || !item.product.published) continue
+    seen.add(item.productId)
+    products.push(mapListProduct(item.product))
+    if (products.length >= take) break
+  }
+  return products
 }

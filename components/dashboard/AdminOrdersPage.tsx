@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
@@ -31,51 +30,40 @@ export function AdminOrdersPage() {
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
+    return () => window.clearTimeout(timer)
+  }, [search])
 
   useEffect(() => {
     setPage(1)
-  }, [filter, search, dateFrom, dateTo])
+  }, [filter, debouncedSearch, dateFrom, dateTo])
 
   useEffect(() => {
     setLoading(true)
-    const url = filter === 'ALL' ? '/api/orders' : `/api/orders?status=${filter}`
-    fetch(url)
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+    })
+    if (filter !== 'ALL') params.set('status', filter)
+    if (debouncedSearch) params.set('search', debouncedSearch)
+    if (dateFrom) params.set('dateFrom', dateFrom)
+    if (dateTo) params.set('dateTo', dateTo)
+
+    fetch(`/api/orders?${params}`)
       .then((r) => r.json())
-      .then((json: { data: OrderRow[] }) => setOrders(json.data ?? []))
-      .finally(() => setLoading(false))
-  }, [filter])
-
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    let result = [...orders]
-
-    if (dateFrom || dateTo) {
-      result = result.filter((order) => {
-        const orderDate = format(new Date(order.createdAt), 'yyyy-MM-dd')
-        if (dateFrom && orderDate < dateFrom) return false
-        if (dateTo && orderDate > dateTo) return false
-        return true
+      .then((json: { data: OrderRow[]; total: number }) => {
+        setOrders(json.data ?? [])
+        setTotal(json.total ?? 0)
       })
-    }
-
-    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-
-    if (!query) return result
-    return result.filter(
-      (order) =>
-        order.user.email.toLowerCase().includes(query) ||
-        (order.user.name?.toLowerCase().includes(query) ?? false) ||
-        order.id.toLowerCase().includes(query),
-    )
-  }, [orders, search, dateFrom, dateTo])
-
-  const paginatedOrders = useMemo(() => {
-    const start = (page - 1) * pageSize
-    return filtered.slice(start, start + pageSize)
-  }, [filtered, page, pageSize])
+      .finally(() => setLoading(false))
+  }, [filter, debouncedSearch, dateFrom, dateTo, page, pageSize])
 
   const updateStatus = useCallback(async (id: string, status: OrderStatus) => {
     const response = await fetch(`/api/orders/${id}`, {
@@ -142,16 +130,16 @@ export function AdminOrdersPage() {
             filenameBase="orders"
             sheetName="Orders"
             page={page}
-            rows={mapOrderRowsForExport(paginatedOrders)}
-            rowCount={paginatedOrders.length}
-            disabled={loading || paginatedOrders.length === 0}
+            rows={mapOrderRowsForExport(orders)}
+            rowCount={orders.length}
+            disabled={loading || orders.length === 0}
           />
         }
       />
 
       <AdminDataTable
         columns={columns}
-        data={paginatedOrders}
+        data={orders}
         loading={loading}
         emptyMessage="No orders found."
         searchPlaceholder="Search orders…"
@@ -159,7 +147,7 @@ export function AdminOrdersPage() {
         onSearchChange={setSearch}
         enableSorting={false}
         manualPagination
-        total={filtered.length}
+        total={total}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}

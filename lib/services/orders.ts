@@ -178,6 +178,60 @@ export async function listAllOrders(filters?: { status?: OrderStatus }) {
   })
 }
 
+export async function listAllOrdersPage(filters?: {
+  status?: OrderStatus
+  search?: string
+  dateFrom?: string
+  dateTo?: string
+  page?: number
+  pageSize?: number
+}) {
+  const page = Math.max(1, filters?.page ?? 1)
+  const pageSize = Math.min(100, Math.max(1, filters?.pageSize ?? 10))
+  const skip = (page - 1) * pageSize
+  const search = filters?.search?.trim()
+
+  const createdAt: { gte?: Date; lte?: Date } = {}
+  if (filters?.dateFrom) {
+    const from = new Date(`${filters.dateFrom}T00:00:00.000Z`)
+    if (!Number.isNaN(from.getTime())) createdAt.gte = from
+  }
+  if (filters?.dateTo) {
+    const to = new Date(`${filters.dateTo}T23:59:59.999Z`)
+    if (!Number.isNaN(to.getTime())) createdAt.lte = to
+  }
+
+  const where = {
+    ...(filters?.status ? { status: filters.status } : {}),
+    ...(Object.keys(createdAt).length > 0 ? { createdAt } : {}),
+    ...(search
+      ? {
+          OR: [
+            { id: { contains: search, mode: 'insensitive' as const } },
+            { user: { email: { contains: search, mode: 'insensitive' as const } } },
+            { user: { name: { contains: search, mode: 'insensitive' as const } } },
+          ],
+        }
+      : {}),
+  }
+
+  const [total, data] = await Promise.all([
+    prisma.order.count({ where }),
+    prisma.order.findMany({
+      where,
+      include: {
+        items: { include: { product: true, variant: true } },
+        user: { select: { id: true, name: true, email: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: pageSize,
+    }),
+  ])
+
+  return { data, total, page, pageSize }
+}
+
 export async function getOrderById(id: string, userId?: string) {
   return prisma.order.findFirst({
     where: { id, ...(userId ? { userId } : {}) },
@@ -332,25 +386,52 @@ export async function getAnalytics(rangeDays = 30) {
   }
 }
 
-export async function listUsers(role?: AppRole) {
-  return prisma.user.findMany({
-    where: {
-      ...NOT_DELETED,
-      ...(role ? { role } : {}),
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      permCreate: true,
-      permRead: true,
-      permUpdate: true,
-      permDelete: true,
-      createdAt: true,
-      _count: { select: { orders: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-  })
+export async function listUsers(options?: {
+  role?: AppRole
+  search?: string
+  page?: number
+  pageSize?: number
+}) {
+  const page = Math.max(1, options?.page ?? 1)
+  const pageSize = Math.min(100, Math.max(1, options?.pageSize ?? 10))
+  const skip = (page - 1) * pageSize
+  const search = options?.search?.trim()
+
+  const where = {
+    ...NOT_DELETED,
+    ...(options?.role ? { role: options.role } : {}),
+    ...(search
+      ? {
+          OR: [
+            { email: { contains: search, mode: 'insensitive' as const } },
+            { name: { contains: search, mode: 'insensitive' as const } },
+          ],
+        }
+      : {}),
+  }
+
+  const [total, data] = await Promise.all([
+    prisma.user.count({ where }),
+    prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        permCreate: true,
+        permRead: true,
+        permUpdate: true,
+        permDelete: true,
+        createdAt: true,
+        _count: { select: { orders: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: pageSize,
+    }),
+  ])
+
+  return { data, total, page, pageSize }
 }
 

@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { isAdminPanelUser } from '@/lib/auth-access'
-import { listAllOrders, listUserOrders } from '@/lib/services/orders'
+import { parsePageSearchParams } from '@/lib/api/pagination'
+import { listAllOrdersPage, listUserOrders } from '@/lib/services/orders'
 import type { OrderStatus } from '@/app/generated/prisma/client'
 
 export async function GET(request: Request) {
@@ -15,8 +16,19 @@ export async function GET(request: Request) {
 
   try {
     if (isAdminPanelUser(session.user.role)) {
-      const orders = await listAllOrders(status ? { status } : undefined)
-      return NextResponse.json({ data: orders })
+      const { page, pageSize } = parsePageSearchParams(searchParams)
+      const search = searchParams.get('search')?.trim() || undefined
+      const dateFrom = searchParams.get('dateFrom')?.trim() || undefined
+      const dateTo = searchParams.get('dateTo')?.trim() || undefined
+      const result = await listAllOrdersPage({
+        status: status ?? undefined,
+        search,
+        dateFrom,
+        dateTo,
+        page,
+        pageSize,
+      })
+      return NextResponse.json(result)
     }
 
     const orders = await listUserOrders(session.user.id)

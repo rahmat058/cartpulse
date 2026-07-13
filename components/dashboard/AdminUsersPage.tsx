@@ -51,7 +51,11 @@ export function AdminUsersPage() {
   const [users, setUsers] = useState<UserRow[]>([])
   const [role, setRole] = useState<'ALL' | AppRole>('ALL')
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [total, setTotal] = useState(0)
   const [savingRole, setSavingRole] = useState(false)
   const [editingUser, setEditingUser] = useState<UserRow | null>(null)
   const [draftRole, setDraftRole] = useState<AppRole>('USER')
@@ -62,12 +66,31 @@ export function AdminUsersPage() {
   const { isSuperAdmin } = useAdminPermissions()
 
   useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
+    return () => window.clearTimeout(timer)
+  }, [search])
+
+  useEffect(() => {
+    setPage(1)
+  }, [role, debouncedSearch])
+
+  useEffect(() => {
     setLoading(true)
-    fetch(`/api/admin/users${role !== 'ALL' ? `?role=${role}` : ''}`)
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+    })
+    if (role !== 'ALL') params.set('role', role)
+    if (debouncedSearch) params.set('search', debouncedSearch)
+
+    fetch(`/api/admin/users?${params}`)
       .then((r) => r.json())
-      .then((json: { data: UserRow[] }) => setUsers(json.data ?? []))
+      .then((json: { data: UserRow[]; total: number }) => {
+        setUsers(json.data ?? [])
+        setTotal(json.total ?? 0)
+      })
       .finally(() => setLoading(false))
-  }, [role])
+  }, [role, debouncedSearch, page, pageSize])
 
   const openRoleDialog = useCallback((user: UserRow) => {
     setEditingUser(user)
@@ -125,15 +148,7 @@ export function AdminUsersPage() {
     toast.success('User deleted')
   }, [confirmDelete])
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    if (!query) return users
-    return users.filter(
-      (user) =>
-        user.email.toLowerCase().includes(query) ||
-        (user.name?.toLowerCase().includes(query) ?? false),
-    )
-  }, [users, search])
+  const filtered = useMemo(() => users, [users])
 
   const columns = useMemo<ColumnDef<UserRow>[]>(
     () => [
@@ -219,6 +234,15 @@ export function AdminUsersPage() {
         searchPlaceholder="Search users…"
         searchValue={search}
         onSearchChange={setSearch}
+        manualPagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={(size) => {
+          setPage(1)
+          setPageSize(size)
+        }}
         rowActions={(user) => [
           { label: 'View orders', onClick: () => window.location.assign('/admin/orders') },
           ...(isSuperAdmin
@@ -231,7 +255,10 @@ export function AdminUsersPage() {
         filters={
           <Select
             value={role}
-            onValueChange={(value) => setRole((value ?? 'ALL') as typeof role)}
+            onValueChange={(value) => {
+              setPage(1)
+              setRole((value ?? 'ALL') as typeof role)
+            }}
           >
             <SelectTrigger className="h-9 w-[150px]">
               <SelectValue placeholder="Role">

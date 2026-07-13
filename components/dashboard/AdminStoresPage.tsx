@@ -55,19 +55,42 @@ function AdminStoresPageContent({ refreshNonce }: { refreshNonce: number }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all')
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
+    return () => window.clearTimeout(timer)
+  }, [search])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearch, status])
 
   const loadStores = useCallback(() => {
     setLoading(true)
-    fetch('/api/admin/stores')
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+      status,
+    })
+    if (debouncedSearch) params.set('search', debouncedSearch)
+
+    fetch(`/api/admin/stores?${params}`)
       .then(async (response) => {
         if (!response.ok) throw new Error('Failed to load stores')
-        return response.json() as Promise<{ data: StoreRow[] }>
+        return response.json() as Promise<{ data: StoreRow[]; total: number }>
       })
-      .then((json) => setStores(json.data ?? []))
+      .then((json) => {
+        setStores(json.data ?? [])
+        setTotal(json.total ?? 0)
+      })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false))
-  }, [])
+  }, [debouncedSearch, page, pageSize, status])
 
   useEffect(() => {
     loadStores()
@@ -91,19 +114,7 @@ function AdminStoresPageContent({ refreshNonce }: { refreshNonce: number }) {
     toast.success('Store deleted')
   }, [confirmDelete])
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    return stores.filter((store) => {
-      if (status === 'active' && store.active === false) return false
-      if (status === 'inactive' && store.active !== false) return false
-      if (!query) return true
-      return (
-        store.name.toLowerCase().includes(query) ||
-        store.slug.toLowerCase().includes(query) ||
-        (store.description ? stripRichText(store.description).toLowerCase().includes(query) : false)
-      )
-    })
-  }, [stores, search, status])
+  const filtered = useMemo(() => stores, [stores])
 
   const columns = useMemo<ColumnDef<StoreRow>[]>(
     () => [
@@ -198,6 +209,15 @@ function AdminStoresPageContent({ refreshNonce }: { refreshNonce: number }) {
         searchPlaceholder="Search stores…"
         searchValue={search}
         onSearchChange={setSearch}
+        manualPagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={(size) => {
+          setPage(1)
+          setPageSize(size)
+        }}
         rowActions={(store) => [
           ...(can('update') ? [{ label: 'Edit store', onClick: () => openEdit(store.id) }] : []),
           {
@@ -217,7 +237,13 @@ function AdminStoresPageContent({ refreshNonce }: { refreshNonce: number }) {
             : []),
         ]}
         filters={
-          <Select value={status} onValueChange={(value) => setStatus((value ?? 'all') as typeof status)}>
+          <Select
+            value={status}
+            onValueChange={(value) => {
+              setPage(1)
+              setStatus((value ?? 'all') as typeof status)
+            }}
+          >
             <SelectTrigger className="h-9 w-[140px]">
               <SelectValue placeholder="Status">
                 {status === 'all' ? 'All status' : status === 'active' ? 'Active' : 'Inactive'}

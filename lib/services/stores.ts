@@ -104,6 +104,62 @@ export async function listStores(activeOnly = true, orderBy: 'name' | 'newest' =
   }))
 }
 
+export async function listAdminStoresPage(options?: {
+  search?: string
+  status?: 'all' | 'active' | 'inactive'
+  page?: number
+  pageSize?: number
+}) {
+  const page = Math.max(1, options?.page ?? 1)
+  const pageSize = Math.min(100, Math.max(1, options?.pageSize ?? 10))
+  const skip = (page - 1) * pageSize
+  const search = options?.search?.trim()
+  const status = options?.status ?? 'all'
+
+  const where = {
+    ...NOT_DELETED,
+    ...(status === 'active' ? { active: true } : {}),
+    ...(status === 'inactive' ? { active: false } : {}),
+    ...(search
+      ? {
+          OR: [
+            { name: { contains: search, mode: 'insensitive' as const } },
+            { slug: { contains: search, mode: 'insensitive' as const } },
+            { description: { contains: search, mode: 'insensitive' as const } },
+          ],
+        }
+      : {}),
+  }
+
+  const [total, rows] = await Promise.all([
+    prisma.store.count({ where }),
+    prisma.store.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: pageSize,
+      include: {
+        _count: {
+          select: {
+            products: { where: { published: true, ...NOT_DELETED } },
+          },
+        },
+      },
+    }),
+  ])
+
+  return {
+    data: rows.map((row) => ({
+      ...mapStore(row),
+      productCount: row._count.products,
+      active: row.active,
+    })),
+    total,
+    page,
+    pageSize,
+  }
+}
+
 export async function getStoreById(storeId: string) {
   const row = await prisma.store.findFirst({ where: { id: storeId, ...NOT_DELETED } })
   return row ? mapStore(row) : null

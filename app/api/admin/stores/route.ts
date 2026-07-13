@@ -2,18 +2,26 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { logAdminActivity } from '@/lib/admin-activity'
 import { requireAdminAction } from '@/lib/admin-auth'
+import { parsePageSearchParams } from '@/lib/api/pagination'
 import { createStore } from '@/lib/services/admin-stores'
-import { listStores } from '@/lib/services/stores'
+import { listAdminStoresPage } from '@/lib/services/stores'
 import type { CreateStoreInput } from '@/types/admin'
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth()
   const access = requireAdminAction(session, 'read')
   if ('error' in access) return access.error
 
   try {
-    const stores = await listStores(false, 'newest')
-    return NextResponse.json({ data: stores })
+    const { searchParams } = new URL(request.url)
+    const { page, pageSize } = parsePageSearchParams(searchParams)
+    const search = searchParams.get('search')?.trim() || undefined
+    const statusParam = searchParams.get('status')
+    const status =
+      statusParam === 'active' || statusParam === 'inactive' ? statusParam : 'all'
+
+    const result = await listAdminStoresPage({ search, status, page, pageSize })
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Admin stores fetch failed:', error)
     return NextResponse.json({ error: 'Failed to fetch stores' }, { status: 500 })

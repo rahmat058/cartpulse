@@ -2,13 +2,7 @@ import type { CouponDefinition } from '@/types/commerce'
 
 export type ProductCategory = string
 
-export type CatalogSortBy =
-  | 'name-asc'
-  | 'name-desc'
-  | 'price-asc'
-  | 'price-desc'
-  | 'rating-desc'
-  | 'newest'
+export type CatalogSortBy = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'rating-desc' | 'newest'
 
 export type CatalogViewMode = 'grid' | 'list'
 
@@ -71,12 +65,21 @@ export interface ProductsMeta {
   currency: string
   generatedAt: string
   store?: StoreInfo
+  pageSize?: number
+  /** Opaque cursor for the next page (product id). Null/omitted when no more rows. */
+  nextCursor?: string | null
+  hasMore?: boolean
 }
 
 export interface ProductsResponse {
   meta: ProductsMeta
   data: Product[]
 }
+
+/** Default page size for storefront catalog /api/products. */
+export const CATALOG_DEFAULT_PAGE_SIZE = 24
+/** Hard cap for pageSize query param (prevents accidental full dumps). */
+export const CATALOG_MAX_PAGE_SIZE = 100
 
 export interface CatalogQueryParams {
   category?: ProductCategory
@@ -88,6 +91,9 @@ export interface CatalogQueryParams {
   sortBy?: CatalogSortBy
   search?: string
   storeSlug?: string
+  /** Cursor of the last item from the previous page (product id). */
+  cursor?: string
+  pageSize?: number
 }
 
 export interface CartLineItem {
@@ -147,10 +153,7 @@ export interface CartPricing {
 }
 
 /** Fallback demo codes when DB coupons aren't loaded yet */
-export const PROMO_CODES: Record<
-  string,
-  { type: 'percent' | 'shipping' | 'fixed'; value: number; label: string }
-> = {
+export const PROMO_CODES: Record<string, { type: 'percent' | 'shipping' | 'fixed'; value: number; label: string }> = {
   SAVE10: { type: 'percent', value: 0.1, label: '10% off' },
   FREESHIP: { type: 'shipping', value: 0, label: 'Free shipping' },
   CARTPULSE15: { type: 'percent', value: 0.15, label: '15% off' },

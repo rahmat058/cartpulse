@@ -19,6 +19,7 @@ export default async function ProductSlugPage({
   const relatedCatalog = await getProducts({
     category: product.category,
     sortBy: 'rating-desc',
+    pageSize: 5,
   })
   const related = relatedCatalog.data.filter((p) => p.slug !== slug).slice(0, 4)
   const initialReviews = await listProductReviews(product.id)

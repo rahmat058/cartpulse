@@ -66,12 +66,43 @@ function mapCoupon(row: {
   }
 }
 
-export async function listAdminCoupons(): Promise<AdminCouponRow[]> {
-  const rows = await prisma.coupon.findMany({
-    where: NOT_DELETED,
-    orderBy: { createdAt: 'desc' },
-  })
-  return rows.map(mapCoupon)
+export async function listAdminCoupons(options?: {
+  search?: string
+  status?: 'all' | 'active' | 'inactive'
+  page?: number
+  pageSize?: number
+}): Promise<{ data: AdminCouponRow[]; total: number; page: number; pageSize: number }> {
+  const page = Math.max(1, options?.page ?? 1)
+  const pageSize = Math.min(100, Math.max(1, options?.pageSize ?? 10))
+  const skip = (page - 1) * pageSize
+  const search = options?.search?.trim()
+  const status = options?.status ?? 'all'
+
+  const where = {
+    ...NOT_DELETED,
+    ...(status === 'active' ? { active: true } : {}),
+    ...(status === 'inactive' ? { active: false } : {}),
+    ...(search
+      ? {
+          OR: [
+            { code: { contains: search, mode: 'insensitive' as const } },
+            { label: { contains: search, mode: 'insensitive' as const } },
+          ],
+        }
+      : {}),
+  }
+
+  const [total, rows] = await Promise.all([
+    prisma.coupon.count({ where }),
+    prisma.coupon.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: pageSize,
+    }),
+  ])
+
+  return { data: rows.map(mapCoupon), total, page, pageSize }
 }
 
 export async function getAdminCoupon(id: string): Promise<AdminCouponDetail | null> {

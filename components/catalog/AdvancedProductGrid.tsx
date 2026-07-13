@@ -2,41 +2,48 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useAppSelector } from '@/lib/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
 import {
   selectCatalogProducts,
   selectAdvancedFilters,
   selectCategoryFilter,
   selectCatalogPriceBounds,
 } from '@/lib/store/selectors/cartSelectors'
+import { appendCatalogFromQuery } from '@/lib/store/slices/cartSlice'
 import { CatalogResultsBar } from '@/components/catalog/CatalogResultsBar'
 import { ProductCard } from '@/components/catalog/ProductCard'
 import { Button } from '@/components/ui/Button'
 import { NoResultsPanel } from '@/components/lottie/NoResultsPanel'
 import { cn } from '@/lib/utils/cn'
+import { fetchProducts } from '@/lib/services/products-client'
+import { useCatalogFilters } from '@/hooks/use-catalog-filters'
+import { CATALOG_DEFAULT_PAGE_SIZE, type CatalogQueryParams } from '@/types/cart'
 
-export const CATEGORY_PRODUCT_PAGE_SIZE = 12
+export const CATEGORY_PRODUCT_PAGE_SIZE = CATALOG_DEFAULT_PAGE_SIZE
 
 interface AdvancedProductGridProps {
   onBuyNow?: () => void
   paginated?: boolean
-  pageSize?: number
+  /** When set (e.g. store page), used for server load-more instead of URL-only filters. */
+  query?: CatalogQueryParams
 }
 
 export function AdvancedProductGrid({
   onBuyNow,
   paginated = false,
-  pageSize = CATEGORY_PRODUCT_PAGE_SIZE,
+  query: queryProp,
 }: AdvancedProductGridProps) {
+  const dispatch = useAppDispatch()
   const products = useAppSelector(selectCatalogProducts)
   const categoryFilter = useAppSelector(selectCategoryFilter)
-  const catalogResultIds = useAppSelector((state) => state.cart.catalogResultIds)
   const catalogBounds = useAppSelector(selectCatalogPriceBounds)
   const advancedFilters = useAppSelector(selectAdvancedFilters)
+  const catalogMeta = useAppSelector((state) => state.cart.meta)
   const searchParams = useSearchParams()
+  const { query: urlQuery } = useCatalogFilters()
+  const query = queryProp ?? urlQuery
   const { viewMode } = advancedFilters
   const isList = viewMode === 'list'
-  const [visibleCount, setVisibleCount] = useState(pageSize)
   const [loadingMore, setLoadingMore] = useState(false)
 
   const hasActiveFilters = useMemo(() => {
@@ -50,6 +57,7 @@ export function AdvancedProductGrid({
     return Boolean(
       search ||
       store ||
+      query.storeSlug ||
       hasCategoryFilter ||
       advancedFilters.minRating > 0 ||
       advancedFilters.inStockOnly ||
@@ -62,23 +70,34 @@ export function AdvancedProductGrid({
       searchParams.get('priceMin') ||
       searchParams.get('priceMax'),
     )
-  }, [advancedFilters, catalogBounds.max, catalogBounds.min, categoryFilter, searchParams])
+  }, [advancedFilters, catalogBounds.max, catalogBounds.min, categoryFilter, query.storeSlug, searchParams])
 
   useEffect(() => {
-    setVisibleCount(pageSize)
     setLoadingMore(false)
-  }, [categoryFilter, pageSize, catalogResultIds, paginated])
+  }, [categoryFilter, query.storeSlug, query.search, query.sortBy, query.priceMin, query.priceMax])
 
-  function handleLoadMore() {
+  const nextCursor = catalogMeta?.nextCursor ?? null
+  const canLoadMore = paginated && Boolean(catalogMeta?.hasMore && nextCursor)
+
+  async function handleLoadMore() {
+    if (loadingMore || !paginated) return
+    const cursor = catalogMeta?.nextCursor
+    if (!cursor) return
+
     setLoadingMore(true)
-    window.setTimeout(() => {
-      setVisibleCount((count) => count + pageSize)
+    try {
+      const payload = await fetchProducts({
+        ...query,
+        cursor,
+        pageSize: catalogMeta?.pageSize ?? query.pageSize ?? CATALOG_DEFAULT_PAGE_SIZE,
+      })
+      dispatch(appendCatalogFromQuery(payload))
+    } catch {
+      // Keep current grid; user can retry.
+    } finally {
       setLoadingMore(false)
-    }, 400)
+    }
   }
-
-  const visibleProducts = paginated ? products.slice(0, visibleCount) : products
-  const canLoadMore = paginated && products.length > pageSize && visibleCount < products.length
 
   if (products.length === 0) {
     return (
@@ -99,14 +118,14 @@ export function AdvancedProductGrid({
 
   return (
     <div>
-      <CatalogResultsBar visibleCount={paginated ? visibleProducts.length : undefined} />
+      <CatalogResultsBar visibleCount={paginated ? products.length : undefined} />
 
       <div
         className={cn(
           isList ? 'flex flex-col gap-3' : 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
         )}
       >
-        {visibleProducts.map((product, index) => (
+        {products.map((product, index) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -123,7 +142,7 @@ export function AdvancedProductGrid({
             type="button"
             size="lg"
             loading={loadingMore}
-            onClick={handleLoadMore}
+            onClick={() => void handleLoadMore()}
             className={cn(
               'relative min-w-[180px] overflow-hidden border-transparent px-8',
               'bg-linear-to-r from-teal-500 via-teal-600 to-cyan-500 text-white',

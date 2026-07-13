@@ -3,7 +3,12 @@ import { NextResponse } from 'next/server'
 import { getClientIp } from '@/lib/api/client-ip'
 import { isMutatingMethod, isOriginAllowed } from '@/lib/api/origin-check'
 import { hasSuspiciousRequestContent } from '@/lib/api/suspicious-request'
-import { apiJson, applySecurityHeaders } from '@/lib/api/security-headers'
+import {
+  apiJson,
+  applyPrivateCacheHeaders,
+  applyPublicCatalogCacheHeaders,
+  applySecurityHeaders,
+} from '@/lib/api/security-headers'
 import { buildRateLimitKey, checkRateLimit, resolveRateLimitBucket } from '@/lib/api/rate-limit'
 
 export function normalizeApiPath(pathname: string): string {
@@ -56,7 +61,18 @@ export function applyApiGuard(request: NextRequest): NextResponse | null {
   return null
 }
 
-/** Attach security headers to a proxied API response. */
+/** Attach security headers to a proxied API response (private by default). */
 export function nextApiResponse(): NextResponse {
-  return applySecurityHeaders(NextResponse.next())
+  const response = NextResponse.next()
+  applySecurityHeaders(response)
+  applyPrivateCacheHeaders(response)
+  return response
+}
+
+/** Public catalog GETs — allow short CDN cache (no auth Set-Cookie on this path). */
+export function nextPublicApiResponse(): NextResponse {
+  const response = NextResponse.next()
+  applySecurityHeaders(response)
+  applyPublicCatalogCacheHeaders(response)
+  return response
 }

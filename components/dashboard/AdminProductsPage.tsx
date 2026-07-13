@@ -63,7 +63,7 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
   }, [])
 
   useEffect(() => {
-    fetch('/api/admin/stores')
+    fetch('/api/admin/stores?pageSize=100')
       .then((r) => r.json())
       .then((json: { data: StoreOption[] }) => setStores(json.data ?? []))
       .catch(() => undefined)

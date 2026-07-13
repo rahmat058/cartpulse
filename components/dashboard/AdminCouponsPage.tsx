@@ -53,19 +53,42 @@ function AdminCouponsPageContent({ refreshNonce }: { refreshNonce: number }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all')
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
+    return () => window.clearTimeout(timer)
+  }, [search])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearch, status])
 
   const loadCoupons = useCallback(() => {
     setLoading(true)
-    fetch('/api/admin/coupons')
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+      status,
+    })
+    if (debouncedSearch) params.set('search', debouncedSearch)
+
+    fetch(`/api/admin/coupons?${params}`)
       .then(async (response) => {
         if (!response.ok) throw new Error('Failed to load promo codes')
-        return response.json() as Promise<{ data: AdminCouponRow[] }>
+        return response.json() as Promise<{ data: AdminCouponRow[]; total: number }>
       })
-      .then((json) => setCoupons(json.data ?? []))
+      .then((json) => {
+        setCoupons(json.data ?? [])
+        setTotal(json.total ?? 0)
+      })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false))
-  }, [])
+  }, [debouncedSearch, page, pageSize, status])
 
   useEffect(() => {
     loadCoupons()
@@ -104,18 +127,7 @@ function AdminCouponsPageContent({ refreshNonce }: { refreshNonce: number }) {
     toast.success('Promo code deleted')
   }, [confirmDelete])
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    return coupons.filter((coupon) => {
-      if (status === 'active' && !coupon.active) return false
-      if (status === 'inactive' && coupon.active) return false
-      if (!query) return true
-      return (
-        coupon.code.toLowerCase().includes(query) ||
-        coupon.label.toLowerCase().includes(query)
-      )
-    })
-  }, [coupons, search, status])
+  const filtered = useMemo(() => coupons, [coupons])
 
   const columns = useMemo<ColumnDef<AdminCouponRow>[]>(
     () => [
@@ -226,6 +238,15 @@ function AdminCouponsPageContent({ refreshNonce }: { refreshNonce: number }) {
         searchPlaceholder="Search promo codes…"
         searchValue={search}
         onSearchChange={setSearch}
+        manualPagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={(size) => {
+          setPage(1)
+          setPageSize(size)
+        }}
         rowActions={(coupon) => [
           ...(can('update')
             ? [
@@ -245,7 +266,13 @@ function AdminCouponsPageContent({ refreshNonce }: { refreshNonce: number }) {
             : []),
         ]}
         filters={
-          <Select value={status} onValueChange={(value) => setStatus((value ?? 'all') as typeof status)}>
+          <Select
+            value={status}
+            onValueChange={(value) => {
+              setPage(1)
+              setStatus((value ?? 'all') as typeof status)
+            }}
+          >
             <SelectTrigger className="h-9 w-[140px]">
               <SelectValue placeholder="Status">
                 {status === 'all' ? 'All status' : status === 'active' ? 'Active' : 'Inactive'}

@@ -147,7 +147,7 @@ export function StorePageClient({ store }: { store: StoreProfile }) {
 
                 <section className="glass-card p-5 sm:p-6" aria-label="Store products">
                   <ActiveFilterChips />
-                  <AdvancedProductGrid onBuyNow={openCart} paginated />
+                  <AdvancedProductGrid onBuyNow={openCart} paginated query={query} />
                 </section>
               </motion.div>
             )}

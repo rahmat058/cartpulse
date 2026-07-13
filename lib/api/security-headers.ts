@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { PRIVATE_API_CACHE_CONTROL, PUBLIC_CATALOG_CACHE_CONTROL } from '@/lib/api/cache-headers'
 
 const SECURITY_HEADERS: Record<string, string> = {
   'X-Content-Type-Options': 'nosniff',
@@ -6,7 +7,6 @@ const SECURITY_HEADERS: Record<string, string> = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Cross-Origin-Resource-Policy': 'same-site',
-  'Cache-Control': 'no-store',
 }
 
 export function applySecurityHeaders(response: NextResponse): NextResponse {
@@ -16,7 +16,29 @@ export function applySecurityHeaders(response: NextResponse): NextResponse {
   return response
 }
 
+export function applyPrivateCacheHeaders(response: NextResponse): NextResponse {
+  response.headers.set('Cache-Control', PRIVATE_API_CACHE_CONTROL)
+  return response
+}
+
+export function applyPublicCatalogCacheHeaders(response: NextResponse): NextResponse {
+  response.headers.set('Cache-Control', PUBLIC_CATALOG_CACHE_CONTROL)
+  response.headers.set('CDN-Cache-Control', PUBLIC_CATALOG_CACHE_CONTROL)
+  response.headers.set('Vercel-CDN-Cache-Control', PUBLIC_CATALOG_CACHE_CONTROL)
+  return response
+}
+
 export function apiJson<T>(body: T, init?: ResponseInit): NextResponse {
   const response = NextResponse.json(body, init)
-  return applySecurityHeaders(response)
+  applySecurityHeaders(response)
+  applyPrivateCacheHeaders(response)
+  return response
+}
+
+/** Public catalog JSON — short CDN + browser cache. */
+export function apiJsonPublic<T>(body: T, init?: ResponseInit): NextResponse {
+  const response = NextResponse.json(body, init)
+  applySecurityHeaders(response)
+  applyPublicCatalogCacheHeaders(response)
+  return response
 }

@@ -101,12 +101,70 @@ export class ProductRepository extends BaseRepository {
     return SortStrategyRegistry.get(sortBy).toPrismaOrderBy()
   }
 
+  /** Stable order for cursor pagination — primary sort + id tiebreaker. */
+  getCursorOrderBy(sortBy: CatalogSortBy = 'name-asc'): Prisma.ProductOrderByWithRelationInput[] {
+    return [this.getOrderBy(sortBy), { id: 'asc' }]
+  }
+
   async findPublishedMany(where: Prisma.ProductWhereInput, sortBy: CatalogSortBy = 'name-asc'): Promise<DbProduct[]> {
     return this.db.product.findMany({
       where,
       include: productInclude,
       orderBy: this.getOrderBy(sortBy),
     })
+  }
+
+  async findPublishedPage(
+    where: Prisma.ProductWhereInput,
+    sortBy: CatalogSortBy = 'name-asc',
+    options: { skip: number; take: number },
+  ): Promise<DbProduct[]> {
+    return this.db.product.findMany({
+      where,
+      include: productInclude,
+      orderBy: this.getOrderBy(sortBy),
+      skip: options.skip,
+      take: options.take,
+    })
+  }
+
+  /**
+   * Cursor pagination — `cursor` is the last product id from the previous page.
+   * Fetches `take + 1` rows so the caller can detect `hasMore`.
+   */
+  async findPublishedAfterCursor(
+    where: Prisma.ProductWhereInput,
+    sortBy: CatalogSortBy = 'name-asc',
+    options: { cursor?: string; take: number },
+  ): Promise<DbProduct[]> {
+    const take = Math.max(1, options.take)
+    return this.db.product.findMany({
+      where,
+      include: productInclude,
+      orderBy: this.getCursorOrderBy(sortBy),
+      ...(options.cursor
+        ? {
+            cursor: { id: options.cursor },
+            skip: 1,
+          }
+        : {}),
+      take: take + 1,
+    })
+  }
+
+  async countPublished(where: Prisma.ProductWhereInput): Promise<number> {
+    return this.db.product.count({ where })
+  }
+
+  /** List DTO — omits download URL and trims long descriptions for catalog payloads. */
+  mapListProduct(row: DbProduct): Product {
+    const product = this.mapDbProduct(row)
+    const description = product.description.length > 180 ? `${product.description.slice(0, 177)}…` : product.description
+    return {
+      ...product,
+      description,
+      digitalAssetUrl: undefined,
+    }
   }
 
   async findBySlug(slug: string, storeSlug?: string): Promise<DbProduct | null> {
@@ -170,6 +228,10 @@ export const productRepository = new ProductRepository()
 /** Backward-compatible functional export used by shelf strategies and checkout. */
 export function mapDbProduct(row: DbProduct): Product {
   return productRepository.mapDbProduct(row)
+}
+
+export function mapListProduct(row: DbProduct): Product {
+  return productRepository.mapListProduct(row)
 }
 
 export function mapStoreInfo(row: DbProduct['store']): StoreInfo {

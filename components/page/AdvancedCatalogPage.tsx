@@ -154,7 +154,7 @@ export function AdvancedCatalogPage() {
 
             <section className="glass-card p-5 sm:p-6" aria-label="Filtered products">
               <ActiveFilterChips />
-              <AdvancedProductGrid onBuyNow={openCart} paginated />
+              <AdvancedProductGrid onBuyNow={openCart} paginated query={query} />
             </section>
           </motion.div>
         )}

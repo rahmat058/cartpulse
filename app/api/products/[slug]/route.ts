@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { apiJson, apiJsonPublic } from '@/lib/api/security-headers'
 import { getProductBySlug } from '@/lib/services/products'
 
 export async function GET(_request: Request, context: { params: Promise<{ slug: string }> }) {
@@ -7,10 +7,10 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
     const product = await getProductBySlug(slug)
 
     if (!product) {
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+      return apiJson({ error: 'Product not found' }, { status: 404 })
     }
 
-    return NextResponse.json({
+    return apiJsonPublic({
       meta: {
         schemaVersion: '1.1.0',
         collection: 'product',
@@ -23,6 +23,6 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
     })
   } catch (error) {
     console.error('Error fetching product:', error)
-    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 })
+    return apiJson({ error: 'Failed to fetch product' }, { status: 500 })
   }
 }

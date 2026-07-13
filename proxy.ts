@@ -7,14 +7,16 @@
  * 3. Locale routing — next-intl redirects and rewrites for `en` / `bn`.
  * 4. Auth gates — admin, dashboard, and checkout require a signed-in user with the right role.
  *
- * Auth.js session is available on `req.auth` because the handler is wrapped with `auth()`.
+ * Public catalog GETs skip the NextAuth wrapper so CDN can cache (no Set-Cookie).
+ * Auth.js session is available on `req.auth` for page gates because those paths use `auth()`.
  */
 import NextAuth from 'next-auth'
 import { routing } from '@/i18n/routing'
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextFetchEvent, type NextMiddleware, type NextRequest } from 'next/server'
 import { authConfig } from '@/lib/auth.config'
 import createIntlMiddleware from 'next-intl/middleware'
-import { applyApiGuard, nextApiResponse, normalizeApiPath } from '@/lib/api/guard'
+import { isPublicCatalogGet } from '@/lib/api/cache-headers'
+import { applyApiGuard, nextApiResponse, nextPublicApiResponse, normalizeApiPath } from '@/lib/api/guard'
 import { canAccessAdmin, canAccessAdminPath, canAccessDashboard } from '@/lib/auth-access'
 import { localeFromPathname, stripLocalePrefix, withLocalePath } from '@/i18n/locale-path'
 
@@ -25,7 +27,7 @@ const { auth } = NextAuth(authConfig)
  * Rewrites or redirects locale-scoped API paths to the real `/api/*` tree.
  * GET/HEAD → redirect (safe, idempotent). Mutations → rewrite (preserve method/body).
  */
-function handleLocalePrefixedApi(req: Parameters<Parameters<typeof auth>[0]>[0]) {
+function handleLocalePrefixedApi(req: NextRequest) {
   const match = req.nextUrl.pathname.match(/^\/(en|bn)\/api(\/.*)?$/)
   if (!match) return null
 
@@ -41,25 +43,29 @@ function handleLocalePrefixedApi(req: Parameters<Parameters<typeof auth>[0]>[0])
   return NextResponse.rewrite(url)
 }
 
-export default auth((req) => {
-  // --- API: locale fix, then security guard ---
+function handleApiRequest(req: NextRequest) {
   const apiFix = handleLocalePrefixedApi(req)
   if (apiFix) return apiFix
 
   const apiPath = normalizeApiPath(req.nextUrl.pathname)
-  if (apiPath.startsWith('/api/')) {
-    const blocked = applyApiGuard(req)
-    if (blocked) return blocked
-    return nextApiResponse()
+  if (!apiPath.startsWith('/api/')) return null
+
+  const blocked = applyApiGuard(req)
+  if (blocked) return blocked
+
+  if (isPublicCatalogGet(apiPath, req.method)) {
+    return nextPublicApiResponse()
   }
 
-  // --- Pages: locale prefix (e.g. /bn/products) ---
+  return nextApiResponse()
+}
+
+const handleAuthedPages = auth((req) => {
   const intlResponse = intlMiddleware(req)
   if (intlResponse.headers.has('location')) {
     return intlResponse
   }
 
-  // --- Pages: role-based access (paths compared without locale prefix) ---
   const pathname = req.nextUrl.pathname
   const withoutLocale = stripLocalePrefix(pathname)
   const locale = localeFromPathname(pathname)
@@ -92,7 +98,28 @@ export default auth((req) => {
   }
 
   return intlResponse
-})
+}) as unknown as NextMiddleware
+
+function needsAuthGate(pathname: string): boolean {
+  const withoutLocale = stripLocalePrefix(pathname)
+  return (
+    withoutLocale.startsWith('/admin') ||
+    withoutLocale.startsWith('/dashboard') ||
+    withoutLocale === '/checkout'
+  )
+}
+
+export default function proxy(req: NextRequest, event: NextFetchEvent) {
+  const apiResponse = handleApiRequest(req)
+  if (apiResponse) return apiResponse
+
+  // Public storefront skips NextAuth so pages can ISR / edge-cache without Set-Cookie.
+  if (!needsAuthGate(req.nextUrl.pathname)) {
+    return intlMiddleware(req)
+  }
+
+  return handleAuthedPages(req, event)
+}
 
 export const config = {
   // Include /api so guards run; exclude static assets and Next internals.

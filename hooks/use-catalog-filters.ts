@@ -20,6 +20,7 @@ import {
   selectCategoryFilter,
 } from '@/lib/store/selectors/cartSelectors'
 import type { CatalogQueryParams, CatalogSortBy, CatalogViewMode, ProductCategory } from '@/types/cart'
+import { CATALOG_DEFAULT_PAGE_SIZE } from '@/types/cart'
 
 function parseOptionalNumber(value: string | null): number | undefined {
   if (value == null || value === '') return undefined
@@ -57,6 +58,7 @@ export function useCatalogFilters() {
       sortBy: (params.get('sort') as CatalogSortBy | null) ?? 'name-asc',
       search: params.get('search') ?? undefined,
       storeSlug: params.get('store') ?? undefined,
+      pageSize: CATALOG_DEFAULT_PAGE_SIZE,
     }
   }, [searchKey])
 

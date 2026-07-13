@@ -3,19 +3,19 @@ import { NOT_DELETED } from '@/lib/core/constants'
 import { BaseService } from '@/lib/core/BaseService'
 import { getCategorySlugsIncludingDescendants } from '@/lib/services/categories'
 import {
+  mapListProduct,
   mapDbProduct,
   mapStoreInfo,
   productRepository,
   type ProductRepository,
 } from '@/lib/repositories/ProductRepository'
-import type {
-  CatalogQueryParams,
-  CatalogSortBy,
-  Product,
-  ProductCategory,
-  ProductsResponse,
-  StoreInfo,
-} from '@/types/cart'
+import type { CatalogQueryParams, CatalogSortBy, Product, ProductCategory, ProductsResponse } from '@/types/cart'
+import { CATALOG_DEFAULT_PAGE_SIZE, CATALOG_MAX_PAGE_SIZE } from '@/types/cart'
+
+function clampPageSize(value: number | undefined, fallback = CATALOG_DEFAULT_PAGE_SIZE): number {
+  if (!value || !Number.isFinite(value)) return fallback
+  return Math.min(CATALOG_MAX_PAGE_SIZE, Math.max(1, Math.floor(value)))
+}
 
 /**
  * Service layer — catalog business rules (filters, meta, query parsing).
@@ -43,6 +43,8 @@ export class CatalogService extends BaseService {
     const priceMin = get('priceMin')
     const priceMax = get('priceMax')
     const minRating = get('minRating')
+    const pageSize = get('pageSize') ?? get('limit')
+    const cursor = get('cursor')?.trim() || undefined
 
     return {
       category: category && category !== 'all' ? category : undefined,
@@ -54,6 +56,8 @@ export class CatalogService extends BaseService {
       freeDeliveryOnly: get('freeDelivery') === 'true',
       search: get('search')?.trim() || undefined,
       storeSlug: get('store') ?? undefined,
+      cursor,
+      pageSize: pageSize ? Number(pageSize) : undefined,
     }
   }
 
@@ -100,20 +104,34 @@ export class CatalogService extends BaseService {
 
   async getProducts(query: CatalogQueryParams & { storeSlug?: string } = {}): Promise<ProductsResponse> {
     const where = await this.buildWhere(query)
-    const rows = await this.products.findPublishedMany(where, query.sortBy)
-    const data = rows.map(mapDbProduct)
-    const store = rows[0]?.store ? mapStoreInfo(rows[0].store) : await this.products.getDefaultStore()
+    const pageSize = clampPageSize(query.pageSize)
+    const cursor = query.cursor?.trim() || undefined
+
+    const [totalProducts, rows, defaultStore] = await Promise.all([
+      this.products.countPublished(where),
+      this.products.findPublishedAfterCursor(where, query.sortBy, { cursor, take: pageSize }),
+      this.products.getDefaultStore(),
+    ])
+
+    const hasMore = rows.length > pageSize
+    const pageRows = hasMore ? rows.slice(0, pageSize) : rows
+    const data = pageRows.map(mapListProduct)
+    const store = pageRows[0]?.store ? mapStoreInfo(pageRows[0].store) : defaultStore
     const categories = [...new Set(data.map((product) => product.category))]
+    const nextCursor = hasMore ? (pageRows[pageRows.length - 1]?.id ?? null) : null
 
     return {
       meta: {
         schemaVersion: '2.0.0',
         collection: 'products',
-        totalProducts: data.length,
+        totalProducts,
         categories,
         currency: store.currency,
         generatedAt: new Date().toISOString(),
         store,
+        pageSize,
+        nextCursor,
+        hasMore,
       },
       data,
     }
@@ -121,17 +139,20 @@ export class CatalogService extends BaseService {
 
   async getProductBySlug(slug: string, storeSlug?: string): Promise<Product | null> {
     const row = await this.products.findBySlug(slug, storeSlug)
-    return row ? mapDbProduct(row) : null
+    if (!row) return null
+    // Never expose raw download URLs on the public PDP — library API handles downloads.
+    const product = mapDbProduct(row)
+    return { ...product, digitalAssetUrl: undefined }
   }
 
   async getProductsByIds(ids: string[]): Promise<Product[]> {
     const rows = await this.products.findByIds(ids)
-    return rows.map(mapDbProduct)
+    return rows.map(mapListProduct)
   }
 
   async getFeaturedProducts(limit = 6, storeSlug?: string): Promise<Product[]> {
     const rows = await this.products.findFeatured(limit, storeSlug)
-    return rows.map(mapDbProduct)
+    return rows.map(mapListProduct)
   }
 }
 

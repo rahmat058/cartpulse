@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { fetchProducts } from '@/lib/services/products-client'
-import type { CartState, CatalogSortBy, CatalogViewMode, Product, ProductCategory, ProductsResponse } from '@/types/cart'
+import type {
+  CartState,
+  CatalogSortBy,
+  CatalogViewMode,
+  Product,
+  ProductCategory,
+  ProductsResponse,
+} from '@/types/cart'
 import type { CouponDefinition } from '@/types/commerce'
 import type { CatalogQueryParams } from '@/types/cart'
-import {
-  DEFAULT_ADVANCED_FILTERS,
-  getCartLineKey,
-  getProductStock,
-} from '@/types/cart'
+import { DEFAULT_ADVANCED_FILTERS, getCartLineKey, getProductStock } from '@/types/cart'
 import { clampQuantity } from '@/lib/utils/cartPricing'
 import { getCatalogPriceBounds } from '@/lib/utils/productCatalog'
 
@@ -47,6 +50,23 @@ function applyCatalogResults(state: CartState, payload: ProductsResponse) {
   state.meta = payload.meta
   mergeProducts(state, payload.data)
   state.catalogResultIds = payload.data.map((product) => product.id)
+  state.catalogTotal = payload.meta.totalProducts
+  state.catalogError = null
+  expandPriceBounds(state, payload.data)
+  reconcileCartLines(state)
+}
+
+function appendCatalogResults(state: CartState, payload: ProductsResponse) {
+  state.catalogStatus = 'succeeded'
+  state.meta = payload.meta
+  mergeProducts(state, payload.data)
+  const seen = new Set(state.catalogResultIds)
+  for (const product of payload.data) {
+    if (!seen.has(product.id)) {
+      state.catalogResultIds.push(product.id)
+      seen.add(product.id)
+    }
+  }
   state.catalogTotal = payload.meta.totalProducts
   state.catalogError = null
   expandPriceBounds(state, payload.data)
@@ -224,6 +244,9 @@ const cartSlice = createSlice({
     setCatalogFromQuery(state, action: PayloadAction<ProductsResponse>) {
       applyCatalogResults(state, action.payload)
     },
+    appendCatalogFromQuery(state, action: PayloadAction<ProductsResponse>) {
+      appendCatalogResults(state, action.payload)
+    },
     setCatalogLoading(state) {
       state.catalogStatus = 'loading'
       state.catalogError = null
@@ -270,6 +293,7 @@ export const {
   hydrateCart,
   upsertProducts,
   setCatalogFromQuery,
+  appendCatalogFromQuery,
   setCatalogLoading,
   setCatalogFailed,
 } = cartSlice.actions

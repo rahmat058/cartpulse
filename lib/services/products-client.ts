@@ -1,4 +1,5 @@
 import type { CatalogQueryParams, ProductsResponse } from '@/types/cart'
+import { CATALOG_DEFAULT_PAGE_SIZE } from '@/types/cart'
 
 function buildQueryString(query: CatalogQueryParams = {}): string {
   const params = new URLSearchParams()
@@ -12,6 +13,8 @@ function buildQueryString(query: CatalogQueryParams = {}): string {
   if (query.sortBy) params.set('sort', query.sortBy)
   if (query.search) params.set('search', query.search)
   if (query.storeSlug) params.set('store', query.storeSlug)
+  if (query.cursor) params.set('cursor', query.cursor)
+  if (query.pageSize !== undefined) params.set('pageSize', String(query.pageSize))
 
   const qs = params.toString()
   return qs ? `?${qs}` : ''
@@ -21,7 +24,11 @@ export async function fetchProducts(
   query: CatalogQueryParams = {},
   signal?: AbortSignal,
 ): Promise<ProductsResponse> {
-  const response = await fetch(`/api/products${buildQueryString(query)}`, { signal })
+  const withDefaults: CatalogQueryParams = {
+    pageSize: CATALOG_DEFAULT_PAGE_SIZE,
+    ...query,
+  }
+  const response = await fetch(`/api/products${buildQueryString(withDefaults)}`, { signal })
 
   if (!response.ok) {
     const body = (await response.json().catch(() => null)) as { error?: string } | null

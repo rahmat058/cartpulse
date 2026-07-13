@@ -40,9 +40,12 @@ export function HeaderSearch({ className }: { className?: string }) {
     const timer = window.setTimeout(async () => {
       setLoading(true)
       try {
-        const response = await fetch(`/api/products?search=${encodeURIComponent(trimmed)}&sort=name-asc`, {
-          signal: controller.signal,
-        })
+        const response = await fetch(
+          `/api/products?search=${encodeURIComponent(trimmed)}&sort=name-asc&pageSize=8`,
+          {
+            signal: controller.signal,
+          },
+        )
         if (!response.ok) return
         const json = (await response.json()) as { data: Product[] }
         setSuggestions(

@@ -3,7 +3,7 @@
  * API routes and server components should import from here for stability.
  */
 export type { DbProduct } from '@/lib/repositories/ProductRepository'
-export { mapDbProduct, mapStoreInfo, productRepository } from '@/lib/repositories/ProductRepository'
+export { mapDbProduct, mapListProduct, mapStoreInfo, productRepository } from '@/lib/repositories/ProductRepository'
 
 import { catalogService } from '@/lib/services/CatalogService'
 
