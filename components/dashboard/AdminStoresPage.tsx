@@ -24,6 +24,8 @@ import {
 } from '@/components/providers/StoreDrawerProvider'
 import { useDeleteConfirm } from '@/components/providers/DeleteConfirmProvider'
 import { useAdminPermissions } from '@/hooks/use-admin-permissions'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 
 interface StoreRow {
   id: string
@@ -55,16 +57,11 @@ function AdminStoresPageContent({ refreshNonce }: { refreshNonce: number }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
   const [status, setStatus] = useState<'all' | 'active' | 'inactive'>('all')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [total, setTotal] = useState(0)
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
-    return () => window.clearTimeout(timer)
-  }, [search])
 
   useEffect(() => {
     setPage(1)

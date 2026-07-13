@@ -9,6 +9,8 @@ import { AdminDataTable, type AdminRowAction } from '@/components/admin/AdminDat
 import { TableExportMenu } from '@/components/admin/TableExportMenu'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select'
 import { Link, useRouter } from '@/i18n/navigation'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 import { formatCurrency } from '@/lib/utils/cartPricing'
 import { mapUserOrderRowsForExport } from '@/lib/export/admin-table-rows'
 import { orderStatusBadgeVariant } from '@/lib/orders/order-display'
@@ -23,35 +25,39 @@ type OrderRow = {
 
 const STATUSES = ['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED'] as const
 
-export function UserOrdersTable({ orders }: { orders: OrderRow[] }) {
+/** Account orders — offset pagination + debounced search via GET /api/orders. */
+export function UserOrdersTable() {
   const router = useRouter()
+  const [orders, setOrders] = useState<OrderRow[]>([])
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
   const [statusFilter, setStatusFilter] = useState<(typeof STATUSES)[number] | 'ALL'>('ALL')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setPage(1)
-  }, [search, statusFilter])
+  }, [debouncedSearch, statusFilter])
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase()
-    let result = [...orders]
+  useEffect(() => {
+    setLoading(true)
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+    })
+    if (statusFilter !== 'ALL') params.set('status', statusFilter)
+    if (debouncedSearch) params.set('search', debouncedSearch)
 
-    if (statusFilter !== 'ALL') {
-      result = result.filter((order) => order.status === statusFilter)
-    }
-
-    result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-
-    if (!query) return result
-    return result.filter((order) => order.id.toLowerCase().includes(query))
-  }, [orders, search, statusFilter])
-
-  const paginatedOrders = useMemo(() => {
-    const start = (page - 1) * pageSize
-    return filtered.slice(start, start + pageSize)
-  }, [filtered, page, pageSize])
+    fetch(`/api/orders?${params}`)
+      .then((r) => r.json())
+      .then((json: { data: OrderRow[]; total: number }) => {
+        setOrders(json.data ?? [])
+        setTotal(json.total ?? 0)
+      })
+      .finally(() => setLoading(false))
+  }, [debouncedSearch, statusFilter, page, pageSize])
 
   const columns = useMemo<ColumnDef<OrderRow>[]>(
     () => [
@@ -130,16 +136,17 @@ export function UserOrdersTable({ orders }: { orders: OrderRow[] }) {
             filenameBase="my-orders"
             sheetName="My Orders"
             page={page}
-            rows={mapUserOrderRowsForExport(paginatedOrders)}
-            rowCount={paginatedOrders.length}
-            disabled={paginatedOrders.length === 0}
+            rows={mapUserOrderRowsForExport(orders)}
+            rowCount={orders.length}
+            disabled={loading || orders.length === 0}
           />
         }
       />
 
       <AdminDataTable
         columns={columns}
-        data={paginatedOrders}
+        data={orders}
+        loading={loading}
         emptyMessage="No orders found."
         searchPlaceholder="Search by order ID…"
         searchValue={search}
@@ -147,7 +154,7 @@ export function UserOrdersTable({ orders }: { orders: OrderRow[] }) {
         enableRowSelection={false}
         enableSorting={false}
         manualPagination
-        total={filtered.length}
+        total={total}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}

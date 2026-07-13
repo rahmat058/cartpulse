@@ -167,6 +167,50 @@ export async function listUserOrders(userId: string) {
   })
 }
 
+export async function listUserOrdersPage(
+  userId: string,
+  filters?: {
+    status?: OrderStatus
+    search?: string
+    page?: number
+    pageSize?: number
+  },
+) {
+  const page = Math.max(1, filters?.page ?? 1)
+  const pageSize = Math.min(100, Math.max(1, filters?.pageSize ?? 10))
+  const skip = (page - 1) * pageSize
+  const search = filters?.search?.trim()
+
+  const where = {
+    userId,
+    ...(filters?.status ? { status: filters.status } : {}),
+    ...(search ? { id: { contains: search, mode: 'insensitive' as const } } : {}),
+  }
+
+  const [total, rows] = await Promise.all([
+    prisma.order.count({ where }),
+    prisma.order.findMany({
+      where,
+      include: {
+        items: { include: { product: true, variant: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: pageSize,
+    }),
+  ])
+
+  const data = rows.map((order) => ({
+    id: order.id,
+    status: order.status,
+    total: order.total,
+    createdAt: order.createdAt.toISOString(),
+    itemCount: order.items.reduce((sum, item) => sum + item.quantity, 0),
+  }))
+
+  return { data, total, page, pageSize }
+}
+
 export async function listAllOrders(filters?: { status?: OrderStatus }) {
   return prisma.order.findMany({
     where: filters?.status ? { status: filters.status } : undefined,
@@ -386,12 +430,7 @@ export async function getAnalytics(rangeDays = 30) {
   }
 }
 
-export async function listUsers(options?: {
-  role?: AppRole
-  search?: string
-  page?: number
-  pageSize?: number
-}) {
+export async function listUsers(options?: { role?: AppRole; search?: string; page?: number; pageSize?: number }) {
   const page = Math.max(1, options?.page ?? 1)
   const pageSize = Math.min(100, Math.max(1, options?.pageSize ?? 10))
   const skip = (page - 1) * pageSize
@@ -434,4 +473,3 @@ export async function listUsers(options?: {
 
   return { data, total, page, pageSize }
 }
-

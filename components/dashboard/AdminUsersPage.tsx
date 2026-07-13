@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/Select'
 import { useDeleteConfirm } from '@/components/providers/DeleteConfirmProvider'
 import { useAdminPermissions } from '@/hooks/use-admin-permissions'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 import type { AdminPermissions, AppRole } from '@/types/auth'
 
 interface UserRow {
@@ -51,7 +53,7 @@ export function AdminUsersPage() {
   const [users, setUsers] = useState<UserRow[]>([])
   const [role, setRole] = useState<'ALL' | AppRole>('ALL')
   const [search, setSearch] = useState('')
-  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -64,11 +66,6 @@ export function AdminUsersPage() {
   )
   const { confirmDelete } = useDeleteConfirm()
   const { isSuperAdmin } = useAdminPermissions()
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300)
-    return () => window.clearTimeout(timer)
-  }, [search])
 
   useEffect(() => {
     setPage(1)

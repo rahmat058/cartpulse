@@ -23,6 +23,8 @@ import {
 import { useDeleteConfirm } from '@/components/providers/DeleteConfirmProvider'
 import { TableExportMenu } from '@/components/admin/TableExportMenu'
 import { useAdminPermissions } from '@/hooks/use-admin-permissions'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 import { mapProductRowsForExport } from '@/lib/export/admin-table-rows'
 
 interface StoreOption {
@@ -49,6 +51,7 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
   const [sort, setSort] = useState<'name' | 'price' | 'stock' | 'newest'>('newest')
   const [storeId, setStoreId] = useState('all')
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all')
@@ -61,6 +64,10 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
     const id = params.get('storeId') ?? params.get('store')
     if (id) setStoreId(id)
   }, [])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearch, sort, storeId, status])
 
   useEffect(() => {
     fetch('/api/admin/stores?pageSize=100')
@@ -76,7 +83,7 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
       pageSize: String(pageSize),
       sort,
     })
-    if (search.trim()) params.set('search', search.trim())
+    if (debouncedSearch) params.set('search', debouncedSearch)
     if (storeId !== 'all') params.set('storeId', storeId)
     if (status === 'published') params.set('published', 'true')
     if (status === 'draft') params.set('published', 'false')
@@ -95,7 +102,7 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false))
-  }, [page, pageSize, search, sort, storeId, status])
+  }, [page, pageSize, debouncedSearch, sort, storeId, status])
 
   useEffect(() => {
     loadProducts()
@@ -273,10 +280,7 @@ function AdminProductsPageContent({ refreshNonce }: { refreshNonce: number }) {
         emptyMessage="No products yet."
         searchPlaceholder="Search products…"
         searchValue={search}
-        onSearchChange={(value) => {
-          setPage(1)
-          setSearch(value)
-        }}
+        onSearchChange={setSearch}
         enableSorting={false}
         manualPagination
         total={total}

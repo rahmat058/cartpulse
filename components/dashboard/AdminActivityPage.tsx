@@ -25,6 +25,8 @@ import {
   activityActionBadgeVariant,
 } from '@/types/activity'
 import { mapActivityRowsForExport } from '@/lib/export/admin-table-rows'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 
 function formatTimestamp(value: string) {
   return new Intl.DateTimeFormat(undefined, {
@@ -38,6 +40,7 @@ export function AdminActivityPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS)
   const [action, setAction] = useState<'ALL' | ActivityAction>('ALL')
   const [entityType, setEntityType] = useState<'ALL' | ActivityEntityType>('ALL')
   const [page, setPage] = useState(1)
@@ -53,7 +56,7 @@ export function AdminActivityPage() {
       page: String(page),
       pageSize: String(pageSize),
     })
-    if (search.trim()) params.set('search', search.trim())
+    if (debouncedSearch) params.set('search', debouncedSearch)
     if (action !== 'ALL') params.set('action', action)
     if (entityType !== 'ALL') params.set('entityType', entityType)
 
@@ -71,7 +74,7 @@ export function AdminActivityPage() {
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false))
-  }, [action, entityType, page, pageSize, search])
+  }, [action, entityType, page, pageSize, debouncedSearch])
 
   useEffect(() => {
     loadLogs()
@@ -79,7 +82,7 @@ export function AdminActivityPage() {
 
   useEffect(() => {
     setPage(1)
-  }, [search, action, entityType])
+  }, [debouncedSearch, action, entityType])
 
   const columns = useMemo<ColumnDef<AdminActivityLogRow>[]>(
     () => [

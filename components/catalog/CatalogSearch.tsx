@@ -3,6 +3,8 @@
 import { useEffect, useId, useState } from 'react'
 import { Search } from 'lucide-react'
 import { useCatalogFilters } from '@/hooks/use-catalog-filters'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 import { Input } from '@/components/ui/Input'
 import { cn } from '@/lib/utils/cn'
 import type { Product } from '@/types/cart'
@@ -13,6 +15,7 @@ export function CatalogSearch() {
   const { query, setSearch } = useCatalogFilters()
   const listboxId = useId()
   const [value, setValue] = useState(query.search ?? '')
+  const debouncedValue = useDebouncedValue(value.trim(), SEARCH_DEBOUNCE_MS)
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
@@ -21,41 +24,38 @@ export function CatalogSearch() {
     setValue(query.search ?? '')
   }, [query.search])
 
+  // Sync debounced text → URL (cursor catalog refetch via useCatalogLoader).
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setSearch(value.trim() || undefined)
-    }, 350)
-    return () => window.clearTimeout(timer)
-  }, [value, setSearch])
+    const next = debouncedValue || undefined
+    if ((query.search ?? undefined) === next) return
+    setSearch(next)
+  }, [debouncedValue, query.search, setSearch])
 
+  // Suggestion dropdown — cursor-friendly first page only.
   useEffect(() => {
-    const trimmed = value.trim()
-    if (trimmed.length < 2) {
+    if (debouncedValue.length < 2) {
       setSuggestions([])
       return
     }
 
     const controller = new AbortController()
-    const timer = window.setTimeout(async () => {
+    void (async () => {
       try {
         const response = await fetch(
-          `/api/products?search=${encodeURIComponent(trimmed)}&sort=name-asc`,
+          `/api/products?search=${encodeURIComponent(debouncedValue)}&sort=name-asc&pageSize=6`,
           { signal: controller.signal },
         )
         if (!response.ok) return
         const json = (await response.json()) as { data: Product[] }
-        setSuggestions((json.data ?? []).slice(0, 6))
+        setSuggestions(json.data ?? [])
         setActiveIndex(-1)
       } catch {
         /* aborted */
       }
-    }, 300)
+    })()
 
-    return () => {
-      window.clearTimeout(timer)
-      controller.abort()
-    }
-  }, [value])
+    return () => controller.abort()
+  }, [debouncedValue])
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown') {
@@ -97,9 +97,7 @@ export function CatalogSearch() {
         aria-expanded={open}
         aria-controls={listboxId}
         aria-autocomplete="list"
-        aria-activedescendant={
-          activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined
-        }
+        aria-activedescendant={activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined}
         autoComplete="off"
       />
 
@@ -107,15 +105,9 @@ export function CatalogSearch() {
         <ul
           id={listboxId}
           role="listbox"
-          className="absolute top-full right-0 left-0 z-20 mt-1 max-h-64 overflow-auto rounded-md border border-teal-100 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-950"
-        >
+          className="absolute top-full right-0 left-0 z-20 mt-1 max-h-64 overflow-auto rounded-md border border-teal-100 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-950">
           {suggestions.map((item, index) => (
-            <li
-              key={item.id}
-              id={`${listboxId}-option-${index}`}
-              role="option"
-              aria-selected={index === activeIndex}
-            >
+            <li key={item.id} id={`${listboxId}-option-${index}`} role="option" aria-selected={index === activeIndex}>
               <button
                 type="button"
                 className={cn(
@@ -128,8 +120,7 @@ export function CatalogSearch() {
                   setValue(item.name)
                   setSearch(item.name)
                   setOpen(false)
-                }}
-              >
+                }}>
                 <span>{item.emoji}</span>
                 <span className="truncate">{item.name}</span>
               </button>

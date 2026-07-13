@@ -1,17 +1,18 @@
 'use client'
 
 import { useEffect, useId, useRef, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useRouter as useI18nRouter } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import { Search } from 'lucide-react'
+import { useDebouncedValue } from '@/hooks/use-debounced-value'
+import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
 import { cn } from '@/lib/utils/cn'
 import type { Product } from '@/types/cart'
 
 type Suggestion = Pick<Product, 'id' | 'slug' | 'name' | 'emoji' | 'price' | 'category'>
 
 export function HeaderSearch({ className }: { className?: string }) {
-  const router = useRouter()
   const i18nRouter = useI18nRouter()
   const t = useTranslations('search')
   const tCommon = useTranslations('common')
@@ -19,6 +20,7 @@ export function HeaderSearch({ className }: { className?: string }) {
   const listboxId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState(searchParams.get('search') ?? '')
+  const debouncedQuery = useDebouncedValue(query.trim(), SEARCH_DEBOUNCE_MS)
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
@@ -29,27 +31,24 @@ export function HeaderSearch({ className }: { className?: string }) {
   }, [searchParams])
 
   useEffect(() => {
-    const trimmed = query.trim()
-    if (trimmed.length < 2) {
+    if (debouncedQuery.length < 2) {
       setSuggestions([])
       setLoading(false)
       return
     }
 
     const controller = new AbortController()
-    const timer = window.setTimeout(async () => {
-      setLoading(true)
+    setLoading(true)
+    void (async () => {
       try {
         const response = await fetch(
-          `/api/products?search=${encodeURIComponent(trimmed)}&sort=name-asc&pageSize=8`,
-          {
-            signal: controller.signal,
-          },
+          `/api/products?search=${encodeURIComponent(debouncedQuery)}&sort=name-asc&pageSize=8`,
+          { signal: controller.signal },
         )
         if (!response.ok) return
         const json = (await response.json()) as { data: Product[] }
         setSuggestions(
-          (json.data ?? []).slice(0, 8).map((product) => ({
+          (json.data ?? []).map((product) => ({
             id: product.id,
             slug: product.slug,
             name: product.name,
@@ -67,13 +66,10 @@ export function HeaderSearch({ className }: { className?: string }) {
       } finally {
         setLoading(false)
       }
-    }, 300)
+    })()
 
-    return () => {
-      window.clearTimeout(timer)
-      controller.abort()
-    }
-  }, [query])
+    return () => controller.abort()
+  }, [debouncedQuery])
 
   function goToResults(value = query) {
     const trimmed = value.trim()
@@ -134,7 +130,6 @@ export function HeaderSearch({ className }: { className?: string }) {
             if (suggestions.length > 0) setOpen(true)
           }}
           onBlur={() => {
-            // Delay so option click can register.
             window.setTimeout(() => setOpen(false), 150)
           }}
           onKeyDown={onKeyDown}
