@@ -11,10 +11,10 @@ import { DateRangePicker } from '@/components/ui/DatePicker'
 import type { OrderStatus } from '@/app/generated/prisma/client'
 import { mapOrderRowsForExport } from '@/lib/export/admin-table-rows'
 import { orderStatusBadgeVariant } from '@/lib/orders/order-display'
-import { AdminDataTable, type AdminRowAction } from '@/components/admin/AdminDataTable'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select'
 import { useDebouncedValue } from '@/hooks/use-debounced-value'
 import { SEARCH_DEBOUNCE_MS } from '@/lib/api/pagination'
+import { AdminDataTable, type AdminRowAction } from '@/components/admin/AdminDataTable'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select'
 
 interface OrderRow {
   id: string
@@ -62,18 +62,27 @@ export function AdminOrdersPage() {
       .finally(() => setLoading(false))
   }, [filter, debouncedSearch, dateFrom, dateTo, page, pageSize])
 
-  const updateStatus = useCallback(async (id: string, status: OrderStatus) => {
+  const updateStatus = useCallback(async (id: string, nextStatus: OrderStatus) => {
+    let previousStatus: OrderStatus | null = null
+    setOrders((current) =>
+      current.map((o) => {
+        if (o.id !== id) return o
+        previousStatus = o.status
+        return { ...o, status: nextStatus }
+      }),
+    )
     const response = await fetch(`/api/orders/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ status: nextStatus }),
     })
     if (!response.ok) {
+      if (previousStatus) {
+        setOrders((current) => current.map((o) => (o.id === id ? { ...o, status: previousStatus! } : o)))
+      }
       toast.error('Failed to update status')
       return
     }
-    const json = (await response.json()) as { data: OrderRow }
-    setOrders((current) => current.map((o) => (o.id === id ? { ...o, status: json.data.status } : o)))
     toast.success('Order updated')
   }, [])
 

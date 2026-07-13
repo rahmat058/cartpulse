@@ -1,30 +1,24 @@
 import Link from 'next/link'
-import { AlertTriangle, DollarSign, Package, Plus, ShoppingBag, Users } from 'lucide-react'
-import { getAdminKpis, getAnalytics, listAllOrders } from '@/lib/services/orders'
-import { KpiCard } from '@/components/dashboard/KpiCard'
-import { AdminOverviewCharts } from '@/components/dashboard/AdminOverviewCharts'
-import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
-import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge'
-import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import { KpiCard } from '@/components/dashboard/KpiCard'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { orderStatusBadgeVariant } from '@/lib/orders/order-display'
+import { AdminStatusBadge } from '@/components/admin/AdminStatusBadge'
+import { getAdminKpis, listAllOrdersPage } from '@/lib/services/orders'
+import { AdminOverviewCharts } from '@/components/dashboard/AdminOverviewCharts'
+import { AlertTriangle, DollarSign, Package, Plus, ShoppingBag, Users } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminOverviewPage() {
-  const [kpis, orders, analytics] = await Promise.all([
-    getAdminKpis(),
-    listAllOrders(),
-    getAnalytics(30),
-  ])
-  const recent = orders.slice(0, 8)
+  // KPIs + 8 recent orders only — analytics charts fetch client-side (was blocking nav with full order dump).
+  const [kpis, recentPage] = await Promise.all([getAdminKpis(), listAllOrdersPage({ page: 1, pageSize: 8 })])
+  const recent = recentPage.data
 
   return (
     <div className="space-y-8">
-      <AdminPageHeader
-        title="Overview"
-        description="Revenue, orders, and storefront activity at a glance."
-      />
+      <AdminPageHeader title="Overview" description="Revenue, orders, and storefront activity at a glance." />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard label="Revenue" value={`$${kpis.revenue.toLocaleString()}`} icon={DollarSign} tone="teal" />
@@ -38,13 +32,13 @@ export default async function AdminOverviewPage() {
         />
       </div>
 
-      <AdminOverviewCharts initialData={analytics} />
+      <AdminOverviewCharts />
 
       <section className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-foreground">Recent orders</h2>
-            <p className="text-sm text-muted-foreground">Latest activity across the storefront</p>
+            <h2 className="text-foreground text-lg font-semibold">Recent orders</h2>
+            <p className="text-muted-foreground text-sm">Latest activity across the storefront</p>
           </div>
           <Link href="/admin/orders">
             <Button variant="outline" size="sm">
@@ -56,18 +50,18 @@ export default async function AdminOverviewPage() {
         <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
-              <thead className="border-b border-border bg-muted/40 text-left">
+              <thead className="border-border bg-muted/40 border-b text-left">
                 <tr>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <th className="text-muted-foreground px-4 py-3 text-xs font-semibold tracking-wide uppercase">
                     Customer
                   </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <th className="text-muted-foreground px-4 py-3 text-xs font-semibold tracking-wide uppercase">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <th className="text-muted-foreground px-4 py-3 text-xs font-semibold tracking-wide uppercase">
                     Date
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <th className="text-muted-foreground px-4 py-3 text-right text-xs font-semibold tracking-wide uppercase">
                     Total
                   </th>
                 </tr>
@@ -75,26 +69,28 @@ export default async function AdminOverviewPage() {
               <tbody>
                 {recent.length > 0 ? (
                   recent.map((order) => (
-                    <tr key={order.id} className="border-t border-border transition-colors hover:bg-muted/30">
-                      <td className="px-4 py-3 font-medium text-foreground">
-                        {order.user.name ?? order.user.email}
+                    <tr key={order.id} className="border-border hover:bg-muted/30 border-t transition-colors">
+                      <td className="text-foreground px-4 py-3 font-medium">
+                        <Link
+                          href={`/admin/orders/${order.id}`}
+                          className="hover:text-teal-700 hover:underline dark:hover:text-teal-300">
+                          {order.user.name ?? order.user.email}
+                        </Link>
                       </td>
                       <td className="px-4 py-3">
                         <AdminStatusBadge variant={orderStatusBadgeVariant(order.status)}>
                           {order.status}
                         </AdminStatusBadge>
                       </td>
-                      <td className="px-4 py-3 text-muted-foreground">
-                        {order.createdAt.toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-right font-semibold tabular-nums text-foreground">
+                      <td className="text-muted-foreground px-4 py-3">{order.createdAt.toLocaleDateString()}</td>
+                      <td className="text-foreground px-4 py-3 text-right font-semibold tabular-nums">
                         ${order.total.toFixed(2)}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="px-4 py-10 text-center text-muted-foreground">
+                    <td colSpan={4} className="text-muted-foreground px-4 py-10 text-center">
                       No orders yet.
                     </td>
                   </tr>

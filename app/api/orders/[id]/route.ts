@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { after, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { logAdminActivity } from '@/lib/admin-activity'
 import { isAdminPanelUser } from '@/lib/auth-access'
@@ -35,12 +35,24 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     return NextResponse.json({ error: 'status is required' }, { status: 400 })
   }
 
-  const order = await updateOrderStatus(id, body.status)
-  logAdminActivity(access.user, 'STATUS_CHANGE', 'ORDER', {
-    entityId: order.id,
-    entityLabel: order.id,
-    summary: `Changed order ${order.id.slice(0, 8)}… status to ${body.status}`,
-    metadata: { status: body.status },
-  })
-  return NextResponse.json({ data: order })
+  try {
+    const { order, scheduleSideEffects } = await updateOrderStatus(id, body.status)
+
+    // Keep the PATCH response fast — notifications / library grants run after flush.
+    after(() => {
+      scheduleSideEffects()
+    })
+
+    logAdminActivity(access.user, 'STATUS_CHANGE', 'ORDER', {
+      entityId: order.id,
+      entityLabel: order.id,
+      summary: `Changed order ${order.id.slice(0, 8)}… status to ${body.status}`,
+      metadata: { status: body.status },
+    })
+    return NextResponse.json({ data: order })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to update status'
+    const status = message === 'Order not found' ? 404 : 500
+    return NextResponse.json({ error: message }, { status })
+  }
 }

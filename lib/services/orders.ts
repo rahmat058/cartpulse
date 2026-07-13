@@ -296,22 +296,36 @@ export async function updateOrderStatus(id: string, status: OrderStatus) {
     throw new Error('Order not found')
   }
 
+  // Lean update — return quickly; notify + library run after the response via `after()`.
   const order = await prisma.order.update({
     where: { id },
     data: { status },
-    include: {
-      items: { include: { product: true } },
-      user: true,
+    select: {
+      id: true,
+      status: true,
+      userId: true,
+      total: true,
+      createdAt: true,
     },
   })
 
-  await notifyOrderStatusChange(existing.userId, id, existing.status, status)
+  const previousStatus = existing.status
+  const userId = existing.userId
+  const shouldGrantLibrary = status === 'PAID' && previousStatus !== 'PAID'
 
-  if (status === 'PAID' && existing.status !== 'PAID') {
-    await grantLibraryAccessForOrder(id)
+  return {
+    order,
+    scheduleSideEffects: () => {
+      void notifyOrderStatusChange(userId, id, previousStatus, status).catch((error) => {
+        console.error('[orders] notifyOrderStatusChange failed', error)
+      })
+      if (shouldGrantLibrary) {
+        void grantLibraryAccessForOrder(id).catch((error) => {
+          console.error('[orders] grantLibraryAccessForOrder failed', error)
+        })
+      }
+    },
   }
-
-  return order
 }
 
 export async function markOrderPaid(orderId: string, stripeSessionId: string) {

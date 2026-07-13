@@ -85,8 +85,8 @@ export function formatShippingAddress(order: OrderDisplayData): string | null {
   return [order.shippingName, ...lines, order.shippingPhone].filter(Boolean).join('\n')
 }
 
-export function formatOrderPlacedAt(date: Date) {
-  return format(date, 'MMM d, yyyy · h:mm aa')
+export function formatOrderPlacedAt(date: Date | string) {
+  return format(typeof date === 'string' ? new Date(date) : date, 'MMM d, yyyy · h:mm aa')
 }
 
 export function formatOrderLabel(orderId: string) {

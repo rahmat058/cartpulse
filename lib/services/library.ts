@@ -98,30 +98,29 @@ export async function grantLibraryAccessForOrder(orderId: string) {
   const digitalItems = order.items.filter((item) => isDigitalProduct(item.product))
   if (digitalItems.length === 0) return []
 
-  const granted = []
-
-  for (const item of digitalItems) {
-    const row = await prisma.libraryItem.upsert({
-      where: {
-        userId_productId: {
+  const rows = await Promise.all(
+    digitalItems.map((item) =>
+      prisma.libraryItem.upsert({
+        where: {
+          userId_productId: {
+            userId: order.userId,
+            productId: item.productId,
+          },
+        },
+        create: {
           userId: order.userId,
           productId: item.productId,
+          orderId: order.id,
         },
-      },
-      create: {
-        userId: order.userId,
-        productId: item.productId,
-        orderId: order.id,
-      },
-      update: {
-        orderId: order.id,
-      },
-      include: libraryInclude,
-    })
-    granted.push(mapLibraryItem(row))
-  }
+        update: {
+          orderId: order.id,
+        },
+        include: libraryInclude,
+      }),
+    ),
+  )
 
-  return granted
+  return rows.map(mapLibraryItem)
 }
 
 export async function getLibraryDownloadTarget(userId: string, productId: string) {
