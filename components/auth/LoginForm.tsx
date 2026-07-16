@@ -22,6 +22,24 @@ type LoginFormProps = {
   oauthProviders?: OAuthProviders
 }
 
+const DEMO_ACCOUNTS = [
+  {
+    label: 'Demo Super Admin',
+    email: 'superadmin@platform.com',
+    password: 'password123',
+  },
+  {
+    label: 'Demo Admin',
+    email: 'admin@platform.com',
+    password: 'password123',
+  },
+  {
+    label: 'Demo User',
+    email: 'customer@demo.com',
+    password: 'password123',
+  },
+] as const
+
 export function LoginForm({ oauthProviders = { google: false, github: false } }: LoginFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -41,12 +59,17 @@ export function LoginForm({ oauthProviders = { google: false, github: false } }:
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   })
 
+  function fillDemoAccount(email: string, password: string) {
+    setValue('email', email, { shouldValidate: true, shouldDirty: true })
+    setValue('password', password, { shouldValidate: true, shouldDirty: true })
+  }
   useEffect(() => {
     setPendingWishlist(hasPendingWishlistProductId())
   }, [])
@@ -140,7 +163,7 @@ export function LoginForm({ oauthProviders = { google: false, github: false } }:
   return (
     <AuthShell
       title="Sign in"
-      subtitle="Welcome back — pick up where you left off."
+      subtitle="Welcome back — use a demo account below or sign in with your own credentials."
       asideTitle="Welcome back"
       asideDescription="Sign in to checkout securely, sync your wishlist, and track orders."
       asideItems={[
@@ -184,6 +207,33 @@ export function LoginForm({ oauthProviders = { google: false, github: false } }:
           Sign in to save the item to your wishlist.
         </p>
       )}
+
+      <div className="mb-5 space-y-2.5">
+        {DEMO_ACCOUNTS.map((account) => (
+          <div
+            key={account.email}
+            className="flex items-center justify-between gap-3 rounded-md border border-teal-200 bg-teal-50/70 px-3 py-2.5 dark:border-teal-900 dark:bg-teal-950/30">
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold tracking-wider text-teal-700 uppercase dark:text-teal-300">
+                {account.label}
+              </p>
+              <p className="mt-0.5 truncate text-xs text-slate-700 dark:text-slate-200">
+                <span className="font-medium">{account.email}</span>
+                <span className="text-slate-400"> · </span>
+                <span className="font-mono">{account.password}</span>
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="shrink-0 border-teal-300 bg-white text-teal-700 hover:bg-teal-50 hover:text-teal-800 dark:border-teal-700 dark:bg-slate-950 dark:text-teal-300 dark:hover:bg-teal-950/50"
+              onClick={() => fillDemoAccount(account.email, account.password)}>
+              Use demo
+            </Button>
+          </div>
+        ))}
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div>
